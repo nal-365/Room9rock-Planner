@@ -237,17 +237,21 @@ button.mini:hover{background:#F7F3EA}
 .mf b{font-size:13px;font-weight:800;color:#3F5C2E;font-variant-numeric:tabular-nums}
 .mf.acc{border-top:1px dashed #DCE7D0;padding-top:3px;color:#9AA98A}
 
-/* 취미 */
+/* 여가 시간 */
 .col-heart .col-body{gap:4px}
-.mood-pick{display:flex;gap:2px;justify-content:space-between;border-bottom:1px dashed #F1DCE3;padding-bottom:5px;flex:none}
+.col-heart .note-area{flex:none;height:72px;min-height:0}
+.mood-pick{display:flex;gap:2px;justify-content:space-between;border-bottom:1px dashed #DCE6F4;padding-bottom:4px;flex:none}
 .mood-btn{border:0;background:transparent;font-size:17px;line-height:1;cursor:pointer;padding:1px;opacity:.32;filter:grayscale(1);transition:transform .12s,opacity .12s;touch-action:manipulation}
 .mood-btn.on{opacity:1;filter:none;transform:scale(1.16)}
-.mood-word{font-size:10.5px;color:#B07E8E;font-weight:800;text-align:center;min-height:13px;flex:none;letter-spacing:.2px}
-.note-one-lab{font-size:9px;letter-spacing:.7px;font-weight:800;color:#C08E9E;margin-top:3px;display:block;flex:none}
-.note-one{width:100%;border:0;border-bottom:1px solid #F1DCE3;background:transparent;outline:none;font-size:12px;padding:2px 1px;color:var(--ink)}
-.note-one::placeholder{color:#D2B9C3}
-.note-area{flex:1;min-height:150px;width:100%;border:0;outline:none;resize:none;font:inherit;font-size:11.5px;line-height:22px;padding:6px 2px 0;color:var(--ink);background:repeating-linear-gradient(#fff 0 21px,#F4E4EA 21px 22px)}
-.note-area::placeholder{color:#D9C3CB}
+.mood-word{font-size:10px;color:#6E8FB0;font-weight:800;text-align:center;min-height:12px;flex:none;letter-spacing:.2px}
+.col-health .mood-btn{font-size:14px}
+.note-one-lab{font-size:9px;letter-spacing:.7px;font-weight:800;color:#7E9CBE;margin-top:3px;display:block;flex:none}
+.note-one{width:100%;border:0;border-bottom:1px solid #DCE6F4;background:transparent;outline:none;font-size:11.5px;padding:2px 1px;color:var(--ink)}
+.note-one::placeholder{color:#B9C9DC}
+.note-area{flex:1;min-height:60px;width:100%;border:0;outline:none;resize:none;font:inherit;font-size:11px;line-height:21px;padding:4px 2px 0;color:var(--ink);background:repeating-linear-gradient(#fff 0 20px,#E7EEF7 20px 21px)}
+.note-area::placeholder{color:#B9C9DC}
+.bm{border:1px solid #D8E3F2;background:#FBFDFF;border-radius:999px;padding:2px 8px;font-size:10.5px;color:#8FA4BD;cursor:pointer;font-weight:800;touch-action:manipulation;line-height:1.4}
+.bm.on{background:#A9DCC4;border-color:#8CC9AF;color:#2F6B52}
 
 /* ---------- 타임테이블 ---------- */
 .tt{display:flex;gap:6px;padding-top:9px}
@@ -757,7 +761,8 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
   body[data-print="daily"] .mood-word{font-size:5pt}
   body[data-print="daily"] .note-one-lab{font-size:4.4pt}
   body[data-print="daily"] .note-one{font-size:6pt}
-  body[data-print="daily"] .note-area{font-size:6.2pt;min-height:32mm;line-height:1.9}
+  body[data-print="daily"] .note-area{font-size:6.2pt;min-height:0;height:16mm;line-height:1.9}
+  body[data-print="daily"] .bm{font-size:5.6pt;padding:0 1mm}
   .task .del,.c-del{display:none !important}
   .wstats{display:none !important}
   .week-scroll{overflow:visible}
@@ -914,6 +919,10 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
             <div class="col-head" style="--tint:#CFE4FB;--inkh:#3E6A9C">건강</div>
             <div class="col-body">
               <div class="weight-row"><input id="weight" class="weight" inputmode="decimal" placeholder="–" aria-label="몸무게 kg"><span class="unit">kg</span></div>
+              <div class="mood-pick" id="moodPick"></div>
+              <div class="mood-word" id="moodWord"></div>
+              <label class="note-one-lab">한 줄</label>
+              <input class="note-one" id="comment" maxlength="80" placeholder="오늘 컨디션 한 줄">
               <div class="meal-list" id="mealList"></div>
               <button class="add-mini" id="addMeal">＋ 식단 기록</button>
             </div>
@@ -921,6 +930,7 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
               <div class="tr"><span class="tr-lab">물</span><span id="waterRow" style="display:flex;gap:3px"></span></div>
               <div class="tr"><span class="tr-lab">약</span><span id="medRow" style="display:flex;gap:3px;flex-wrap:wrap"></span></div>
               <div class="tr"><span class="tr-lab">에너지</span><span id="energyRow" style="display:flex;gap:3px;align-items:flex-end"></span></div>
+              <div class="tr"><span class="tr-lab">장건강</span><span id="bmRow" style="display:flex;gap:3px;flex-wrap:wrap"></span></div>
             </div>
           </section>
 
@@ -985,16 +995,14 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
             </div>
           </section>
 
-          <!-- 7. 취미 -->
+          <!-- 7. 여가 시간 -->
           <section class="col col-heart">
-            <div class="col-head" style="--tint:#CFF0EA;--inkh:#2F7A6E">취미</div>
+            <div class="col-head" style="--tint:#CFF0EA;--inkh:#2F7A6E">여가 시간</div>
             <div class="col-body">
-              <div class="mood-pick" id="moodPick"></div>
-              <div class="mood-word" id="moodWord"></div>
-              <label class="note-one-lab">취미 한 줄</label>
-              <input class="note-one" id="comment" maxlength="80" placeholder="오늘 해본 취미 한 줄">
-              <label class="note-one-lab">오늘의 취미 기록</label>
-              <textarea class="note-area" id="memo" placeholder="무엇을 만들고, 배우고, 즐겼나요?" maxlength="3000"></textarea>
+              <div class="tasks-body" id="taskList-leisure"></div>
+              <button class="add-task" data-add="leisure">＋ 여가 활동 추가</button>
+              <label class="note-one-lab">여가 메모</label>
+              <textarea class="note-area" id="memo" placeholder="오늘의 여가 기록" maxlength="3000"></textarea>
             </div>
           </section>
         </div>
@@ -1378,7 +1386,7 @@ function normalize(o){
       v.tasks.forEach(function(t){
         if(!t || typeof t.text!=="string") return;
         var st=parseInt(t.st,10); if(!isFinite(st)||st<0||st>4) st=0;
-        var lk=(t.list==="home"||t.list==="study")?t.list:"work";
+        var lk=(t.list==="home"||t.list==="study"||t.list==="leisure")?t.list:"work";
         tasks.push({id:t.id||uid(), text:t.text.slice(0,200), st:st, list:lk});
       });
     }
@@ -1412,6 +1420,7 @@ function normalize(o){
       weather:typeof v.weather==="string"?v.weather.slice(0,30):"",
       tasks:tasks,
       slots:slots,
+      bm:ci(v.bm,0,3),
       health:health,
       emotion:{mood:ci(esrc.mood,0,5)}
     };
@@ -1728,6 +1737,7 @@ function renderDaily(){
   renderTaskList("work");
   renderTaskList("study");
   renderTaskList("home");
+  renderTaskList("leisure");
   renderMoney();
 
   var wrap=$("#dailyTT");
@@ -1756,7 +1766,7 @@ function renderTaskList(kind){
   var html=list.map(taskRowHTML).join("");
   if(!list.length){
     html='<div class="task empty"><span class="st"></span><span class="txt-ph" style="font-size:10.5px;color:#CFC5B4">'
-       +(kind==="study"?"읽은 책·공부 기록":(kind==="home"?"일정을 적어 보세요":"할 일을 적어 보세요"))
+       +(kind==="study"?"읽은 책·공부 기록":(kind==="home"?"일정을 적어 보세요":(kind==="leisure"?"여가 활동을 적어 보세요":"할 일을 적어 보세요")))
        +'</span></div>';
   }
   box.innerHTML=html;
@@ -1828,9 +1838,14 @@ function renderHealth(){
   var e="";
   for(var k=1;k<=5;k++) e+='<button class="bat'+(h.energy>=k?" on":"")+'" data-energy="'+k+'" aria-label="에너지 '+k+'단계" style="height:'+(7+k*2)+'px"></button>';
   $("#energyRow").innerHTML=e;
+  var br=$("#bmRow");
+  if(br){
+    var bm=clampInt(getDay(curDate).bm,0,3);
+    br.innerHTML='<button class="bm'+(bm?" on":"")+'" data-bm="1" aria-label="장건강(배변) '+(bm?bm+"회":"미기록")+'" title="누를 때마다 오늘 배변 기록 (0→1회→2회→3회+) → 네 번에 초기화">'+(bm?(bm>=3?"3회+":bm+"회"):"체크")+'</button>';
+  }
 }
 
-/* ---------- 취미 ---------- */
+/* ---------- 컨디션(기분) ---------- */
 var MOODS=[
   {v:1, e:"😞", w:"많이 지침"},
   {v:2, e:"😕", w:"조금 가라앉음"},
@@ -1851,7 +1866,7 @@ function renderEmotion(){
   }).join("");
   var found=null;
   MOODS.forEach(function(m){ if(m.v===em.mood) found=m; });
-  $("#moodWord").textContent=found?found.w:"오늘 취미는 어땠나요?";
+  $("#moodWord").textContent=found?found.w:"오늘 컨디션은?";
 }
 
 /* ---------- Money (당일) ---------- */
@@ -1975,13 +1990,13 @@ function renderWeek(){
     var dt=parseISO(date);
     var tasks="";
     var maxShow=7;
-    // 표시 순서: 일정(home) → 작업(work·미지정) → 자기개발(study), 같은 분류 안에서는 입력 순서 유지
-    var weekOrder=function(t){ return t.list==="home"?0:(t.list==="study"?2:1); };
+    // 표시 순서: 일정(home) → 작업(work·미지정) → 자기개발(study) → 여가 시간(leisure), 같은 분류 안에서는 입력 순서 유지
+    var weekOrder=function(t){ return t.list==="home"?0:(t.list==="study"?2:(t.list==="leisure"?3:1)); };
     var sortedTasks=d.tasks.map(function(t,i){ return {t:t, i:i}; }).sort(function(a,b){
       return (weekOrder(a.t)-weekOrder(b.t)) || (a.i-b.i);
     }).map(function(x){ return x.t; });
     sortedTasks.slice(0,maxShow).forEach(function(t){
-      var lc=(t.list==="home")?"#EFA96A":(t.list==="study"?"#EF9FB4":"#EBCB5A");
+      var lc=(t.list==="home")?"#EFA96A":(t.list==="study"?"#EF9FB4":(t.list==="leisure"?"#5FC4AE":"#EBCB5A"));
       tasks+='<div class="wtask'+(t.st===1?" done":"")+'" data-date="'+date+'" data-id="'+t.id+'">'
            +   '<button class="wst s'+t.st+'" data-date="'+date+'" data-id="'+t.id+'" title="'+ST_LABEL[t.st]+'">'+ST_SYM[t.st]+'</button>'
            +   '<span class="wtxt"><i style="display:inline-block;width:5px;height:5px;border-radius:1px;background:'+lc+';margin-right:4px;vertical-align:1px"></i>'+esc(t.text||"할 일")+'</span>'
@@ -2728,7 +2743,7 @@ function bindEvents(){
     if(!ed.hidden && !e.target.closest("#ddayWrap")) ed.hidden=true;
   });
 
-  // 코멘트 / 날씨 / 취미 기록
+  // 코멘트 / 날씨 / 여가 메모
   var commentTimer=null, weatherTimer=null, memoTimer=null;
   $("#comment").addEventListener("input", function(e){
     getDay(curDate).comment=e.target.value;
@@ -2815,6 +2830,11 @@ function bindEvents(){
       var em=getEmotion(curDate); var mv=parseInt(moodEl.dataset.mood,10);
       em.mood=(em.mood===mv)?0:mv;
       renderEmotion(); scheduleSave(); return;
+    }
+    if(e.target.closest("[data-bm]")){
+      var dg=getDay(curDate);
+      dg.bm=(clampInt(dg.bm,0,3)+1)%4;
+      renderHealth(); scheduleSave(); return;
     }
     var mdel=e.target.closest("[data-mdel]");
     if(mdel){ e.stopPropagation(); deleteEntry(mdel.dataset.mdel); return; }
@@ -3149,7 +3169,7 @@ function startRename(nmEl){
       if(cc && v) cc.name=v.slice(0,12);
       scheduleSave();
     }
-    renderPalette(); renderNameGrid(); renderTaskList("work"); renderTaskList("study"); renderTaskList("home"); refreshSums();
+    renderPalette(); renderNameGrid(); renderTaskList("work"); renderTaskList("study"); renderTaskList("home"); renderTaskList("leisure"); refreshSums();
     if(view==="week") renderWeek();
   }
   input.addEventListener("keydown", function(e){
