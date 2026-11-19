@@ -269,8 +269,8 @@ button.mini:hover{background:#F7F3EA}
 .note-area{flex:1;min-height:60px;width:100%;border:0;outline:none;resize:none;font:inherit;font-size:11px;line-height:21px;padding:4px 2px 0;color:var(--ink);background:repeating-linear-gradient(#fff 0 20px,#E7EEF7 20px 21px)}
 .note-area::placeholder{color:#B9C9DC}
 /* 장건강 — 변 상태 5종 선택 칩 */
-#bmRow{gap:3px;align-items:flex-start}
-.bm{height:17px;display:inline-flex;align-items:center;justify-content:center;border:1px solid #E1E9F3;background:#FCFDFF;border-radius:999px;padding:0 5px;font-size:9.5px;letter-spacing:-.1px;color:#A3B2C4;cursor:pointer;font-weight:800;touch-action:manipulation;line-height:1.2;flex:none;transition:background .12s,border-color .12s,color .12s}
+#bmRow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:3px;max-width:212px}
+.bm{height:17px;display:inline-flex;align-items:center;justify-content:center;border:1px solid #E1E9F3;background:#FCFDFF;border-radius:999px;padding:0 4px;font-size:9.5px;letter-spacing:-.1px;color:#A3B2C4;cursor:pointer;font-weight:800;touch-action:manipulation;line-height:1.2;min-width:0;overflow:hidden;white-space:nowrap;transition:background .12s,border-color .12s,color .12s}
 .bm:hover{border-color:#C9D8EA;color:#7E93AC}
 .bm[data-bm-state="soft"].on{background:#EDF0F4;border-color:#C6CFDA;color:#586372}
 .bm[data-bm-state="banana"].on{background:#D9F1E5;border-color:#9FD6BC;color:#2F6B52}
@@ -280,6 +280,7 @@ button.mini:hover{background:#F7F3EA}
 .bm-legacy{font-size:9px;letter-spacing:-.1px;color:#B6C2D1;font-weight:800;align-self:center}
 .tr-bm{align-items:start}
 .tr-bm .tr-lab{margin-top:2px}
+.tr-bm .tr-in{flex-wrap:nowrap}
 .comment-row{display:flex;flex-direction:column;gap:1px;flex:none;margin-top:1px}
 .comment-row .note-one-lab{margin-top:0}
 
@@ -803,6 +804,7 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
   body[data-print="daily"] .med{height:3.4mm;font-size:5.6pt;padding:0 1mm;line-height:3mm}
   body[data-print="daily"] .bat{width:1.1mm}
   body[data-print="daily"] .bm{height:3.4mm;min-width:0;padding:0 .8mm;font-size:5pt}
+  body[data-print="daily"] #bmRow{gap:.5mm;max-width:none}
   body[data-print="daily"] .bm-legacy{font-size:4.6pt}
   body[data-print="daily"] .tr-bm{align-items:center;min-height:0}
   body[data-print="daily"] .tr-lab{font-size:5.2pt}
