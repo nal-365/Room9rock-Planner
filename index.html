@@ -3500,6 +3500,7 @@ function cloudLoad(){
     cloudAttach();
     if(st){
       var localNewer=cloudLocalIsNewer(data);
+      var localSnapshot=localNewer?JSON.stringify(S):null;
       cloud.applying=true;
       try{
         S=st;
@@ -3508,8 +3509,18 @@ function cloudLoad(){
       }catch(e){}
       cloud.applying=false;
       cloudUI("synced");
-      if(localNewer && hasRealData()){
-        toast("이 기기에 더 최근 기록이 있어요.","이 기기 기록 올리기", function(){ cloudPush(); });
+      if(localNewer && localSnapshot && hasRealData()){
+        toast("이 기기에 더 최근 기록이 있어요.","이 기기 기록 올리기", function(){
+          try{
+            var back=JSON.parse(localSnapshot);
+            cloud.applying=true;
+            S=normalize(back);
+            lsSet(KEY, JSON.stringify(S));
+            cloudRenderAll();
+            cloud.applying=false;
+            cloudPush();
+          }catch(e){ cloud.applying=false; }
+        });
       }
     }else{
       cloudUI("synced");
