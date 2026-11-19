@@ -268,8 +268,20 @@ button.mini:hover{background:#F7F3EA}
 .note-one::placeholder{color:#B9C9DC}
 .note-area{flex:1;min-height:60px;width:100%;border:0;outline:none;resize:none;font:inherit;font-size:11px;line-height:21px;padding:4px 2px 0;color:var(--ink);background:repeating-linear-gradient(#fff 0 20px,#E7EEF7 20px 21px)}
 .note-area::placeholder{color:#B9C9DC}
-.bm{height:18px;min-width:44px;display:inline-flex;align-items:center;justify-content:center;border:1px solid #D8E3F2;background:#FBFDFF;border-radius:999px;padding:0 8px;font-size:10.5px;color:#8FA4BD;cursor:pointer;font-weight:800;touch-action:manipulation;line-height:1.3;flex:none}
-.bm.on{background:#A9DCC4;border-color:#8CC9AF;color:#2F6B52}
+/* 장건강 — 변 상태 5종 선택 칩 */
+#bmRow{gap:3px;align-items:flex-start}
+.bm{height:17px;display:inline-flex;align-items:center;justify-content:center;border:1px solid #E1E9F3;background:#FCFDFF;border-radius:999px;padding:0 5px;font-size:9.5px;letter-spacing:-.1px;color:#A3B2C4;cursor:pointer;font-weight:800;touch-action:manipulation;line-height:1.2;flex:none;transition:background .12s,border-color .12s,color .12s}
+.bm:hover{border-color:#C9D8EA;color:#7E93AC}
+.bm[data-bm-state="soft"].on{background:#EDF0F4;border-color:#C6CFDA;color:#586372}
+.bm[data-bm-state="banana"].on{background:#D9F1E5;border-color:#9FD6BC;color:#2F6B52}
+.bm[data-bm-state="hard"].on{background:#FBF1D4;border-color:#E3CC92;color:#8A6A20}
+.bm[data-bm-state="loose"].on{background:#FFE4CF;border-color:#EFBB92;color:#A2551F}
+.bm[data-bm-state="blood"].on{background:#FBDDDD;border-color:#E9AFAF;color:#A63B3B}
+.bm-legacy{font-size:9px;letter-spacing:-.1px;color:#B6C2D1;font-weight:800;align-self:center}
+.tr-bm{align-items:start}
+.tr-bm .tr-lab{margin-top:2px}
+.comment-row{display:flex;flex-direction:column;gap:1px;flex:none;margin-top:1px}
+.comment-row .note-one-lab{margin-top:0}
 
 /* ---------- 타임테이블 ---------- */
 .tt{display:flex;gap:6px;padding-top:9px}
@@ -790,7 +802,9 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
   body[data-print="daily"] .wbtn{width:2.6mm;height:3.8mm}
   body[data-print="daily"] .med{height:3.4mm;font-size:5.6pt;padding:0 1mm;line-height:3mm}
   body[data-print="daily"] .bat{width:1.1mm}
-  body[data-print="daily"] .bm{height:3.6mm;min-width:0;padding:0 1mm}
+  body[data-print="daily"] .bm{height:3.4mm;min-width:0;padding:0 .8mm;font-size:5pt}
+  body[data-print="daily"] .bm-legacy{font-size:4.6pt}
+  body[data-print="daily"] .tr-bm{align-items:center;min-height:0}
   body[data-print="daily"] .tr-lab{font-size:5.2pt}
   body[data-print="daily"] .note-one{height:3.6mm}
   body[data-print="daily"] .mrow{font-size:6.2pt;padding:.5mm 0}
@@ -959,6 +973,10 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
             <div class="col-head" style="--tint:#CFE4FB;--inkh:#3E6A9C">건강</div>
             <div class="col-body">
               <div class="weight-row"><input id="weight" class="weight" inputmode="decimal" placeholder="–" aria-label="몸무게 kg"><span class="unit">kg</span></div>
+              <div class="comment-row">
+                <span class="note-one-lab">오늘의 한 줄</span>
+                <input class="note-one" id="comment" maxlength="80" placeholder="오늘 컨디션 한 줄" aria-label="오늘 컨디션 한 줄">
+              </div>
               <div class="meal-list" id="mealList"></div>
               <button class="add-mini" id="addMeal">＋ 식단 기록</button>
             </div>
@@ -966,9 +984,8 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
               <div class="tr"><span class="tr-lab">물</span><span class="tr-in" id="waterRow"></span></div>
               <div class="tr"><span class="tr-lab">약</span><span class="tr-in" id="medRow"></span></div>
               <div class="tr"><span class="tr-lab">에너지</span><span class="tr-in energy" id="energyRow"></span></div>
-              <div class="tr"><span class="tr-lab">장건강</span><span class="tr-in" id="bmRow"></span></div>
+              <div class="tr tr-bm"><span class="tr-lab">장건강</span><span class="tr-in" id="bmRow"></span></div>
               <div class="tr"><span class="tr-lab">기분</span><span class="tr-in mood-row"><span id="moodPick"></span><span class="mood-word" id="moodWord"></span></span></div>
-              <div class="tr"><span class="tr-lab">한 줄</span><input class="note-one" id="comment" maxlength="80" placeholder="오늘 컨디션 한 줄" aria-label="오늘 컨디션 한 줄"></div>
             </div>
           </section>
 
@@ -1210,7 +1227,7 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
         <li><b>할 일</b> — 네모를 누를 때마다 <b>□ → ○ 완료 → △ 일부 → × 못함 → → 미룸</b> 순서로 바뀌어요.</li>
         <li><b>주간</b> — 일간에서 칠하고 적은 내용이 그대로 모이고, 주간에서 고쳐도 일간에 바로 반영돼요.</li>
         <li><b>소비일지</b> — 날짜·시간·분류·구매내역·금액을 적고, 필요하면 <b>상세 구매내역</b>을 여러 줄로 남겨요. 월 합계와 <b>분류별 모아보기</b>가 자동으로 정리되고, 분류를 누르면 그 내역만 필터링됩니다.</li>
-        <li><b>일간 열</b> — <b>건강</b>은 위에서부터 몸무게·식단(시간·시간대·내용, 여러 줄 가능)을 적고, 아래 트래커 한 칸에 물·약·에너지·장건강·기분(5단계)·한 줄을 모아 둡니다. <b>작업·자기개발·일정·여가 시간</b>은 체크리스트로 적어요. 기분 이모지는 월간 달력에도 표시됩니다.</li>
+        <li><b>일간 열</b> — <b>건강</b>은 위에서부터 몸무게 → 오늘의 한 줄 → 식단(시간·시간대·내용, 여러 줄 가능)을 적고, 아래 트래커 한 칸에 물·약·에너지·장건강(안감·바나나·딱딱함·설사·혈변 중 하나, 누르면 선택·다시 누르면 해제)·기분(5단계)을 모아 둡니다. <b>작업·자기개발·일정·여가 시간</b>은 체크리스트로 적어요. 기분 이모지는 월간 달력에도 표시됩니다.</li>
         <li><b>월간</b> — 한 달을 달력 한 장으로 모아 봐요. 날짜를 누르면 그날 일간으로 바로 넘어가고, <b>이달의 목표</b>·<b>한 줄 리뷰</b>는 아래 통계와 함께 자동 저장돼요.</li>
         <li><b>카테고리 관리</b> — 위쪽 <b>카테고리</b> 버튼에서 형광펜·소비일지 분류·약 종류를 직접 추가하거나 지울 수 있어요.</li>
         <li><b>저장</b> — 모든 변경은 이 브라우저에 자동 저장돼요. <b>Google 로그인</b>하면 다른 기기와 자동으로 이어지고, 로그아웃해도 이 기기의 기록은 그대로 남아요.</li>
@@ -1477,6 +1494,7 @@ function normalize(o){
       tasks:tasks,
       slots:slots,
       bm:ci(v.bm,0,3),
+      bmState:(function(x){ x=String(x==null?"":x); return (x==="soft"||x==="banana"||x==="hard"||x==="loose"||x==="blood")?x:""; })(v.bmState),
       health:health,
       emotion:{mood:ci(esrc.mood,0,5)}
     };
@@ -1900,6 +1918,19 @@ function autoGrowTa(el){
 function autoGrowMeals(){
   $$("#mealList .mx").forEach(function(el){ if(el.tagName==="TEXTAREA") autoGrowTa(el); });
 }
+/* ---------- 장건강: 변 상태 5종 ---------- */
+var BM_STATES=[
+  {k:"soft",   label:"안감",   long:"안감 (무르고 힘없이 나옴)"},
+  {k:"banana", label:"바나나", long:"바나나 (정상)"},
+  {k:"hard",   label:"딱딱함", long:"딱딱함 (단단해서 힘듦)"},
+  {k:"loose",  label:"설사",   long:"설사"},
+  {k:"blood",  label:"혈변",   long:"혈변"}
+];
+function bmStateOf(date){
+  var d=getDay(date), x=String(d.bmState||"");
+  for(var i=0;i<BM_STATES.length;i++) if(BM_STATES[i].k===x) return x;
+  return "";
+}
 function renderHealth(){
   var h=getHealth(curDate);
   $("#weight").value=h.weight||"";
@@ -1932,8 +1963,14 @@ function renderHealth(){
   $("#energyRow").innerHTML=e;
   var br=$("#bmRow");
   if(br){
-    var bm=clampInt(getDay(curDate).bm,0,3);
-    br.innerHTML='<button class="bm'+(bm?" on":"")+'" data-bm="1" aria-label="장건강(배변) '+(bm?bm+"회":"미기록")+'" title="누를 때마다 오늘 배변 기록 (0→1회→2회→3회+) → 네 번에 초기화">'+(bm?(bm>=3?"3회+":bm+"회"):"체크")+'</button>';
+    var curBm=bmStateOf(curDate), bh="";
+    BM_STATES.forEach(function(s){
+      var on=(curBm===s.k);
+      bh+='<button class="bm'+(on?" on":"")+'" data-bm-state="'+s.k+'" aria-pressed="'+(on?"true":"false")+'" aria-label="장건강 '+esc(s.label)+'" title="'+esc(s.long)+' — 누르면 선택, 다시 누르면 해제">'+s.label+'</button>';
+    });
+    var oldBm=clampInt(getDay(curDate).bm,0,3);
+    if(!curBm && oldBm>0) bh+='<span class="bm-legacy" title="바꾸기 전 기록: 하루 '+oldBm+'회 (변 상태는 기록되지 않았어요)">·'+oldBm+'회</span>';
+    br.innerHTML=bh;
   }
   autoGrowMeals();
   if(window.requestAnimationFrame) requestAnimationFrame(autoGrowMeals);
@@ -2868,11 +2905,7 @@ function bindEvents(){
   });
 
   // 코멘트 / 날씨 / 여가 메모
-  var commentTimer=null, weatherTimer=null, memoTimer=null;
-  $("#comment").addEventListener("input", function(e){
-    getDay(curDate).comment=e.target.value;
-    clearTimeout(commentTimer); commentTimer=setTimeout(scheduleSave,200);
-  });
+  var weatherTimer=null, memoTimer=null;
   $("#weather").addEventListener("input", function(e){
     getDay(curDate).weather=e.target.value;
     clearTimeout(weatherTimer); weatherTimer=setTimeout(scheduleSave,200);
@@ -2955,9 +2988,10 @@ function bindEvents(){
       em.mood=(em.mood===mv)?0:mv;
       renderEmotion(); scheduleSave(); return;
     }
-    if(e.target.closest("[data-bm]")){
-      var dg=getDay(curDate);
-      dg.bm=(clampInt(dg.bm,0,3)+1)%4;
+    var bmEl=e.target.closest("[data-bm-state]");
+    if(bmEl){
+      var dg=getDay(curDate), sv=bmEl.dataset.bmState;
+      dg.bmState=(bmStateOf(curDate)===sv)?"":sv;
       renderHealth(); scheduleSave(); return;
     }
     var mdel=e.target.closest("[data-mdel]");
