@@ -429,6 +429,7 @@ button.mini:hover{background:#F7F3EA}
 .mcell .mtasks{display:flex;align-items:center;gap:4px;min-width:0;font-size:10.5px;line-height:1.25;color:var(--ink-soft)}
 .mcell .mtasks .cnt{flex:none;font-family:var(--sans);font-size:9.5px;font-weight:800;color:#8A97A8;letter-spacing:0}
 .mcell .mtasks .one{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.mcell .mtasks .more{flex:none;margin-left:auto;font-family:var(--sans);font-size:9px;font-weight:800;color:#7C8798;background:#F3EFE6;border-radius:4px;padding:0 4px;line-height:1.5;font-variant-numeric:tabular-nums}
 .mcell .mtasks.second{color:#9A9082;padding-left:22px}
 .mcell .mone{align-self:flex-start;margin-top:auto;background:#EAF5DC;color:#41631F;border-radius:999px;padding:1px 6px;font-family:var(--sans);font-size:9px;font-weight:800;letter-spacing:0;white-space:nowrap}
 .mstats{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:12px}
@@ -621,6 +622,7 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
   .mcell .mtasks{font-size:9px;gap:2px}
   .mcell .mtasks .cnt{font-size:8.5px}
   .mcell .mtasks .one{display:none}
+  .mcell .mtasks .more{display:none}
   .mcell .mtasks.second{display:none}
   .mcell .mone{font-size:8px;padding:0 4px}
   .mstats{grid-template-columns:1fr}
@@ -799,6 +801,7 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
   body[data-print="month"] .mcell .mbar{height:1.1mm}
   body[data-print="month"] .mcell .mtasks{font-size:5.2pt;gap:.6mm}
   body[data-print="month"] .mcell .mtasks .cnt{font-size:4.8pt}
+  body[data-print="month"] .mcell .mtasks .more{font-size:4.8pt;padding:0 .6mm}
   body[data-print="month"] .mcell .mtasks.second{display:flex;padding-left:4mm}
   body[data-print="month"] .mcell .mone{font-size:4.8pt;padding:0 1mm;margin-top:auto;background:#EAF5DC !important}
   body[data-print="month"] .mstats{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:2mm}
@@ -2122,12 +2125,18 @@ function renderMonth(){
       if(rest) cell+='<i style="flex:'+rest+';--c:#DFD8CA"></i>';
       cell+='</span>';
     }
-    if(sm.tasks.length){
-      var ordered=sm.tasks.filter(function(t){ return t.st!==1; }).concat(sm.tasks.filter(function(t){ return t.st===1; }));
-      var t1=ordered[0], t2=ordered[1];
-      cell+='<span class="mtasks" title="할 일 '+sm.tasks.length+'개 중 '+sm.done+'개 완료"><span class="cnt">'+sm.done+'/'+sm.tasks.length+'</span>'
-          + '<span class="one">'+esc(t1.text||"할 일")+'</span></span>';
-      if(t2) cell+='<span class="mtasks second"><span class="one">'+esc(t2.text||"할 일")+'</span></span>';
+    var evTasks=sm.tasks.filter(function(t){ return t.list==="home"; });
+    if(evTasks.length){
+      var evDone=0;
+      evTasks.forEach(function(t){ if(t.st===1) evDone++; });
+      var ordered=evTasks.filter(function(t){ return t.st!==1; }).concat(evTasks.filter(function(t){ return t.st===1; }));
+      var t1=ordered[0], t2=ordered[1], restN=ordered.length-2;
+      var restNames=ordered.slice(2).map(function(t){ return String(t.text||"일정").slice(0,40); }).join(", ");
+      var tip="일정 "+evTasks.length+"개 중 "+evDone+"개 완료"+(restNames?" · 외 "+restN+"개: "+restNames:"");
+      cell+='<span class="mtasks" title="'+esc(tip)+'"><span class="cnt">'+evDone+'/'+evTasks.length+'</span>'
+          + '<span class="one">'+esc(t1.text||"일정")+'</span>'
+          + (restN>0?'<span class="more" aria-label="외 '+restN+'개">+'+restN+'</span>':'')+'</span>';
+      if(t2) cell+='<span class="mtasks second"><span class="one">'+esc(t2.text||"일정")+'</span></span>';
     }
     if(sm.spend>0) cell+='<span class="mone" title="지출 '+fmtWon(sm.spend)+'">'+shortWon(sm.spend)+'</span>';
     cell+='</div>';
