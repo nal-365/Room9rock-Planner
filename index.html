@@ -163,12 +163,14 @@ button.mini:hover{background:#F7F3EA}
 .weight{width:100%;min-width:0;border:0;background:transparent;outline:none;font-size:19px;font-weight:800;color:#3F6B9E;text-align:right;font-variant-numeric:tabular-nums;padding:0}
 .weight::placeholder{color:#C9D8EA}
 .weight-row .unit{font-size:10.5px;color:#7D90AB;font-weight:800;flex:none}
-.meal-list{display:flex;flex-direction:column;gap:1px;margin-top:4px;overflow:auto;min-height:40px}
-.meal{display:flex;align-items:center;gap:2px;border-bottom:1px dashed #EDF2F9;padding:1px 0}
-.meal .mt{width:38px;flex:none;border:0;background:transparent;font-size:10px;color:#93A7C0;outline:none;font-variant-numeric:tabular-nums;padding:0}
-.meal .mx{flex:1;min-width:0;border:0;background:transparent;font-size:11.5px;outline:none;color:var(--ink);padding:2px 0}
+.meal-list{display:flex;flex-direction:column;gap:3px;margin-top:4px;overflow:auto;min-height:40px}
+.meal{border:1px solid #E6EEF8;border-radius:7px;padding:2px 3px 3px;background:#FCFDFF}
+.meal-top{display:flex;align-items:center;gap:2px}
+.meal .mt{width:38px;flex:none;border:0;background:transparent;font-size:10px;color:#93A7C0;outline:none;font-variant-numeric:tabular-nums;padding:1px 0}
+.meal .ms{flex:1;min-width:0;border:0;background:transparent;font-size:10.5px;color:#6E8FB0;font-weight:700;outline:none;padding:1px 0;cursor:pointer;appearance:none;-webkit-appearance:none}
+.meal .mx{display:block;width:100%;border:0;border-top:1px dashed #EDF2F9;margin-top:2px;padding:2px 0 0;background:transparent;font:inherit;font-size:11px;line-height:1.5;color:var(--ink);outline:none;resize:none;min-height:32px;overflow:auto}
 .meal .mx::placeholder{color:#C4D2E4}
-.meal .md{border:0;background:transparent;color:#C9D5E5;font-size:11px;cursor:pointer;padding:0 2px;opacity:0;line-height:1}
+.meal .md{border:0;background:transparent;color:#C9D5E5;font-size:11px;cursor:pointer;padding:0 2px;opacity:0;line-height:1;flex:none}
 .meal:hover .md{opacity:1}
 .add-mini{border:1px dashed #D3DFEF;background:transparent;border-radius:7px;padding:3px 6px;font-size:10.5px;color:#9AAFC8;font-weight:700;cursor:pointer;margin-top:3px;text-align:left}
 .add-mini:hover{background:#F5F9FE;color:#5E7FA6}
@@ -1222,6 +1224,7 @@ var DEF_LEDGER_CATS = [
   {id:"income",  name:"수입",      type:"income",  color:"#A9DCC4"}
 ];
 var DEF_MEDS = [{id:"m", name:"아침약"}, {id:"e", name:"저녁약"}];
+var MEAL_SLOTS = ["아침","점심","저녁","운동","간식","야식"];
 var CAT_PALETTE = ["#B9E3CE","#FBE49B","#FAC9D6","#FBC79C","#CFE8A6","#B8DDF2","#CBB9EF","#DAD8D2","#C7DDF7","#F3B9A8","#E3C7F2","#CBD8CA"];
 var ST_SYM  = ["", "○", "△", "×", "→"];
 var ST_LABEL= ["미완료", "완료", "일부 완료", "못함", "미룸"];
@@ -1394,8 +1397,14 @@ function normalize(o){
     var meals=[];
     if(Array.isArray(hsrc.meals)){
       hsrc.meals.forEach(function(m){
-        if(!m || typeof m!=="object") return;
-        meals.push({t:String(m.t||"").slice(0,5), x:String(m.x||"").slice(0,80)});
+        if(m==null) return;
+        if(typeof m!=="object"){ meals.push({t:"", s:"", x:String(m).slice(0,500)}); return; }
+        var mt=String(m.t||"").slice(0,5);
+        meals.push({
+          t:mt,
+          s:(MEAL_SLOTS.indexOf(m.s)>=0)?m.s:guessMealSlot(mt),
+          x:String(m.x==null?"":m.x).slice(0,500)
+        });
       });
     }
     function ci(x,a,b){ x=parseInt(x,10); if(!isFinite(x)) x=0; return Math.max(a,Math.min(b,x)); }
@@ -1799,12 +1808,29 @@ function addTaskTo(date, text, afterId, list){
 
 /* ---------- Health ---------- */
 function clampInt(v,a,b){ v=parseInt(v,10); if(!isFinite(v)) v=0; return Math.max(a,Math.min(b,v)); }
+function guessMealSlot(t){
+  var m=/^(\d{1,2}):(\d{2})/.exec(String(t||""));
+  if(!m) return "";
+  var hh=parseInt(m[1],10); if(!isFinite(hh)) return "";
+  if(hh>=5 && hh<11) return "아침";
+  if(hh>=11 && hh<15) return "점심";
+  if(hh>=17 && hh<21) return "저녁";
+  if(hh>=21 || hh<5) return "야식";
+  return "간식";
+}
 function getHealth(date){
   var d=getDay(date);
   if(!d.health || typeof d.health!=="object") d.health={};
   var h=d.health;
   h.weight=(typeof h.weight==="string")?h.weight:(h.weight==null?"":String(h.weight));
   if(!Array.isArray(h.meals)) h.meals=[];
+  h.meals=h.meals.map(function(m){
+    if(!m || typeof m!=="object") m={t:"", x:String(m==null?"":m)};
+    var t=(typeof m.t==="string")?m.t.slice(0,5):String(m.t==null?"":m.t).slice(0,5);
+    var x=(typeof m.x==="string")?m.x:String(m.x==null?"":m.x);
+    var s=(MEAL_SLOTS.indexOf(m.s)>=0)?m.s:guessMealSlot(t);
+    return {t:t, s:s, x:x};
+  });
   h.water=clampInt(h.water,0,4);
   if(!h.meds || typeof h.meds!=="object"){
     h.meds={};
@@ -1819,9 +1845,15 @@ function renderHealth(){
   $("#weight").value=h.weight||"";
   $("#mealList").innerHTML=h.meals.map(function(m,i){
     return '<div class="meal" data-i="'+i+'">'
+      + '<div class="meal-top">'
       + '<input class="mt" value="'+esc(m.t||"")+'" placeholder="12:00" maxlength="5" aria-label="시간">'
-      + '<input class="mx" value="'+esc(m.x||"")+'" placeholder="메뉴" maxlength="60" aria-label="메뉴">'
-      + '<button class="md" data-meal-del="'+i+'" aria-label="삭제">×</button></div>';
+      + '<select class="ms" aria-label="시간대"><option value=""'+(m.s?"":" selected")+'>시간대</option>'
+      +   MEAL_SLOTS.map(function(s){ return '<option value="'+s+'"'+(m.s===s?" selected":"")+'>'+s+'</option>'; }).join("")
+      + '</select>'
+      + '<button class="md" data-meal-del="'+i+'" aria-label="삭제">×</button>'
+      + '</div>'
+      + '<textarea class="mx" rows="2" maxlength="500" placeholder="메뉴·내용 (여러 줄 가능)" aria-label="내용">'+esc(m.x||"")+'</textarea>'
+      + '</div>';
   }).join("");
   var w="";
   for(var i=1;i<=4;i++) w+='<button class="wbtn'+(h.water>=i?" on":"")+'" data-water="'+i+'" aria-label="물 '+i+'병" title="물 '+i+'병"></button>';
@@ -2856,7 +2888,8 @@ function bindEvents(){
       getHealth(curDate).weight=hv; scheduleSave(); return;
     }
     if(el.classList.contains("mt")||el.classList.contains("mx")){
-      var meal=el.closest(".meal"); var idx=parseInt(meal.dataset.i,10);
+      var meal=el.closest(".meal"); if(!meal) return;
+      var idx=parseInt(meal.dataset.i,10);
       var h=getHealth(curDate); if(!h.meals[idx]) return;
       if(el.classList.contains("mt")) h.meals[idx].t=el.value.slice(0,5);
       else h.meals[idx].x=el.value;
@@ -2884,9 +2917,18 @@ function bindEvents(){
 
   $("#addMeal").addEventListener("click", function(){
     var h=getHealth(curDate);
-    h.meals.push({t:"",x:""});
+    h.meals.push({t:"", s:"", x:""});
     renderHealth(); scheduleSave();
     var rows=$$("#mealList .mx"); var last=rows[rows.length-1]; if(last) last.focus();
+  });
+
+  board.addEventListener("change", function(e){
+    var el=e.target;
+    if(!el.classList || !el.classList.contains("ms")) return;
+    var row=el.closest(".meal"); if(!row) return;
+    var idx=parseInt(row.dataset.i,10);
+    var h=getHealth(curDate); if(!h.meals[idx]) return;
+    h.meals[idx].s=el.value; scheduleSave();
   });
 
   $("#mAdd").addEventListener("click", addMoneyQuick);
