@@ -237,7 +237,7 @@ button.mini:hover{background:#F7F3EA}
 .mf b{font-size:13px;font-weight:800;color:#3F5C2E;font-variant-numeric:tabular-nums}
 .mf.acc{border-top:1px dashed #DCE7D0;padding-top:3px;color:#9AA98A}
 
-/* 감정 */
+/* 취미 */
 .col-heart .col-body{gap:4px}
 .mood-pick{display:flex;gap:2px;justify-content:space-between;border-bottom:1px dashed #F1DCE3;padding-bottom:5px;flex:none}
 .mood-btn{border:0;background:transparent;font-size:17px;line-height:1;cursor:pointer;padding:1px;opacity:.32;filter:grayscale(1);transition:transform .12s,opacity .12s;touch-action:manipulation}
@@ -985,16 +985,16 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
             </div>
           </section>
 
-          <!-- 7. 감정 -->
+          <!-- 7. 취미 -->
           <section class="col col-heart">
-            <div class="col-head" style="--tint:#CFF0EA;--inkh:#2F7A6E">감정</div>
+            <div class="col-head" style="--tint:#CFF0EA;--inkh:#2F7A6E">취미</div>
             <div class="col-body">
               <div class="mood-pick" id="moodPick"></div>
               <div class="mood-word" id="moodWord"></div>
-              <label class="note-one-lab">오늘 한 줄</label>
-              <input class="note-one" id="comment" maxlength="80" placeholder="한 줄로 남기기">
-              <label class="note-one-lab">감정 일기</label>
-              <textarea class="note-area" id="memo" placeholder="오늘 어떤 하루였나요?" maxlength="3000"></textarea>
+              <label class="note-one-lab">취미 한 줄</label>
+              <input class="note-one" id="comment" maxlength="80" placeholder="오늘 해본 취미 한 줄">
+              <label class="note-one-lab">오늘의 취미 기록</label>
+              <textarea class="note-area" id="memo" placeholder="무엇을 만들고, 배우고, 즐겼나요?" maxlength="3000"></textarea>
             </div>
           </section>
         </div>
@@ -1830,7 +1830,7 @@ function renderHealth(){
   $("#energyRow").innerHTML=e;
 }
 
-/* ---------- 감정 ---------- */
+/* ---------- 취미 ---------- */
 var MOODS=[
   {v:1, e:"😞", w:"많이 지침"},
   {v:2, e:"😕", w:"조금 가라앉음"},
@@ -1851,7 +1851,7 @@ function renderEmotion(){
   }).join("");
   var found=null;
   MOODS.forEach(function(m){ if(m.v===em.mood) found=m; });
-  $("#moodWord").textContent=found?found.w:"오늘 기분은?";
+  $("#moodWord").textContent=found?found.w:"오늘 취미는 어땠나요?";
 }
 
 /* ---------- Money (당일) ---------- */
@@ -1975,15 +1975,20 @@ function renderWeek(){
     var dt=parseISO(date);
     var tasks="";
     var maxShow=7;
-    d.tasks.slice(0,maxShow).forEach(function(t){
+    // 표시 순서: 일정(home) → 작업(work·미지정) → 자기개발(study), 같은 분류 안에서는 입력 순서 유지
+    var weekOrder=function(t){ return t.list==="home"?0:(t.list==="study"?2:1); };
+    var sortedTasks=d.tasks.map(function(t,i){ return {t:t, i:i}; }).sort(function(a,b){
+      return (weekOrder(a.t)-weekOrder(b.t)) || (a.i-b.i);
+    }).map(function(x){ return x.t; });
+    sortedTasks.slice(0,maxShow).forEach(function(t){
       var lc=(t.list==="home")?"#EFA96A":(t.list==="study"?"#EF9FB4":"#EBCB5A");
       tasks+='<div class="wtask'+(t.st===1?" done":"")+'" data-date="'+date+'" data-id="'+t.id+'">'
            +   '<button class="wst s'+t.st+'" data-date="'+date+'" data-id="'+t.id+'" title="'+ST_LABEL[t.st]+'">'+ST_SYM[t.st]+'</button>'
            +   '<span class="wtxt"><i style="display:inline-block;width:5px;height:5px;border-radius:1px;background:'+lc+';margin-right:4px;vertical-align:1px"></i>'+esc(t.text||"할 일")+'</span>'
            + '</div>';
     });
-    if(d.tasks.length>maxShow){
-      tasks+='<button class="wmore" data-date="'+date+'">+'+(d.tasks.length-maxShow)+'개 더 보기</button>';
+    if(sortedTasks.length>maxShow){
+      tasks+='<button class="wmore" data-date="'+date+'">+'+(sortedTasks.length-maxShow)+'개 더 보기</button>';
     }
     if(!d.tasks.length){
       tasks+='<div class="wtask" data-date="'+date+'" style="color:#C6BCAB"><span class="wtxt">할 일 없음</span></div>';
@@ -2723,7 +2728,7 @@ function bindEvents(){
     if(!ed.hidden && !e.target.closest("#ddayWrap")) ed.hidden=true;
   });
 
-  // 코멘트 / 날씨 / 감정 일기
+  // 코멘트 / 날씨 / 취미 기록
   var commentTimer=null, weatherTimer=null, memoTimer=null;
   $("#comment").addEventListener("input", function(e){
     getDay(curDate).comment=e.target.value;
