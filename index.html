@@ -219,20 +219,30 @@ button.mini:hover{background:#F7F3EA}
 .add-task:hover{background:#FBF7EF;color:var(--ink-soft)}
 
 /* Money */
-.money-list{display:flex;flex-direction:column;gap:1px;overflow:auto;min-height:50px}
-.mrow{display:flex;align-items:center;gap:4px;border-bottom:1px dashed #E6EEDC;padding:3px 0;font-size:11.5px;cursor:pointer}
+.money-list{display:flex;flex-direction:column;gap:2px;overflow:auto;min-height:50px}
+.mrow{display:block;border-bottom:1px dashed #E6EEDC;padding:3px 0 4px;font-size:11.5px;cursor:pointer;min-width:0}
+.mrow .mline{display:flex;align-items:baseline;gap:3px;min-width:0}
+.mrow .mtm{color:#7E8F6C;font-weight:800;font-size:9.5px;font-variant-numeric:tabular-nums;flex:none}
 .mrow .mm{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink)}
 .mrow .ma{font-weight:800;font-variant-numeric:tabular-nums;color:#A9504A;white-space:nowrap;font-size:11px}
 .mrow .ma.inc{color:#2F7F60}
-.mrow .mx{border:0;background:transparent;color:#C6BCAB;opacity:0;cursor:pointer;font-size:12px;padding:0 1px;line-height:1}
+.mrow .mx{border:0;background:transparent;color:#C6BCAB;opacity:0;cursor:pointer;font-size:12px;padding:0 1px;line-height:1;flex:none}
 .mrow:hover .mx{opacity:1}
+.mrow .msub{display:flex;align-items:center;gap:4px;font-size:9.5px;color:#8FA080;font-weight:700;margin-top:1px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mrow .msub i{width:7px;height:7px;border-radius:2px;background:var(--c,#DAD8D2);flex:none}
+.mrow .mdet{margin-top:2px;font-size:10px;line-height:1.5;color:#6E7F60;white-space:pre-wrap;word-break:break-word;-webkit-line-clamp:2;display:-webkit-box;-webkit-box-orient:vertical;overflow:hidden}
+.mrow.open .mdet{-webkit-line-clamp:unset;display:block}
+.mrow .mexp{border:0;background:transparent;color:#7E8F6C;font-size:9.5px;font-weight:800;padding:1px 0 0;cursor:pointer;text-align:left;text-decoration:underline;text-underline-offset:2px}
 .money-add{display:grid;grid-template-columns:minmax(0,1fr);gap:3px;margin-top:5px;min-width:0}
-.money-add select,.money-add input{border:1px solid #DCE7CF;border-radius:6px;padding:3px 5px;font-size:11px;background:#FCFEF9;outline:none;min-width:0;max-width:100%;color:var(--ink)}
-.money-add select{width:100%}
-.money-add select:focus,.money-add input:focus{border-color:#9DBE7A}
+.money-add select,.money-add input,.money-add textarea{border:1px solid #DCE7CF;border-radius:6px;padding:3px 5px;font-size:11px;background:#FCFEF9;outline:none;min-width:0;max-width:100%;color:var(--ink);font-family:inherit}
+.money-add select:focus,.money-add input:focus,.money-add textarea:focus{border-color:#9DBE7A}
 .money-add .r{display:flex;gap:3px;min-width:0}
 .money-add .r input{flex:1 1 0;width:0;min-width:0}
+.money-add .r input.mtm{flex:0 0 44px;width:auto;text-align:center}
+.money-add .r select{flex:1 1 0;width:0;min-width:0;padding:3px 2px}
 .money-add .r input.amt{flex:0 0 56px;width:auto;text-align:right;font-variant-numeric:tabular-nums}
+.money-add textarea.money-detail{resize:none;line-height:1.5;min-height:32px;background:#FCFEF9}
+.money-add .add-mini{margin-top:0}
 .money-add .r button{flex:0 0 26px;border:1px solid #B9D79B;background:#EAF5DC;border-radius:6px;color:#4C6B22;font-weight:800;cursor:pointer;font-size:12px;line-height:1;padding:0}
 .money-foot{margin-top:auto;border-top:1px solid #E2EBD8;padding-top:5px;display:grid;gap:2px;flex:none}
 .mf{display:flex;justify-content:space-between;align-items:baseline;font-size:10px;color:#7E8F6C;font-weight:700}
@@ -468,6 +478,11 @@ button.mini:hover{background:#F7F3EA}
 .qa-amount{flex:0 1 112px;text-align:right;font-variant-numeric:tabular-nums;font-weight:700}
 .qa-row .won{font-size:11.5px;color:var(--ink-mute);margin-left:-3px}
 .qa-add{flex:0 0 auto}
+.qa-time{flex:0 0 74px;text-align:center}
+.qa-detail-btn{border:1px dashed var(--line-strong);background:transparent;border-radius:7px;padding:4px 8px;font-size:11px;font-weight:700;color:var(--ink-mute);cursor:pointer;margin-top:7px}
+.qa-detail-btn:hover{background:#FBF7EF;color:var(--ink-soft)}
+.qa-detail{display:block;width:100%;margin-top:6px;border:1px solid var(--line);border-radius:8px;padding:7px 9px;font:inherit;font-size:12.5px;line-height:1.55;background:#FFFDF8;outline:none;resize:vertical;min-height:52px;color:var(--ink)}
+.qa-detail:focus{border-color:var(--accent)}
 .btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
 .btn.primary:hover{background:var(--accent-deep);border-color:var(--accent-deep)}
 .btn.danger{color:#B4544E;border-color:#EBCBC8;background:#FFF6F5}
@@ -476,11 +491,16 @@ button.mini:hover{background:#F7F3EA}
 .ledger-table-card{background:var(--paper2);border:1px solid var(--line);border-radius:12px;padding:12px 14px;min-width:0}
 .lt-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:4px;min-height:22px}
 .filter-chip{border:1px solid #D6CBF3;background:var(--accent-soft);color:var(--accent-deep);font-size:10.5px;font-weight:800;border-radius:999px;padding:3px 9px;cursor:pointer}
-.lt-row{display:grid;grid-template-columns:62px 44px 88px minmax(0,1fr) 104px 26px;gap:6px;align-items:center;padding:7px 2px;border-bottom:1px dashed var(--line);cursor:pointer;font-size:12.5px}
+.lt-row{display:block;padding:7px 2px 8px;border-bottom:1px dashed var(--line);cursor:pointer;font-size:12.5px;min-width:0}
 .lt-row:hover{background:#FAF6EE}
-.lt-row.lt-headrow{border-bottom:1px solid var(--line-strong);color:var(--ink-mute);font-size:9.5px;font-weight:800;letter-spacing:.7px;cursor:default;padding:2px 2px 6px}
+.lt-row.lt-headrow{border-bottom:1px solid var(--line-strong);color:var(--ink-mute);font-size:9.5px;font-weight:800;letter-spacing:.7px;cursor:default;padding:2px 2px 6px;display:flex;gap:8px}
 .lt-row.lt-headrow:hover{background:transparent}
-.c-meta{display:contents}
+.lt-top{display:flex;align-items:center;gap:6px;min-width:0}
+.lt-detail{margin-top:4px;padding-left:1px;font-size:11.5px;line-height:1.55;color:var(--ink-soft);white-space:pre-wrap;word-break:break-word;-webkit-line-clamp:2;display:-webkit-box;-webkit-box-orient:vertical;overflow:hidden}
+.lt-row.open .lt-detail{-webkit-line-clamp:unset;display:block}
+.lt-more{border:0;background:transparent;color:var(--accent-deep);font-size:10px;font-weight:800;padding:2px 0 0;cursor:pointer;text-decoration:underline;text-underline-offset:2px}
+.c-meta{display:flex;align-items:center;gap:6px;flex:0 1 auto;min-width:0}
+.c-time{color:#8B7BD8;font-weight:800;font-size:11px;font-variant-numeric:tabular-nums;white-space:nowrap}
 .c-date{color:var(--ink-soft);font-variant-numeric:tabular-nums;white-space:nowrap;font-size:11.5px}
 .c-type{display:inline-flex;align-items:center;gap:4px;font-size:11.5px;color:var(--ink-soft);white-space:nowrap}
 .c-type i{width:7px;height:7px;border-radius:50%;background:#DBA9A4;flex:none}
@@ -540,8 +560,9 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
 .namegrid input{border:0;background:transparent;outline:none;font-size:12px;width:100%;min-width:0}
 .entry-form{display:grid;gap:8px}
 .entry-form .f{display:grid;grid-template-columns:62px minmax(0,1fr);align-items:center;gap:8px;font-size:12px;color:var(--ink-soft)}
-.entry-form input,.entry-form select{border:1px solid var(--line);border-radius:8px;padding:7px 9px;font-size:13px;background:#FFFDF8;outline:none;width:100%;min-width:0}
-.entry-form input:focus,.entry-form select:focus{border-color:var(--accent)}
+.entry-form input,.entry-form select,.entry-form textarea{border:1px solid var(--line);border-radius:8px;padding:7px 9px;font-size:13px;background:#FFFDF8;outline:none;width:100%;min-width:0;font-family:inherit;color:var(--ink)}
+.entry-form textarea{resize:vertical;line-height:1.55;min-height:76px}
+.entry-form input:focus,.entry-form select:focus,.entry-form textarea:focus{border-color:var(--accent)}
 .entry-form .row{display:flex;gap:7px;margin-top:4px}
 .entry-form .row .btn{flex:1;justify-content:center;padding:8px}
 .fine{font-size:10.5px;color:var(--ink-mute);line-height:1.5;margin:9px 0 0}
@@ -645,11 +666,11 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
   .qa-add{order:6;flex:0 0 62px}
   .sum b{font-size:17px}
   .lt-row.lt-headrow{display:none}
-  .lt-row{grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"memo amt" "meta del";row-gap:2px;padding:8px 2px}
-  .c-memo{grid-area:memo}
-  .c-amt{grid-area:amt}
-  .c-meta{display:flex;grid-area:meta;gap:7px;align-items:center;font-size:10.5px}
-  .c-del{grid-area:del;opacity:.45;height:20px}
+  .lt-top{flex-wrap:wrap;gap:4px 6px}
+  .c-memo{flex:1 1 100%;order:3;white-space:normal}
+  .c-amt{order:2;margin-left:auto}
+  .c-del{order:1;opacity:.45;height:20px;margin-left:0}
+  .lt-detail{font-size:11px}
   .ledger-table-card{padding:10px 10px}
 }
 @media (max-width:420px){
@@ -708,8 +729,10 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
   .quick-add{display:none !important}
   .ledger-grid{grid-template-columns:1fr;gap:5mm}
   .ledger-table-card,.ledger-side{border:1px solid #DDD;border-radius:0;padding:2mm 3mm}
-  .lt-row{grid-template-columns:17mm 9mm 22mm 1fr 24mm 0;font-size:8pt;padding:1.4mm 0;gap:1.5mm}
+  .lt-row{display:block;font-size:8pt;padding:1.4mm 0;border-bottom:1px solid #EEE}
   .lt-row.lt-headrow{font-size:6.5pt;padding-bottom:1.2mm}
+  .lt-detail{font-size:7pt;margin-top:1mm}
+  .lt-more{display:none}
   .c-del{display:none}
   .lc{padding:1mm 0}
   .lc-top{font-size:7.5pt}.lc-sub{font-size:6pt}
@@ -983,12 +1006,17 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
             <div class="col-body">
               <div class="money-list" id="moneyList"></div>
               <div class="money-add">
-                <select id="mCat" aria-label="분류"></select>
                 <div class="r">
-                  <input id="mMemo" maxlength="40" placeholder="내용" aria-label="상세 내용">
-                  <input id="mAmt" class="amt" inputmode="numeric" placeholder="0" aria-label="금액">
+                  <input id="mTime" class="mtm" maxlength="5" placeholder="시간" aria-label="구매시간">
+                  <select id="mCat" aria-label="분류"></select>
+                </div>
+                <input id="mMemo" maxlength="60" placeholder="구매내역" aria-label="구매내역">
+                <div class="r">
+                  <input id="mAmt" class="amt" inputmode="numeric" placeholder="0" aria-label="총금액">
                   <button id="mAdd" aria-label="내역 추가">＋</button>
                 </div>
+                <button class="add-mini" id="mDetailBtn" type="button">＋ 상세 구매내역</button>
+                <textarea id="mDetail" class="money-detail" rows="2" maxlength="1000" placeholder="상세 구매내역 (세부금액 포함, 줄바꿈 가능)" aria-label="상세 구매내역" hidden></textarea>
               </div>
             </div>
             <div class="money-foot">
@@ -1106,11 +1134,14 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
           <input type="date" class="qa-date" id="qaDate" aria-label="날짜">
           <span class="seg qa-seg" id="qaType"><button data-type="expense" class="on">지출</button><button data-type="income">수입</button></span>
           <select class="qa-cat" id="qaCat" aria-label="분류"></select>
-          <input class="qa-memo" id="qaMemo" maxlength="60" placeholder="상세 내용 (예: 아이스 아메리카노)" aria-label="상세 내용">
-          <input class="qa-amount" id="qaAmount" inputmode="numeric" placeholder="0" aria-label="금액">
+          <input class="qa-time" id="qaTime" maxlength="5" placeholder="시간" aria-label="구매시간">
+          <input class="qa-memo" id="qaMemo" maxlength="60" placeholder="구매내역 (예: 아이스 아메리카노)" aria-label="구매내역">
+          <input class="qa-amount" id="qaAmount" inputmode="numeric" placeholder="0" aria-label="총금액">
           <span class="won">원</span>
           <button class="btn primary qa-add" id="qaAdd">추가</button>
         </div>
+        <button class="qa-detail-btn" id="qaDetailBtn" type="button">＋ 상세 구매내역</button>
+        <textarea class="qa-detail" id="qaDetail" rows="3" maxlength="1000" placeholder="상세 구매내역 (세부금액 포함, 줄바꿈 가능)" aria-label="상세 구매내역" hidden></textarea>
       </div>
 
       <div class="ledger-grid">
@@ -1120,7 +1151,7 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
             <button class="filter-chip" id="lFilter" hidden></button>
           </div>
           <div class="lt-row lt-headrow">
-            <span>날짜</span><span>구분</span><span>분류</span><span>상세 내용</span><span class="c-num">금액</span><span></span>
+            <span>날짜·시간</span><span>구분</span><span>분류</span><span>구매 내역</span><span class="c-num">금액</span>
           </div>
           <div id="lRows"></div>
           <div class="lt-empty" id="lEmpty">아직 기록이 없어요. 위에서 첫 내역을 적어 보세요.</div>
@@ -1144,10 +1175,12 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
     <div class="dlg-head"><strong>내역 수정</strong><button class="x" data-eclose="1" aria-label="닫기">✕</button></div>
     <div class="dlg-body entry-form">
       <label class="f"><span>날짜</span><input type="date" id="eDate"></label>
+      <label class="f"><span>구매시간</span><input id="eTime" maxlength="5" placeholder="HH:MM (선택)"></label>
       <label class="f"><span>구분</span><span class="seg" id="eType"><button data-type="expense">지출</button><button data-type="income">수입</button></span></label>
       <label class="f"><span>분류</span><select id="eCat"></select></label>
-      <label class="f"><span>상세 내용</span><input id="eMemo" maxlength="60"></label>
-      <label class="f"><span>금액</span><input id="eAmount" inputmode="numeric"></label>
+      <label class="f"><span>구매내역</span><input id="eMemo" maxlength="60"></label>
+      <label class="f"><span>총금액</span><input id="eAmount" inputmode="numeric"></label>
+      <label class="f" style="align-items:start"><span style="padding-top:7px">상세 내역</span><textarea id="eDetail" maxlength="1000" rows="4" placeholder="세부 구매 내역을 여러 줄로 적어 보세요"></textarea></label>
       <div class="row"><button class="btn danger" id="eDelete">삭제</button><button class="btn primary" id="eSave">저장</button></div>
     </div>
   </div>
@@ -1473,7 +1506,9 @@ function normalize(o){
       if(!isFinite(amount) || amount<=0) return;
       var id=String(e.id||uid());
       if(seen[id]) return; seen[id]=1;
-      s.ledger.entries.push({id:id, date:date, type:type, cat:c.id, memo:String(e.memo||"").slice(0,80), amount:amount, ts:Number(e.ts)||Date.now()});
+      var tm=String(e.time||"").slice(0,5);
+      if(!/^\d{1,2}:\d{2}$/.test(tm)) tm="";
+      s.ledger.entries.push({id:id, date:date, type:type, cat:c.id, memo:String(e.memo||"").slice(0,80), amount:amount, ts:Number(e.ts)||Date.now(), time:tm, detail:String(e.detail||"").slice(0,1000)});
     });
   }
   s.savedAt = o.savedAt||null;
@@ -1908,10 +1943,20 @@ function renderMoney(){
                    .sort(function(a,b){ return (a.ts||0)-(b.ts||0); });
   var html="";
   list.forEach(function(e){
-    html+='<div class="mrow" data-id="'+e.id+'">'
-      + '<span class="mm">'+esc(e.memo||lcatName(e.cat))+'</span>'
-      + '<span class="ma'+(e.type==="income"?" inc":"")+'">'+(e.type==="income"?"+":"-")+fmtNum(e.amount)+'</span>'
-      + '<button class="mx" data-mdel="'+e.id+'" aria-label="삭제">×</button></div>';
+    var c=lcat(e.cat)||{name:"기타", color:"#DAD8D2"};
+    var det=String(e.detail||"");
+    var longDet=(det.split("\n").length>2 || det.length>60);
+    html+='<div class="mrow'+(longDet?" fold":"")+'" data-id="'+e.id+'">'
+      + '<div class="mline">'
+      +   (e.time?'<span class="mtm">'+esc(e.time)+'</span>':"")
+      +   '<span class="mm">'+esc(e.memo||lcatName(e.cat))+'</span>'
+      +   '<span class="ma'+(e.type==="income"?" inc":"")+'">'+(e.type==="income"?"+":"-")+fmtNum(e.amount)+'</span>'
+      +   '<button class="mx" data-mdel="'+e.id+'" aria-label="삭제">×</button>'
+      + '</div>'
+      + '<div class="msub"><i style="--c:'+c.color+'"></i>'+esc(c.name)+"</div>"
+      + (det?'<div class="mdet">'+esc(det)+'</div>':"")
+      + (longDet?'<button class="mexp" data-mexp="1">상세 보기</button>':"")
+      + '</div>';
   });
   if(!list.length) html='<div class="mrow" style="cursor:default;color:#C6BCAB;font-size:10px"><span class="mm">오늘 지출을 적어 보세요</span></div>';
   $("#moneyList").innerHTML=html;
@@ -2274,15 +2319,22 @@ function entryRowHTML(e){
   var c=lcat(e.cat) || firstLCat(e.type==="income"?"income":"expense") || {name:"기타", color:"#DAD8D2"};
   var dt=parseISO(e.date);
   var isInc=(e.type==="income");
+  var det=String(e.detail||"");
+  var longDet=(det.split("\n").length>2 || det.length>90);
   return '<div class="lt-row" data-id="'+e.id+'" tabindex="0">'
-    + '<span class="c-meta">'
-    +   '<span class="c-date">'+(dt.getMonth()+1)+"/"+dt.getDate()+' ('+DOW_KO[dt.getDay()]+')</span>'
-    +   '<span class="c-type'+(isInc?" income":"")+'"><i></i>'+(isInc?"수입":"지출")+'</span>'
-    +   '<span class="c-cat" style="--c:'+c.color+'"><i></i>'+esc(c.name)+'</span>'
-    + '</span>'
-    + '<span class="c-memo">'+esc(e.memo || c.name)+'</span>'
-    + '<span class="c-amt '+(isInc?"inc":"exp")+'">'+(isInc?"+":"−")+fmtWon(e.amount)+'</span>'
-    + '<button class="c-del" data-del="'+e.id+'" aria-label="삭제" title="삭제">×</button>'
+    + '<div class="lt-top">'
+    +   '<span class="c-meta">'
+    +     '<span class="c-date">'+(dt.getMonth()+1)+"/"+dt.getDate()+' ('+DOW_KO[dt.getDay()]+')</span>'
+    +     (e.time?'<span class="c-time">'+esc(e.time)+'</span>':"")
+    +     '<span class="c-type'+(isInc?" income":"")+'"><i></i>'+(isInc?"수입":"지출")+'</span>'
+    +     '<span class="c-cat" style="--c:'+c.color+'"><i></i>'+esc(c.name)+'</span>'
+    +   '</span>'
+    +   '<span class="c-memo">'+esc(e.memo || c.name)+'</span>'
+    +   '<span class="c-amt '+(isInc?"inc":"exp")+'">'+(isInc?"+":"−")+fmtWon(e.amount)+'</span>'
+    +   '<button class="c-del" data-del="'+e.id+'" aria-label="삭제" title="삭제">×</button>'
+    + '</div>'
+    + (det?'<div class="lt-detail">'+esc(det)+'</div>':"")
+    + (longDet?'<button class="lt-more" data-lmore="1">더 보기</button>':"")
     + '</div>';
 }
 function renderLedger(){
@@ -2359,7 +2411,9 @@ function openEntry(id){
   if(!e) return;
   editingId=id;
   $("#eDate").value=e.date;
+  $("#eTime").value=e.time||"";
   $("#eMemo").value=e.memo||"";
+  $("#eDetail").value=e.detail||"";
   $("#eAmount").value=fmtNum(e.amount);
   setEntryType(e.type);
   fillCatSelect($("#eCat"), e.type, e.cat);
@@ -2379,8 +2433,11 @@ function saveEntry(){
   var catId=$("#eCat").value;
   if(!lcat(catId) || lcat(catId).type!==type){ var fc=firstLCat(type); catId=fc?fc.id:catId; }
   e.date=date; e.type=type; e.cat=catId; e.memo=$("#eMemo").value.trim(); e.amount=amount;
+  var et=String($("#eTime").value||"").trim();
+  e.time=/^\d{1,2}:\d{2}$/.test(et)?et:"";
+  e.detail=String($("#eDetail").value||"").slice(0,1000);
   if(date.slice(0,7)!==curMonth) curMonth=date.slice(0,7);
-  closeEntry(); renderLedger(); scheduleSave(); toast("내역을 수정했어요");
+  closeEntry(); renderLedger(); renderMoney(); scheduleSave(); toast("내역을 수정했어요");
 }
 function deleteEntry(id){
   var arr=entries(), i=-1;
@@ -2388,8 +2445,16 @@ function deleteEntry(id){
   if(i<0) return;
   var removed=arr.splice(i,1)[0];
   if(editingId===id) closeEntry();
-  renderLedger(); scheduleSave();
-  toast("내역을 지웠어요","되돌리기",function(){ entries().splice(i,0,removed); renderLedger(); scheduleSave(); });
+  renderLedger(); renderMoney(); scheduleSave();
+  toast("내역을 지웠어요","되돌리기",function(){ entries().splice(i,0,removed); renderLedger(); renderMoney(); scheduleSave(); });
+}
+function normalizeTime(v){
+  var s=String(v||"").trim();
+  var m=/^(\d{1,2})[:.\s]?(\d{2})$/.exec(s);
+  if(!m) return "";
+  var hh=parseInt(m[1],10), mi=parseInt(m[2],10);
+  if(!isFinite(hh)||!isFinite(mi)||hh>23||mi>59) return "";
+  return pad(hh)+":"+pad(mi);
 }
 function addMoneyQuick(){
   var amt=parseInt(digitsOnly($("#mAmt").value),10);
@@ -2397,8 +2462,8 @@ function addMoneyQuick(){
   var memo=$("#mMemo").value.trim();
   var cid=$("#mCat").value || "";
   if(!lcat(cid)){ var fc3=firstLCat("expense"); cid=fc3?fc3.id:"etc"; }
-  entries().push({id:uid(), date:curDate, type:"expense", cat:cid, memo:memo, amount:amt, ts:Date.now()});
-  $("#mMemo").value=""; $("#mAmt").value="";
+  entries().push({id:uid(), date:curDate, type:"expense", cat:cid, memo:memo, amount:amt, ts:Date.now(), time:normalizeTime($("#mTime").value), detail:String($("#mDetail").value||"").slice(0,1000)});
+  $("#mMemo").value=""; $("#mAmt").value=""; $("#mTime").value=""; $("#mDetail").value=""; $("#mDetail").hidden=true; $("#mDetailBtn").textContent="＋ 상세 구매내역";
   renderMoney(); renderLedger(); scheduleSave();
   toast(fmtWon(amt)+" 기록했어요");
 }
@@ -2411,9 +2476,9 @@ function addEntryFromQuick(){
   if(!lcat(catId) || lcat(catId).type!==qaType){ var fc2=firstLCat(qaType); catId=fc2?fc2.id:catId; }
   var monthChanged = date.slice(0,7)!==curMonth;
   if(monthChanged) curMonth=date.slice(0,7);
-  entries().push({id:uid(), date:date, type:qaType, cat:catId, memo:memo, amount:amount, ts:Date.now()});
-  $("#qaMemo").value=""; $("#qaAmount").value="";
-  renderLedger(); scheduleSave();
+  entries().push({id:uid(), date:date, type:qaType, cat:catId, memo:memo, amount:amount, ts:Date.now(), time:normalizeTime($("#qaTime").value), detail:String($("#qaDetail").value||"").slice(0,1000)});
+  $("#qaMemo").value=""; $("#qaAmount").value=""; $("#qaTime").value=""; $("#qaDetail").value=""; $("#qaDetail").hidden=true; $("#qaDetailBtn").textContent="＋ 상세 구매내역";
+  renderLedger(); renderMoney(); scheduleSave();
   $("#qaMemo").focus();
   toast(fmtWon(amount)+" 기록했어요");
 }
@@ -2870,6 +2935,13 @@ function bindEvents(){
     }
     var mdel=e.target.closest("[data-mdel]");
     if(mdel){ e.stopPropagation(); deleteEntry(mdel.dataset.mdel); return; }
+    var mexp=e.target.closest("[data-mexp]");
+    if(mexp){
+      e.stopPropagation();
+      var mr=mexp.closest(".mrow");
+      if(mr){ mr.classList.toggle("open"); mexp.textContent=mr.classList.contains("open")?"접기":"상세 보기"; }
+      return;
+    }
     var mrow=e.target.closest(".mrow[data-id]");
     if(mrow){ openEntry(mrow.dataset.id); return; }
   });
@@ -2932,6 +3004,22 @@ function bindEvents(){
   });
 
   $("#mAdd").addEventListener("click", addMoneyQuick);
+  $("#mDetailBtn").addEventListener("click", function(){
+    var d=$("#mDetail"); if(!d) return;
+    d.hidden=!d.hidden;
+    this.textContent=d.hidden?"＋ 상세 구매내역":"− 상세 구매내역 접기";
+    if(!d.hidden) d.focus();
+  });
+  $("#qaDetailBtn").addEventListener("click", function(){
+    var d=$("#qaDetail"); if(!d) return;
+    d.hidden=!d.hidden;
+    this.textContent=d.hidden?"＋ 상세 구매내역":"− 상세 구매내역 접기";
+    if(!d.hidden) d.focus();
+  });
+  ["#mTime","#qaTime","#eTime"].forEach(function(sel){
+    var el=$(sel); if(!el) return;
+    el.addEventListener("blur", function(){ var v=normalizeTime(el.value); if(v) el.value=v; });
+  });
   $("#mAmt").addEventListener("keydown", function(e){ if(e.key==="Enter"){ e.preventDefault(); addMoneyQuick(); } });
 
   // 팔레트
@@ -3075,6 +3163,13 @@ function bindEvents(){
   $("#lRows").addEventListener("click", function(e){
     var d=e.target.closest("[data-del]");
     if(d){ e.stopPropagation(); deleteEntry(d.dataset.del); return; }
+    var lm=e.target.closest("[data-lmore]");
+    if(lm){
+      e.stopPropagation();
+      var lr=lm.closest(".lt-row");
+      if(lr){ lr.classList.toggle("open"); lm.textContent=lr.classList.contains("open")?"접기":"더 보기"; }
+      return;
+    }
     var row=e.target.closest(".lt-row");
     if(row && row.dataset.id) openEntry(row.dataset.id);
   });
