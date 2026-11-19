@@ -281,8 +281,8 @@ button.mini:hover{background:#F7F3EA}
 .tr-bm{align-items:start}
 .tr-bm .tr-lab{margin-top:2px}
 .tr-bm .tr-in{flex-wrap:nowrap}
-.comment-row{display:flex;flex-direction:column;gap:1px;flex:none;margin-top:1px}
-.comment-row .note-one-lab{margin-top:0}
+.tr-comment{margin-bottom:1px}
+.tr-comment .tr-in{flex-wrap:nowrap}
 
 /* ---------- 타임테이블 ---------- */
 .tt{display:flex;gap:6px;padding-top:9px}
@@ -974,20 +974,17 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
           <section class="col col-health">
             <div class="col-head" style="--tint:#CFE4FB;--inkh:#3E6A9C">건강</div>
             <div class="col-body">
-              <div class="comment-row">
-                <span class="note-one-lab">오늘의 한 줄</span>
-                <input class="note-one" id="comment" maxlength="80" placeholder="오늘 컨디션 한 줄" aria-label="오늘 컨디션 한 줄">
-              </div>
               <div class="weight-row"><input id="weight" class="weight" inputmode="decimal" placeholder="–" aria-label="몸무게 kg"><span class="unit">kg</span></div>
               <div class="meal-list" id="mealList"></div>
               <button class="add-mini" id="addMeal">＋ 식단 기록</button>
             </div>
             <div class="tracker" id="tracker">
+              <div class="tr tr-comment"><span class="tr-lab">한 줄</span><span class="tr-in"><input class="note-one" id="comment" maxlength="80" placeholder="오늘 컨디션 한 줄" aria-label="오늘 컨디션 한 줄"></span></div>
               <div class="tr"><span class="tr-lab">물</span><span class="tr-in" id="waterRow"></span></div>
-              <div class="tr"><span class="tr-lab">약</span><span class="tr-in" id="medRow"></span></div>
               <div class="tr"><span class="tr-lab">에너지</span><span class="tr-in energy" id="energyRow"></span></div>
-              <div class="tr tr-bm"><span class="tr-lab">장건강</span><span class="tr-in" id="bmRow"></span></div>
               <div class="tr"><span class="tr-lab">기분</span><span class="tr-in mood-row"><span id="moodPick"></span><span class="mood-word" id="moodWord"></span></span></div>
+              <div class="tr"><span class="tr-lab">약</span><span class="tr-in" id="medRow"></span></div>
+              <div class="tr tr-bm"><span class="tr-lab">장건강</span><span class="tr-in" id="bmRow"></span></div>
             </div>
           </section>
 
