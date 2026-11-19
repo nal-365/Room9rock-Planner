@@ -163,30 +163,37 @@ button.mini:hover{background:#F7F3EA}
 .weight{width:100%;min-width:0;border:0;background:transparent;outline:none;font-size:19px;font-weight:800;color:#3F6B9E;text-align:right;font-variant-numeric:tabular-nums;padding:0}
 .weight::placeholder{color:#C9D8EA}
 .weight-row .unit{font-size:10.5px;color:#7D90AB;font-weight:800;flex:none}
-.meal-list{display:flex;flex-direction:column;gap:3px;margin-top:4px;overflow:auto;min-height:40px}
+.meal-list{display:flex;flex-direction:column;gap:3px;margin-top:4px;min-height:0;flex:none}
 .meal{border:1px solid #E6EEF8;border-radius:7px;padding:2px 3px 3px;background:#FCFDFF}
 .meal-top{display:flex;align-items:center;gap:2px}
 .meal .mt{width:38px;flex:none;border:0;background:transparent;font-size:10px;color:#93A7C0;outline:none;font-variant-numeric:tabular-nums;padding:1px 0}
 .meal .ms{flex:1;min-width:0;border:0;background:transparent;font-size:10.5px;color:#6E8FB0;font-weight:700;outline:none;padding:1px 0;cursor:pointer;appearance:none;-webkit-appearance:none}
-.meal .mx{display:block;width:100%;border:0;border-top:1px dashed #EDF2F9;margin-top:2px;padding:2px 0 0;background:transparent;font:inherit;font-size:11px;line-height:1.5;color:var(--ink);outline:none;resize:none;min-height:32px;overflow:auto}
+.meal .mx{display:block;width:100%;border:0;border-top:1px dashed #EDF2F9;margin-top:2px;padding:2px 0 0;background:transparent;font:inherit;font-size:11px;line-height:1.5;color:var(--ink);outline:none;resize:none;min-height:30px;height:auto;overflow:hidden}
 .meal .mx::placeholder{color:#C4D2E4}
 .meal .md{border:0;background:transparent;color:#C9D5E5;font-size:11px;cursor:pointer;padding:0 2px;opacity:0;line-height:1;flex:none}
 .meal:hover .md{opacity:1}
 .add-mini{border:1px dashed #D3DFEF;background:transparent;border-radius:7px;padding:3px 6px;font-size:10.5px;color:#9AAFC8;font-weight:700;cursor:pointer;margin-top:3px;text-align:left}
 .add-mini:hover{background:#F5F9FE;color:#5E7FA6}
-.tracker{margin-top:auto;border-top:1px solid #DCE6F4;padding-top:6px;display:grid;gap:3px;flex:none}
-.tr{display:flex;align-items:center;gap:3px;flex-wrap:wrap;min-height:18px}
-.tr-lab{width:34px;flex:none;font-weight:800;letter-spacing:.2px;color:#93A7C0;font-size:10px}
-.wbtn{width:15px;height:19px;border-radius:3px 3px 5px 5px;border:1px solid #BED4EE;background:#F3F8FE;cursor:pointer;padding:0;touch-action:manipulation}
+.tracker{margin-top:auto;border-top:1px solid #DCE6F4;padding-top:7px;display:grid;gap:5px;flex:none}
+.tr{display:grid;grid-template-columns:32px minmax(0,1fr);align-items:center;column-gap:6px;min-height:20px}
+.tr-lab{font-weight:800;letter-spacing:.2px;color:#93A7C0;font-size:10px;line-height:1.15;white-space:nowrap}
+.tr-in{display:flex;align-items:center;gap:4px;min-width:0;flex-wrap:wrap}
+.tr-in.energy{align-items:flex-end;flex-wrap:nowrap;height:17px}
+.tr-in.mood-row{flex-direction:column;align-items:stretch;gap:1px;flex-wrap:nowrap}
+#moodPick{display:flex;align-items:center;gap:3px;height:20px}
+.wbtn{width:14px;height:18px;border-radius:3px 3px 5px 5px;border:1px solid #BED4EE;background:#F3F8FE;cursor:pointer;padding:0;touch-action:manipulation;flex:none}
 .wbtn.on{background:#8FC0F0;border-color:#6FA9E4}
-.med{border:1px solid #D8E3F2;background:#FBFDFF;border-radius:999px;padding:2px 7px;font-size:10.5px;color:#7D90AB;cursor:pointer;font-weight:700;touch-action:manipulation;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.med{height:18px;border:1px solid #D8E3F2;background:#FBFDFF;border-radius:999px;padding:0 7px;font-size:10.5px;line-height:16px;color:#7D90AB;cursor:pointer;font-weight:700;touch-action:manipulation;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:none}
 .med.on{background:#DCEBFB;border-color:#A9C8EA;color:#3F6B9E}
 .med.add{border-style:dashed;background:transparent;color:#A9B8C9}
-.mood{border:0;background:transparent;font-size:12px;line-height:1;padding:0 1px;cursor:pointer;opacity:.32;filter:grayscale(1);touch-action:manipulation}
-.mood.on{opacity:1;filter:none;transform:scale(1.12)}
 .cond{width:14px;height:14px;border-radius:50%;border:1px solid #DCE4EF;background:#F8FBFE;font-size:8px;color:#A9B8C9;cursor:pointer;padding:0;line-height:1;touch-action:manipulation}
 .cond.on{background:#9EC8F0;border-color:#7FAEDC;color:#fff;font-weight:800}
-.bat{width:8px;height:13px;border-radius:2px;border:1px solid #D9DFE7;background:#FAFCFE;padding:0;cursor:pointer;touch-action:manipulation}
+.bat{width:7px;border-radius:2px;border:1px solid #D9DFE7;background:#FAFCFE;padding:0;cursor:pointer;touch-action:manipulation;flex:none}
+#energyRow .bat:nth-child(1){height:8px}
+#energyRow .bat:nth-child(2){height:10px}
+#energyRow .bat:nth-child(3){height:12px}
+#energyRow .bat:nth-child(4){height:14px}
+#energyRow .bat:nth-child(5){height:16px}
 .bat.on{background:#A9DCC4;border-color:#8CC9AF}
 
 /* Time */
@@ -252,17 +259,16 @@ button.mini:hover{background:#F7F3EA}
 /* 여가 시간 */
 .col-heart .col-body{gap:4px}
 .col-heart .note-area{flex:none;height:72px;min-height:0}
-.mood-pick{display:flex;gap:2px;justify-content:space-between;border-bottom:1px dashed #DCE6F4;padding-bottom:4px;flex:none}
-.mood-btn{border:0;background:transparent;font-size:17px;line-height:1;cursor:pointer;padding:1px;opacity:.32;filter:grayscale(1);transition:transform .12s,opacity .12s;touch-action:manipulation}
-.mood-btn.on{opacity:1;filter:none;transform:scale(1.16)}
-.mood-word{font-size:10px;color:#6E8FB0;font-weight:800;text-align:center;min-height:12px;flex:none;letter-spacing:.2px}
-.col-health .mood-btn{font-size:14px}
+.mood-btn{width:20px;height:20px;display:grid;place-items:center;border:0;background:transparent;font-size:14px;line-height:1;cursor:pointer;padding:0;opacity:.32;filter:grayscale(1);transition:transform .12s,opacity .12s;touch-action:manipulation;flex:none}
+.mood-btn.on{opacity:1;filter:none;transform:scale(1.14)}
+.mood-word{font-size:9px;color:#6E8FB0;font-weight:800;text-align:center;letter-spacing:.2px;line-height:1.2}
+.mood-word:empty{display:none}
 .note-one-lab{font-size:9px;letter-spacing:.7px;font-weight:800;color:#7E9CBE;margin-top:3px;display:block;flex:none}
-.note-one{width:100%;border:0;border-bottom:1px solid #DCE6F4;background:transparent;outline:none;font-size:11.5px;padding:2px 1px;color:var(--ink)}
+.note-one{width:100%;min-width:0;border:0;border-bottom:1px solid #DCE6F4;background:transparent;outline:none;font-size:11px;height:20px;padding:0 1px;color:var(--ink)}
 .note-one::placeholder{color:#B9C9DC}
 .note-area{flex:1;min-height:60px;width:100%;border:0;outline:none;resize:none;font:inherit;font-size:11px;line-height:21px;padding:4px 2px 0;color:var(--ink);background:repeating-linear-gradient(#fff 0 20px,#E7EEF7 20px 21px)}
 .note-area::placeholder{color:#B9C9DC}
-.bm{border:1px solid #D8E3F2;background:#FBFDFF;border-radius:999px;padding:2px 8px;font-size:10.5px;color:#8FA4BD;cursor:pointer;font-weight:800;touch-action:manipulation;line-height:1.4}
+.bm{height:18px;min-width:44px;display:inline-flex;align-items:center;justify-content:center;border:1px solid #D8E3F2;background:#FBFDFF;border-radius:999px;padding:0 8px;font-size:10.5px;color:#8FA4BD;cursor:pointer;font-weight:800;touch-action:manipulation;line-height:1.3;flex:none}
 .bm.on{background:#A9DCC4;border-color:#8CC9AF;color:#2F6B52}
 
 /* ---------- 타임테이블 ---------- */
@@ -776,15 +782,23 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
   body[data-print="daily"] .meal .mx{font-size:6.2pt}
   body[data-print="daily"] .meal .mt{font-size:5pt;width:7mm}
   body[data-print="daily"] .add-mini{display:none}
-  body[data-print="daily"] .wbtn{width:3.2mm;height:4.4mm}
-  body[data-print="daily"] .med{font-size:5.6pt;padding:0 1mm}
-  body[data-print="daily"] .tr-lab{font-size:5.2pt;width:6mm}
+  body[data-print="daily"] .tracker{gap:.8mm;padding-top:1mm}
+  body[data-print="daily"] .tr{grid-template-columns:6mm minmax(0,1fr);column-gap:1mm;min-height:3.2mm}
+  body[data-print="daily"] .tr-in{gap:.7mm}
+  body[data-print="daily"] .tr-in.energy{height:3mm}
+  body[data-print="daily"] #moodPick{gap:.7mm;height:3.6mm}
+  body[data-print="daily"] .wbtn{width:2.6mm;height:3.8mm}
+  body[data-print="daily"] .med{height:3.4mm;font-size:5.6pt;padding:0 1mm;line-height:3mm}
+  body[data-print="daily"] .bat{width:1.1mm}
+  body[data-print="daily"] .bm{height:3.6mm;min-width:0;padding:0 1mm}
+  body[data-print="daily"] .tr-lab{font-size:5.2pt}
+  body[data-print="daily"] .note-one{height:3.6mm}
   body[data-print="daily"] .mrow{font-size:6.2pt;padding:.5mm 0}
   body[data-print="daily"] .money-add{display:none}
   body[data-print="daily"] .mf{font-size:5.4pt}
   body[data-print="daily"] .mf b{font-size:7.4pt}
-  body[data-print="daily"] .mood-btn{font-size:8pt}
-  body[data-print="daily"] .mood-word{font-size:5pt}
+  body[data-print="daily"] .mood-btn{width:3.6mm;height:3.6mm;font-size:8pt}
+  body[data-print="daily"] .mood-word{font-size:4.8pt}
   body[data-print="daily"] .note-one-lab{font-size:4.4pt}
   body[data-print="daily"] .note-one{font-size:6pt}
   body[data-print="daily"] .note-area{font-size:6.2pt;min-height:0;height:16mm;line-height:1.9}
@@ -945,18 +959,16 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
             <div class="col-head" style="--tint:#CFE4FB;--inkh:#3E6A9C">건강</div>
             <div class="col-body">
               <div class="weight-row"><input id="weight" class="weight" inputmode="decimal" placeholder="–" aria-label="몸무게 kg"><span class="unit">kg</span></div>
-              <div class="mood-pick" id="moodPick"></div>
-              <div class="mood-word" id="moodWord"></div>
-              <label class="note-one-lab">한 줄</label>
-              <input class="note-one" id="comment" maxlength="80" placeholder="오늘 컨디션 한 줄">
               <div class="meal-list" id="mealList"></div>
               <button class="add-mini" id="addMeal">＋ 식단 기록</button>
             </div>
             <div class="tracker" id="tracker">
-              <div class="tr"><span class="tr-lab">물</span><span id="waterRow" style="display:flex;gap:3px"></span></div>
-              <div class="tr"><span class="tr-lab">약</span><span id="medRow" style="display:flex;gap:3px;flex-wrap:wrap"></span></div>
-              <div class="tr"><span class="tr-lab">에너지</span><span id="energyRow" style="display:flex;gap:3px;align-items:flex-end"></span></div>
-              <div class="tr"><span class="tr-lab">장건강</span><span id="bmRow" style="display:flex;gap:3px;flex-wrap:wrap"></span></div>
+              <div class="tr"><span class="tr-lab">물</span><span class="tr-in" id="waterRow"></span></div>
+              <div class="tr"><span class="tr-lab">약</span><span class="tr-in" id="medRow"></span></div>
+              <div class="tr"><span class="tr-lab">에너지</span><span class="tr-in energy" id="energyRow"></span></div>
+              <div class="tr"><span class="tr-lab">장건강</span><span class="tr-in" id="bmRow"></span></div>
+              <div class="tr"><span class="tr-lab">기분</span><span class="tr-in mood-row"><span id="moodPick"></span><span class="mood-word" id="moodWord"></span></span></div>
+              <div class="tr"><span class="tr-lab">한 줄</span><input class="note-one" id="comment" maxlength="80" placeholder="오늘 컨디션 한 줄" aria-label="오늘 컨디션 한 줄"></div>
             </div>
           </section>
 
@@ -1198,7 +1210,7 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
         <li><b>할 일</b> — 네모를 누를 때마다 <b>□ → ○ 완료 → △ 일부 → × 못함 → → 미룸</b> 순서로 바뀌어요.</li>
         <li><b>주간</b> — 일간에서 칠하고 적은 내용이 그대로 모이고, 주간에서 고쳐도 일간에 바로 반영돼요.</li>
         <li><b>소비일지</b> — 날짜·시간·분류·구매내역·금액을 적고, 필요하면 <b>상세 구매내역</b>을 여러 줄로 남겨요. 월 합계와 <b>분류별 모아보기</b>가 자동으로 정리되고, 분류를 누르면 그 내역만 필터링됩니다.</li>
-        <li><b>일간 열</b> — <b>건강</b>에는 몸무게·컨디션(기분)·한 줄·식단(시간대·내용)·물·약·에너지·장건강을, <b>작업·자기개발·일정·여가 시간</b>은 체크리스트로 적어요. 기분 이모지는 월간 달력에도 표시됩니다.</li>
+        <li><b>일간 열</b> — <b>건강</b>은 위에서부터 몸무게·식단(시간·시간대·내용, 여러 줄 가능)을 적고, 아래 트래커 한 칸에 물·약·에너지·장건강·기분(5단계)·한 줄을 모아 둡니다. <b>작업·자기개발·일정·여가 시간</b>은 체크리스트로 적어요. 기분 이모지는 월간 달력에도 표시됩니다.</li>
         <li><b>월간</b> — 한 달을 달력 한 장으로 모아 봐요. 날짜를 누르면 그날 일간으로 바로 넘어가고, <b>이달의 목표</b>·<b>한 줄 리뷰</b>는 아래 통계와 함께 자동 저장돼요.</li>
         <li><b>카테고리 관리</b> — 위쪽 <b>카테고리</b> 버튼에서 형광펜·소비일지 분류·약 종류를 직접 추가하거나 지울 수 있어요.</li>
         <li><b>저장</b> — 모든 변경은 이 브라우저에 자동 저장돼요. <b>Google 로그인</b>하면 다른 기기와 자동으로 이어지고, 로그아웃해도 이 기기의 기록은 그대로 남아요.</li>
@@ -1877,6 +1889,17 @@ function getHealth(date){
   h.energy=clampInt(h.energy,0,5);
   return h;
 }
+function autoGrowTa(el){
+  if(!el || el.tagName!=="TEXTAREA") return;
+  el.rows=Math.max(2, String(el.value||"").split("\n").length);
+  el.style.height="auto";
+  var box=el.offsetHeight-el.clientHeight; // 테두리 두께 보정
+  var full=el.scrollHeight+box;
+  el.style.height=(full>0?full:30)+"px";
+}
+function autoGrowMeals(){
+  $$("#mealList .mx").forEach(function(el){ if(el.tagName==="TEXTAREA") autoGrowTa(el); });
+}
 function renderHealth(){
   var h=getHealth(curDate);
   $("#weight").value=h.weight||"";
@@ -1905,13 +1928,15 @@ function renderHealth(){
       : '<button class="med add" data-medcat="1">＋ 약 추가</button>';
   }
   var e="";
-  for(var k=1;k<=5;k++) e+='<button class="bat'+(h.energy>=k?" on":"")+'" data-energy="'+k+'" aria-label="에너지 '+k+'단계" style="height:'+(7+k*2)+'px"></button>';
+  for(var k=1;k<=5;k++) e+='<button class="bat'+(h.energy>=k?" on":"")+'" data-energy="'+k+'" aria-label="에너지 '+k+'단계"></button>';
   $("#energyRow").innerHTML=e;
   var br=$("#bmRow");
   if(br){
     var bm=clampInt(getDay(curDate).bm,0,3);
     br.innerHTML='<button class="bm'+(bm?" on":"")+'" data-bm="1" aria-label="장건강(배변) '+(bm?bm+"회":"미기록")+'" title="누를 때마다 오늘 배변 기록 (0→1회→2회→3회+) → 네 번에 초기화">'+(bm?(bm>=3?"3회+":bm+"회"):"체크")+'</button>';
   }
+  autoGrowMeals();
+  if(window.requestAnimationFrame) requestAnimationFrame(autoGrowMeals);
 }
 
 /* ---------- 컨디션(기분) ---------- */
@@ -1935,7 +1960,7 @@ function renderEmotion(){
   }).join("");
   var found=null;
   MOODS.forEach(function(m){ if(m.v===em.mood) found=m; });
-  $("#moodWord").textContent=found?found.w:"오늘 컨디션은?";
+  $("#moodWord").textContent=found?found.w:"";
 }
 
 /* ---------- Money (당일) ---------- */
@@ -2966,7 +2991,7 @@ function bindEvents(){
       var idx=parseInt(meal.dataset.i,10);
       var h=getHealth(curDate); if(!h.meals[idx]) return;
       if(el.classList.contains("mt")) h.meals[idx].t=el.value.slice(0,5);
-      else h.meals[idx].x=el.value;
+      else { h.meals[idx].x=el.value; autoGrowTa(el); }
       scheduleSave(); return;
     }
     if(el.id==="mAmt"){
