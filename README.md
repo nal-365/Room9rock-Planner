@@ -3,7 +3,7 @@
 일간 시간표 · 주간 목표 · 월간 리뷰 · 소비일지를 **한 장**에 담은 단일 HTML 플래너입니다.
 빌드 도구 없이 `index.html` 하나로 동작하고, GitHub Pages에서 바로 열 수 있습니다.
 
-> 🔗 https://nal-365.github.io/My-planner/
+> 🔗 https://nal-365.github.io/Room9rock-planner/
 
 ## 무엇이 되나요
 
