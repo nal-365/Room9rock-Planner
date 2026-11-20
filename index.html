@@ -273,7 +273,6 @@ button.mini:hover{background:#F7F3EA}
 
 /* 여가 시간 */
 .col-heart .col-body{gap:4px}
-.col-heart .note-area{flex:none;height:72px;min-height:0}
 .mood-btn{width:100%;max-width:20px;min-width:0;height:20px;display:grid;place-items:center;border:0;background:transparent;font-size:14px;font-size:clamp(9px,calc(15cqw - 1.5px),14px);line-height:1;cursor:pointer;padding:0;opacity:.32;filter:grayscale(1);transition:transform .12s,opacity .12s;touch-action:manipulation;flex:none}
 .mood-btn.on{opacity:1;filter:none;transform:scale(1.14)}
 .mood-word{font-size:9px;color:#6E8FB0;font-weight:800;text-align:center;letter-spacing:.2px;line-height:1.2}
@@ -281,20 +280,18 @@ button.mini:hover{background:#F7F3EA}
 .note-one-lab{font-size:9px;letter-spacing:.7px;font-weight:800;color:#7E9CBE;margin-top:3px;display:block;flex:none}
 .note-one{width:100%;min-width:0;border:0;border-bottom:1px solid #DCE6F4;background:transparent;outline:none;font-size:11px;height:20px;padding:0 1px;color:var(--ink)}
 .note-one::placeholder{color:#B9C9DC}
-.note-area{flex:1;min-height:60px;width:100%;border:0;outline:none;resize:none;font:inherit;font-size:11px;line-height:21px;padding:4px 2px 0;color:var(--ink);background:repeating-linear-gradient(#fff 0 20px,#E7EEF7 20px 21px)}
-.note-area::placeholder{color:#B9C9DC}
-/* 열 하단 피드백 칸 — 작업·자기개발·일정·소비일지·여가 시간 */
-.col-fb .col-body{flex:1 1 auto;min-height:auto}
-.col-feedback{display:flex;flex-direction:column;gap:2px;flex:1 1 auto;min-width:0;min-height:76px;margin-top:7px;padding:4px 5px 4px;border:1px solid var(--fb-line,#EDE6D8);border-radius:8px;background:var(--fb-bg,#FFFDF8);transition:border-color .15s,box-shadow .15s}
+/* 열 하단 피드백 칸 — 작업·자기개발·일정·소비일지·여가 시간 (5개 열 높이 통일) */
+.col-fb .col-body{flex:1 1 auto;min-height:auto;padding-bottom:7px}
+.col-feedback{display:flex;flex-direction:column;gap:2px;flex:0 0 auto;min-width:0;height:120px;margin-top:auto;padding:4px 5px 4px;border:1px solid var(--fb-line,#EDE6D8);border-radius:8px;background:var(--fb-bg,#FFFDF8);transition:border-color .15s,box-shadow .15s}
 .col-feedback:focus-within{border-color:var(--fb-ink,#CFC5B4);box-shadow:0 0 0 2px rgba(0,0,0,.03)}
 .fb-lab{font-family:var(--sans);font-size:9px;letter-spacing:.8px;font-weight:800;line-height:1.3;color:var(--fb-ink,#A79C88);flex:none}
 .fb-in{flex:1 1 auto;width:100%;min-width:0;min-height:52px;border:0;outline:none;resize:none;overflow:auto;font:inherit;font-size:11px;line-height:20px;padding:0 1px;color:var(--ink);background-color:transparent;background-image:repeating-linear-gradient(to bottom,transparent 0,transparent 19px,var(--fb-line,#EDE6D8) 19px,var(--fb-line,#EDE6D8) 20px)}
 .fb-in::placeholder{color:#C9BFAE}
 .col-money .money-foot{margin-top:6px}
-.col-money .money-list{flex:1 1 auto}
+.col-money .money-list{flex:0 0 auto}
 @media (max-width:720px){
   .fb-in{min-height:56px}
-  .col-feedback{min-height:84px}
+  .col-feedback{height:104px}
 }
 /* 장건강 — 변 상태 5종 선택 칩 */
 #bmRow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:3px;max-width:212px}
@@ -683,7 +680,6 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
   .wcard .wplat{font-size:11px;padding:2px 3px}
   .wcard .txt{font-size:13px}
   .wcard .wdet{font-size:11.5px}
-  .note-area{min-height:150px}
   .task .del{opacity:.55}
   .week-top{gap:7px}
   .goal-box,.review-box{flex:1 1 100%}
@@ -857,8 +853,7 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
   body[data-print="daily"] .mood-word{font-size:4.8pt}
   body[data-print="daily"] .note-one-lab{font-size:4.4pt}
   body[data-print="daily"] .note-one{font-size:6pt}
-  body[data-print="daily"] .note-area{font-size:6.2pt;min-height:0;height:16mm;line-height:1.9}
-  body[data-print="daily"] .col-feedback{min-height:0;margin-top:1.2mm;padding:.8mm 1mm;border-radius:1mm;background:#fff}
+  body[data-print="daily"] .col-feedback{height:20mm;min-height:0;flex:0 0 auto;margin-top:1.2mm;padding:.8mm 1mm;border-radius:1mm;background:#fff}
   body[data-print="daily"] .fb-lab{font-size:4.6pt;letter-spacing:.4pt}
   body[data-print="daily"] .fb-in{font-size:6pt;line-height:1.65;min-height:8mm;padding-top:0;overflow:hidden;background-image:none}
   body[data-print="daily"] .bm{font-size:5.6pt;padding:0 1mm}
@@ -1103,10 +1098,10 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
                 <button class="add-mini" id="mDetailBtn" type="button">＋ 상세 구매내역</button>
                 <textarea id="mDetail" class="money-detail" rows="2" maxlength="1000" placeholder="상세 구매내역 (세부금액 포함, 줄바꿈 가능)" aria-label="상세 구매내역" hidden></textarea>
               </div>
-            </div>
-            <div class="money-foot">
-              <div class="mf"><span>오늘 지출</span><b id="mToday">0원</b></div>
-              <div class="mf acc"><span>이번 달 누적</span><b id="mMonth">0원</b></div>
+              <div class="money-foot">
+                <div class="mf"><span>오늘 지출</span><b id="mToday">0원</b></div>
+                <div class="mf acc"><span>이번 달 누적</span><b id="mMonth">0원</b></div>
+              </div>
             </div>
             <div class="col-feedback" style="--fb-line:#DEEBD2;--fb-ink:#6E8A45;--fb-bg:#FBFFF6">
               <span class="fb-lab">피드백</span>
@@ -1120,8 +1115,6 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
             <div class="col-body">
               <div class="tasks-body" id="taskList-leisure"></div>
               <button class="add-task" data-add="leisure">＋ 여가 활동 추가</button>
-              <label class="note-one-lab">여가 메모</label>
-              <textarea class="note-area" id="memo" placeholder="오늘의 여가 기록" maxlength="3000"></textarea>
             </div>
             <div class="col-feedback" style="--fb-line:#D8EAE5;--fb-ink:#4A8C81;--fb-bg:#F8FEFC">
               <span class="fb-lab">피드백</span>
@@ -1920,7 +1913,7 @@ function renderDaily(){
   var d=S.days[curDate];
   $("#weather").value=(d&&d.weather)||"";
   $("#comment").value=(d&&d.comment)||"";
-  $("#memo").value=(d&&d.memo)||"";
+  var memoEl=$("#memo"); if(memoEl) memoEl.value=(d&&d.memo)||"";
   renderHealth();
   renderEmotion();
   renderTaskList("work");
@@ -3156,7 +3149,8 @@ function bindEvents(){
     getDay(curDate).weather=e.target.value;
     clearTimeout(weatherTimer); weatherTimer=setTimeout(scheduleSave,200);
   });
-  $("#memo").addEventListener("input", function(e){
+  var memoEl=$("#memo");
+  if(memoEl) memoEl.addEventListener("input", function(e){
     getDay(curDate).memo=e.target.value;
     clearTimeout(memoTimer); memoTimer=setTimeout(scheduleSave,200);
   });
