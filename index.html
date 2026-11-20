@@ -502,7 +502,7 @@ button.mini:hover{background:#F7F3EA}
 .mcell .mbar i{display:block;height:100%;background:var(--c);min-width:2px}
 .mcell .mtasks{display:flex;align-items:center;gap:4px;min-width:0;font-size:10.5px;line-height:1.25;color:var(--ink-soft)}
 .mcell .mtasks .tdot{flex:none;display:block;width:5px;height:5px;border-radius:1px;background:var(--c)}
-.mcell .mtasks .cnt{flex:none;min-width:20px;font-family:var(--sans);font-size:9.5px;font-weight:800;color:#8A97A8;letter-spacing:0}
+.mcell .mtasks .cnt{flex:none;min-width:20px;font-family:var(--sans);font-size:9.5px;font-weight:800;color:var(--tc,#8A97A8);letter-spacing:0}
 .mcell .mtasks .one{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
 .mcell .mtasks .more{flex:none;margin-left:auto;font-family:var(--sans);font-size:9px;font-weight:800;color:#7C8798;background:#F3EFE6;border-radius:4px;padding:0 4px;line-height:1.5;font-variant-numeric:tabular-nums}
 .mcell .mtasks.second{color:var(--ink-soft);padding-left:0}
@@ -710,7 +710,7 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
   .mcell .mbar{height:3px;gap:1px}
   .mcell .mtasks{font-size:9px;gap:2px}
   .mcell .mtasks .cnt{font-size:8.5px;min-width:0}
-  .mcell .mtasks .tdot{width:4px;height:4px}
+  .mcell .mtasks .tdot{width:5px;height:5px}
   .mcell .mtasks .one{display:none}
   .mcell .mtasks .more{display:none}
   .mcell .mone{font-size:8px;padding:0 4px}
@@ -2548,8 +2548,8 @@ function renderMonth(){
     });
     var pendFirst=function(a){ return a.filter(function(t){ return t.st!==1; }).concat(a.filter(function(t){ return t.st===1; })); };
     var mgroups=[
-      {label:"일정", kind:"home", color:"#EFA96A", list:pendFirst(mHome)},
-      {label:"작업", kind:"work", color:"#EBCB5A", list:pendFirst(mWork)}
+      {label:"일정", kind:"home", color:"#EFA96A", tcolor:"#B4703A", list:pendFirst(mHome)},
+      {label:"작업", kind:"work", color:"#EBCB5A", tcolor:"#8E7415", list:pendFirst(mWork)}
     ].filter(function(g){ return g.list.length; });
     if(mgroups.length){
       // 한 줄에 제목 두 개까지 보여 주고, 남는 개수는 +N 으로 표시한다
@@ -2567,8 +2567,8 @@ function renderMonth(){
         if(g.list.length>8) tipNames+=" 외 "+(g.list.length-8)+"개";
         var tip=g.label+" "+g.list.length+"개 중 "+gDone+"개 완료"+(tipNames?" — "+tipNames:"");
         var shownTxt=shown.map(function(t){ return String(t.text||"").trim()||g.label; }).join(" · ");
-        cell+='<span class="mtasks'+(gi?" second":"")+'" data-kind="'+g.kind+'" title="'+esc(tip)+'">'
-            + '<i class="tdot" style="--c:'+g.color+'" aria-hidden="true"></i>'
+        cell+='<span class="mtasks'+(gi?" second":"")+'" data-kind="'+g.kind+'" style="--c:'+g.color+';--tc:'+g.tcolor+'" title="'+esc(tip)+'">'
+            + '<i class="tdot" aria-hidden="true"></i>'
             + '<span class="cnt">'+gDone+'/'+g.list.length+'</span>'
             + '<span class="one">'+esc(shownTxt)+'</span>'
             + (gRest>0?'<span class="more" aria-label="'+esc(g.label+" 외 "+gRest+"개 더")+'">+'+gRest+'</span>':'')+'</span>';
