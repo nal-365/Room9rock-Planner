@@ -7,18 +7,18 @@
 <meta name="theme-color" content="#F1ECE3">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="방구석 플래너">
-<title>방구석 작업실 · 올인원 플래너 (일간·주간·월간·소비일지)</title>
-<meta name="description" content="방구석 작업실의 올인원 플래너. 일간·주간·월간 시간표와 소비일지를 한 화면에서, Google 로그인으로 기기 간 자동 동기화.">
+<title>방구석 작업실 · 올인원 플래너 (일간·주간·월간·장부)</title>
+<meta name="description" content="방구석 작업실의 올인원 플래너. 일간·주간·월간 시간표와 장부를 한 화면에서, Google 로그인으로 기기 간 자동 동기화.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="방구석 작업실 · 올인원 플래너">
-<meta property="og:description" content="일간·주간·월간 시간표, 소비일지, 습관 기록을 한 장에. Google 로그인하면 기기끼리 자동으로 이어져요.">
+<meta property="og:description" content="일간·주간·월간 시간표, 장부, 습관 기록을 한 장에. Google 로그인하면 기기끼리 자동으로 이어져요.">
 <meta property="og:image" content="https://nal-365.github.io/Room9rock-Planner/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:url" content="https://nal-365.github.io/Room9rock-Planner/">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="방구석 작업실 · 올인원 플래너">
-<meta name="twitter:description" content="일간·주간·월간 시간표와 소비일지를 한 화면에서.">
+<meta name="twitter:description" content="일간·주간·월간 시간표와 장부를 한 화면에서.">
 <meta name="twitter:image" content="https://nal-365.github.io/Room9rock-Planner/og-image.png">
 <link rel="icon" type="image/png" href="favicon.png">
 <link rel="apple-touch-icon" href="favicon.png">
@@ -254,6 +254,9 @@ button.mini:hover{background:#F7F3EA}
 .mrow:hover .mx{opacity:1}
 .mrow .msub{display:flex;align-items:center;gap:4px;font-size:9.5px;color:#8FA080;font-weight:700;margin-top:1px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .mrow .msub i{width:7px;height:7px;border-radius:2px;background:var(--c,#DAD8D2);flex:none}
+.mrow.inc{border-bottom-color:#D7EDE4}
+.mrow .msub .mt{flex:none;font-size:8.5px;font-weight:800;padding:0 3px;border-radius:3px;background:#DDF3E8;color:#1F7A57;letter-spacing:0}
+.mrow .msub .mt.exp{background:#FBECEA;color:#A9504A}
 .mrow .mdet{margin-top:2px;font-size:10px;line-height:1.5;color:#6E7F60;white-space:pre-wrap;word-break:break-word}
 .money-add{display:grid;grid-template-columns:minmax(0,1fr);gap:3px;margin-top:5px;min-width:0}
 .money-add select,.money-add input,.money-add textarea{border:1px solid #DCE7CF;border-radius:6px;padding:3px 5px;font-size:11px;background:#FCFEF9;outline:none;min-width:0;max-width:100%;color:var(--ink);font-family:inherit}
@@ -263,9 +266,16 @@ button.mini:hover{background:#F7F3EA}
 .money-add .r input.mtm{flex:0 0 44px;width:auto;text-align:center}
 .money-add .r select{flex:1 1 0;width:0;min-width:0;padding:3px 2px}
 .money-add .r input.amt{flex:0 0 56px;width:auto;text-align:right;font-variant-numeric:tabular-nums}
+.money-add .mseg{flex:0 0 auto;display:inline-flex;gap:0;border:1px solid #DCE7CF;border-radius:6px;padding:1px;background:#fff}
+.money-add .mseg button{flex:0 0 auto;width:auto;border:0;background:transparent;border-radius:5px;font-size:10px;font-weight:800;line-height:1.3;padding:1px 6px;color:#9DAD8D;cursor:pointer;touch-action:manipulation}
+.money-add .mseg button.on{background:#EDF6E1;color:#3F6B1E}
+.money-add .mseg button[data-type="income"].on{background:#DDF3E8;color:#1F7A57}
+.money-add .mamt{flex:0 0 74px;display:flex;align-items:center;gap:2px;min-width:0}
+.money-add .mamt input{flex:1 1 auto;width:0;min-width:0;text-align:right;font-variant-numeric:tabular-nums}
+.money-add .mamt i{flex:none;font-style:normal;font-size:9.5px;font-weight:800;color:#8FA080}
 .money-add textarea.money-detail{resize:none;line-height:1.5;min-height:32px;background:#FCFEF9}
 .money-add .add-mini{margin-top:0}
-.money-add .r button{flex:0 0 26px;border:1px solid #B9D79B;background:#EAF5DC;border-radius:6px;color:#4C6B22;font-weight:800;cursor:pointer;font-size:12px;line-height:1;padding:0}
+.money-add .r #mAdd{flex:0 0 26px;border:1px solid #B9D79B;background:#EAF5DC;border-radius:6px;color:#4C6B22;font-weight:800;cursor:pointer;font-size:12px;line-height:1;padding:0}
 .money-top{flex:none;display:grid;gap:1px;padding:0 3px 4px 0;margin:-1px 0 2px;border-bottom:1px dashed #E2EBD8}
 .mf{display:flex;justify-content:space-between;align-items:baseline;gap:5px;min-width:0;font-size:10px;color:#7E8F6C;font-weight:700}
 .mf>span:first-child{flex:0 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -276,6 +286,9 @@ button.mini:hover{background:#F7F3EA}
 .money-top .mf.acc{color:#93A383}
 .money-top .mf.acc b{font-size:13px;letter-spacing:.3px}
 .money-top .mf.acc .mval i{font-size:8.5px}
+.money-top .mf.in b{color:#1F7A57}
+.money-top .mf.in .mval i{color:#5E9B80}
+.money-top .mf.in{color:#5E9B80}
 .mf.acc{border-top:1px dashed #DCE7D0;padding-top:3px;color:#9AA98A}
 
 /* 여가 시간 */
@@ -287,7 +300,7 @@ button.mini:hover{background:#F7F3EA}
 .note-one-lab{font-size:9px;letter-spacing:.7px;font-weight:800;color:#7E9CBE;margin-top:3px;display:block;flex:none}
 .note-one{width:100%;min-width:0;border:0;border-bottom:1px solid #DCE6F4;background:transparent;outline:none;font-size:11px;height:20px;padding:0 1px;color:var(--ink)}
 .note-one::placeholder{color:#B9C9DC}
-/* 열 하단 피드백 칸 — 작업·자기개발·일정·소비일지·여가 시간 (5개 열 높이 통일) */
+/* 열 하단 피드백 칸 — 작업·자기개발·일정·장부·여가 시간 (5개 열 높이 통일) */
 .col-fb .col-body{flex:1 1 auto;min-height:auto;padding-bottom:7px}
 .col-feedback{display:flex;flex-direction:column;gap:2px;flex:0 0 auto;min-width:0;height:120px;margin-top:auto;padding:4px 5px 4px;border:1px solid var(--fb-line,#EDE6D8);border-radius:8px;background:var(--fb-bg,#FFFDF8);transition:border-color .15s,box-shadow .15s}
 .col-feedback:focus-within{border-color:var(--fb-ink,#CFC5B4);box-shadow:0 0 0 2px rgba(0,0,0,.03)}
@@ -533,7 +546,7 @@ button.mini:hover{background:#F7F3EA}
 .mstats{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:12px}
 .sc-wide b{font-size:14px;padding-top:4px}
 
-/* ---------- 소비일지 ---------- */
+/* ---------- 장부 ---------- */
 .ledger-wrap{display:grid;gap:12px;max-width:1280px;margin:0 auto}
 .led-head{display:flex;flex-wrap:wrap;align-items:stretch;gap:10px}
 .month-nav{display:flex;align-items:center;gap:6px;background:#fff;border:1px solid var(--line);border-radius:11px;padding:6px 9px}
@@ -990,13 +1003,13 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
           <path d="M10.5 20.7v-4.5a1.5 1.5 0 0 1 3 0v4.5Z" fill="#5B8DEF"/>
         </svg>
       </span>
-      <span class="btxt"><strong>방구석 작업실</strong><span>일간 · 주간 · 월간 · 소비일지</span></span>
+      <span class="btxt"><strong>방구석 작업실</strong><span>일간 · 주간 · 월간 · 장부</span></span>
     </div>
     <nav class="tabs" role="tablist" aria-label="보기 전환">
       <button class="tab on" data-view="daily" role="tab" aria-selected="true">일간</button>
       <button class="tab" data-view="week" role="tab" aria-selected="false">주간</button>
       <button class="tab" data-view="month" role="tab" aria-selected="false">월간</button>
-      <button class="tab" data-view="ledger" role="tab" aria-selected="false">소비일지</button>
+      <button class="tab" data-view="ledger" role="tab" aria-selected="false">장부</button>
     </nav>
     <div class="tools">
       <div class="cloud" id="cloudBox">
@@ -1012,7 +1025,7 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
         </div>
       </div>
       <span class="saved" id="savedPill" title="자동 저장 상태"><i></i><span id="savedText">저장됨</span></span>
-      <button class="btn" id="catBtn" title="형광펜 · 소비일지 · 약 종류 관리">
+      <button class="btn" id="catBtn" title="형광펜 · 장부 · 약 종류 관리">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3.5 7h6.5M14.5 7h6M3.5 17h3.5M11.5 17h9"/><circle cx="12" cy="7" r="2.1"/><circle cx="9" cy="17" r="2.1"/></svg>
         <span class="lbl">카테고리</span>
       </button>
@@ -1132,32 +1145,36 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
             </div>
           </section>
 
-          <!-- 6. 소비일지 -->
+          <!-- 6. 장부 -->
           <section class="col col-money col-fb">
-            <div class="col-head" style="--tint:#D7F0D0;--inkh:#4C6B22">소비일지</div>
+            <div class="col-head" style="--tint:#D7F0D0;--inkh:#4C6B22">장부</div>
             <div class="col-body">
               <div class="money-top">
                 <div class="mf"><span>오늘 지출</span><span class="mval"><b id="mToday">0</b><i>원</i></span></div>
-                <div class="mf acc"><span>이번 달 누적</span><span class="mval"><b id="mMonth">0</b><i>원</i></span></div>
+                <div class="mf in" id="mTodayInRow" hidden><span>오늘 수입</span><span class="mval"><b id="mTodayIn">0</b><i>원</i></span></div>
+                <div class="mf acc"><span>이번 달 지출</span><span class="mval"><b id="mMonth">0</b><i>원</i></span></div>
+                <div class="mf acc in" id="mMonthInRow" hidden><span>이번 달 수입</span><span class="mval"><b id="mMonthIn">0</b><i>원</i></span></div>
               </div>
               <div class="money-list" id="moneyList"></div>
               <div class="money-add">
                 <div class="r">
-                  <input id="mTime" class="mtm" maxlength="5" placeholder="시간" aria-label="구매시간">
+                  <input id="mTime" class="mtm" maxlength="5" placeholder="시간" aria-label="시간">
+                  <div class="mseg" id="mType" role="group" aria-label="수입/지출">
+                    <button type="button" data-type="expense" class="on">지출</button><button type="button" data-type="income">수입</button>
+                  </div>
                   <select id="mCat" aria-label="분류"></select>
                 </div>
-                <input id="mMemo" maxlength="60" placeholder="구매내역" aria-label="구매내역">
                 <div class="r">
-                  <input id="mAmt" class="amt" inputmode="numeric" placeholder="0" aria-label="총금액">
-                  <button id="mAdd" aria-label="내역 추가">＋</button>
+                  <input id="mMemo" maxlength="60" placeholder="내용" aria-label="내용">
+                  <span class="mamt"><input id="mAmt" class="amt" inputmode="numeric" placeholder="0" aria-label="금액"><i>원</i></span>
+                  <button id="mAdd" type="button" aria-label="내역 추가">＋</button>
                 </div>
-                <button class="add-mini" id="mDetailBtn" type="button">＋ 상세 구매내역</button>
-                <textarea id="mDetail" class="money-detail" rows="2" maxlength="1000" placeholder="상세 구매내역 (세부금액 포함, 줄바꿈 가능)" aria-label="상세 구매내역" hidden></textarea>
+                <textarea id="mDetail" class="money-detail" rows="2" maxlength="1000" placeholder="상세내역 (세부금액 포함, 여러 줄)" aria-label="상세내역"></textarea>
               </div>
             </div>
             <div class="col-feedback" style="--fb-line:#DEEBD2;--fb-ink:#6E8A45;--fb-bg:#FBFFF6">
               <span class="fb-lab">피드백</span>
-              <textarea class="fb-in" data-fb="money" maxlength="1200" placeholder="오늘 피드백 · 회고" aria-label="소비일지 피드백"></textarea>
+              <textarea class="fb-in" data-fb="money" maxlength="1200" placeholder="오늘 피드백 · 회고" aria-label="장부 피드백"></textarea>
             </div>
           </section>
 
@@ -1272,10 +1289,10 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
     </div>
   </section>
 
-  <!-- ================= 소비일지 ================= -->
+  <!-- ================= 장부 ================= -->
   <section class="view" id="viewLedger" hidden>
     <div class="ledger-wrap">
-      <div class="print-only print-head">방구석 작업실 · <span id="lPrintMonth">2026년 11월</span> 소비일지</div>
+      <div class="print-only print-head">방구석 작업실 · <span id="lPrintMonth">2026년 11월</span> 장부</div>
 
       <div class="led-head">
         <div class="month-nav">
@@ -1302,8 +1319,7 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
           <span class="won">원</span>
           <button class="btn primary qa-add" id="qaAdd">추가</button>
         </div>
-        <button class="qa-detail-btn" id="qaDetailBtn" type="button">＋ 상세 구매내역</button>
-        <textarea class="qa-detail" id="qaDetail" rows="3" maxlength="1000" placeholder="상세 구매내역 (세부금액 포함, 줄바꿈 가능)" aria-label="상세 구매내역" hidden></textarea>
+        <textarea class="qa-detail" id="qaDetail" rows="3" maxlength="1000" placeholder="상세내역 (세부금액 포함, 여러 줄)" aria-label="상세내역"></textarea>
       </div>
 
       <div class="ledger-grid">
@@ -1359,11 +1375,11 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
         <li><b>할 일</b> — 네모를 누를 때마다 <b>□ → ○ 완료 → △ 일부 → × 못함 → → 미룸</b> 순서로 바뀌어요.</li>
         <li><b>카드</b> — <b>작업·자기개발·여가 시간</b> 열은 카드로 적어요. 위줄에서 상태·분류(플랫폼·카테고리)를 고르고, 제목 아래 <b>상세 내역</b>에 여러 줄로 메모해요. 분류 목록은 카드의 <b>＋ 플랫폼 관리</b>·<b>＋ 카테고리 관리</b>나 카테고리 관리에서 직접 추가·이름 바꾸기·삭제할 수 있어요.</li>
         <li><b>주간</b> — 일간에서 칠하고 적은 내용이 그대로 모이고, 주간에서 고쳐도 일간에 바로 반영돼요. 주간 화면 위쪽 형광펜도 그대로 쓸 수 있어요.</li>
-        <li><b>소비일지</b> — 날짜·시간·분류·구매내역·금액을 적고, 필요하면 <b>상세 구매내역</b>을 여러 줄로 남겨요. 월 합계와 <b>분류별 모아보기</b>가 자동으로 정리되고, 분류를 누르면 그 내역만 필터링됩니다.</li>
-        <li><b>일간 열</b> — <b>건강</b>은 위에서부터 몸무게 → 오늘의 한 줄 → 식단(시간·시간대·내용, 여러 줄 가능)을 적고, 아래 트래커 한 칸에 물·약·에너지·장건강(안감·바나나·딱딱함·설사·혈변 중 하나, 누르면 선택·다시 누르면 해제)·기분(5단계)을 모아 둡니다. <b>작업·자기개발·여가 시간</b>은 분류·상세 내역이 붙은 카드로, <b>일정</b>은 체크리스트로 적어요. <b>소비일지</b>는 맨 위에 오늘 지출·이번 달 누적 합계를 두고 그 아래에 내역을 적어요. 기분 이모지는 월간 달력에도 표시됩니다.</li>
-        <li><b>피드백</b> — <b>작업·자기개발·일정·소비일지·여가 시간</b> 열 맨 아래 칸에 그날의 회고를 적어요. 날짜마다 따로 저장되고, 화면을 넓게 보면 건강 열과 같은 높이까지 채워집니다.</li>
+        <li><b>장부</b> — 날짜·시간·수입/지출·분류·내용·금액을 적고 상세 내역을 여러 줄로 남겨요. 총 지출·총 수입·잔액과 <b>분류별 모아보기</b>가 자동으로 정리되고, 분류를 누르면 그 내역만 필터링됩니다.</li>
+        <li><b>일간 열</b> — <b>건강</b>은 위에서부터 몸무게 → 오늘의 한 줄 → 식단(시간·시간대·내용, 여러 줄 가능)을 적고, 아래 트래커 한 칸에 물·약·에너지·장건강(안감·바나나·딱딱함·설사·혈변 중 하나, 누르면 선택·다시 누르면 해제)·기분(5단계)을 모아 둡니다. <b>작업·자기개발·여가 시간</b>은 분류·상세 내역이 붙은 카드로, <b>일정</b>은 체크리스트로 적어요. <b>장부</b>는 맨 위에 오늘 지출·오늘 수입과 이번 달 지출·수입 합계를 두고, 그 아래에서 수입/지출을 골라 시간·분류·내용·금액·상세 내역을 적어요. 기분 이모지는 월간 달력에도 표시됩니다.</li>
+        <li><b>피드백</b> — <b>작업·자기개발·일정·장부·여가 시간</b> 열 맨 아래 칸에 그날의 회고를 적어요. 날짜마다 따로 저장되고, 화면을 넓게 보면 건강 열과 같은 높이까지 채워집니다.</li>
         <li><b>월간</b> — 한 달을 달력 한 장으로 모아 봐요. 날짜를 누르면 그날 일간으로 바로 넘어가고, <b>이달의 목표</b>·<b>한 줄 리뷰</b>는 아래 통계와 함께 자동 저장돼요.</li>
-        <li><b>카테고리 관리</b> — 위쪽 <b>카테고리</b> 버튼에서 형광펜·소비일지 분류·<b>작업 플랫폼</b>·<b>자기개발 카테고리</b>·<b>여가 카테고리</b>·<b>식단 시간대</b>·약 종류를 직접 추가하거나 지울 수 있어요.</li>
+        <li><b>카테고리 관리</b> — 위쪽 <b>카테고리</b> 버튼에서 형광펜·장부 분류·<b>작업 플랫폼</b>·<b>자기개발 카테고리</b>·<b>여가 카테고리</b>·<b>식단 시간대</b>·약 종류를 직접 추가하거나 지울 수 있어요.</li>
         <li><b>저장</b> — 모든 변경은 이 브라우저에 자동 저장돼요. <b>Google 로그인</b>하면 다른 기기와 자동으로 이어지고, 로그아웃해도 이 기기의 기록은 그대로 남아요.</li>
       </ul>
       <h4>형광펜 이름 (직접 바꾸기)</h4>
@@ -1533,7 +1549,7 @@ function normalize(o){
   s.cats=builtCats;
   var catIdx={}; builtCats.forEach(function(c){ catIdx[c.id]=c; });
 
-  /* ---- 소비일지 분류 ---- */
+  /* ---- 장부 분류 ---- */
   var builtLC=[], seenLC={};
   if(Array.isArray(o.ledgerCats)){
     o.ledgerCats.forEach(function(c){
@@ -2311,28 +2327,43 @@ function renderMoney(){
   list.forEach(function(e){
     var c=lcat(e.cat)||{name:"기타", color:"#DAD8D2"};
     var det=String(e.detail||"");
-    html+='<div class="mrow" data-id="'+e.id+'">'
+    var isInc=(e.type==="income");
+    html+='<div class="mrow'+(isInc?" inc":"")+'" data-id="'+e.id+'">'
       + '<div class="mline">'
       +   (e.time?'<span class="mtm">'+esc(e.time)+'</span>':"")
       +   '<span class="mm">'+esc(e.memo||lcatName(e.cat))+'</span>'
-      +   '<span class="ma'+(e.type==="income"?" inc":"")+'">'+(e.type==="income"?"+":"-")+fmtNum(e.amount)+'</span>'
+      +   '<span class="ma'+(isInc?" inc":"")+'">'+(isInc?"+":"-")+fmtNum(e.amount)+'</span>'
       +   '<button class="mx" data-mdel="'+e.id+'" aria-label="삭제">×</button>'
       + '</div>'
-      + '<div class="msub"><i style="--c:'+c.color+'"></i>'+esc(c.name)+"</div>"
+      + '<div class="msub"><span class="mt'+(isInc?"":" exp")+'">'+(isInc?"수입":"지출")+'</span>'
+      +   (isInc && c.name==="수입" ? "" : '<i style="--c:'+c.color+'"></i>'+esc(c.name))+"</div>"
       + (det?'<div class="mdet">'+esc(det)+'</div>':"")
       + '</div>';
   });
-  if(!list.length) html='<div class="mrow" style="cursor:default;color:#C6BCAB;font-size:10px"><span class="mm">오늘 지출을 적어 보세요</span></div>';
+  if(!list.length) html='<div class="mrow" style="cursor:default;color:#C6BCAB;font-size:10px"><span class="mm">오늘 수입·지출을 적어 보세요</span></div>';
   $("#moneyList").innerHTML=html;
-  var today=0, month=0, mk=curDate.slice(0,7);
+
+  var todayExp=0, todayInc=0, monthExp=0, monthInc=0, mk=curDate.slice(0,7);
   entries().forEach(function(e){
-    if(e.type!=="expense") return;
-    if(e.date===curDate) today+=e.amount;
-    if(e.date && e.date.slice(0,7)===mk) month+=e.amount;
+    var inc=(e.type==="income");
+    if(e.date===curDate){ if(inc) todayInc+=e.amount; else todayExp+=e.amount; }
+    if(e.date && e.date.slice(0,7)===mk){ if(inc) monthInc+=e.amount; else monthExp+=e.amount; }
   });
-  $("#mToday").textContent=fmtNum(today);
-  $("#mMonth").textContent=fmtNum(month);
-  fillCatSelect($("#mCat"),"expense",$("#mCat").value);
+  $("#mToday").textContent=fmtNum(todayExp);
+  $("#mMonth").textContent=fmtNum(monthExp);
+  var tr=$("#mTodayInRow"), mr=$("#mMonthInRow");
+  if($("#mTodayIn")) $("#mTodayIn").textContent=fmtNum(todayInc);
+  if($("#mMonthIn")) $("#mMonthIn").textContent=fmtNum(monthInc);
+  if(tr) tr.hidden = !todayInc;
+  if(mr) mr.hidden = !monthInc;
+
+  fillCatSelect($("#mCat"), moneyType, $("#mCat").value);
+  $$("#mType button").forEach(function(b){ b.classList.toggle("on", b.dataset.type===moneyType); });
+}
+function setMoneyType(t){
+  moneyType=(t==="income")?"income":"expense";
+  $$("#mType button").forEach(function(b){ b.classList.toggle("on", b.dataset.type===moneyType); });
+  fillCatSelect($("#mCat"), moneyType);
 }
 
 /* ---------- D-DAY ---------- */
@@ -2705,11 +2736,12 @@ function renderMonthStats(mt){
 }
 
 /* ============================================================
-   6-2. 소비일지
+   6-2. 장부
    ============================================================ */
 var curMonth = todayISO().slice(0,7);
 var ledgerFilter = null;
 var qaType = "expense";
+var moneyType = "expense";
 var editingId = null;
 
 function entries(){
@@ -2755,7 +2787,7 @@ function entryRowHTML(e){
     +     '<span class="c-date">'+(dt.getMonth()+1)+"/"+dt.getDate()+' ('+DOW_KO[dt.getDay()]+')</span>'
     +     (e.time?'<span class="c-time">'+esc(e.time)+'</span>':"")
     +     '<span class="c-type'+(isInc?" income":"")+'"><i></i>'+(isInc?"수입":"지출")+'</span>'
-    +     '<span class="c-cat" style="--c:'+c.color+'"><i></i>'+esc(c.name)+'</span>'
+    +     (isInc && c.name==="수입" ? "" : '<span class="c-cat" style="--c:'+c.color+'"><i></i>'+esc(c.name)+'</span>')
     +   '</span>'
     +   '<span class="c-memo">'+esc(e.memo || c.name)+'</span>'
     +   '<span class="c-amt '+(isInc?"inc":"exp")+'">'+(isInc?"+":"−")+fmtWon(e.amount)+'</span>'
@@ -2888,11 +2920,11 @@ function addMoneyQuick(){
   if(!amt || amt<=0){ toast("금액을 입력해 주세요"); $("#mAmt").focus(); return; }
   var memo=$("#mMemo").value.trim();
   var cid=$("#mCat").value || "";
-  if(!lcat(cid)){ var fc3=firstLCat("expense"); cid=fc3?fc3.id:"etc"; }
-  entries().push({id:uid(), date:curDate, type:"expense", cat:cid, memo:memo, amount:amt, ts:Date.now(), time:normalizeTime($("#mTime").value), detail:String($("#mDetail").value||"").slice(0,1000)});
-  $("#mMemo").value=""; $("#mAmt").value=""; $("#mTime").value=""; $("#mDetail").value=""; $("#mDetail").hidden=true; $("#mDetailBtn").textContent="＋ 상세 구매내역";
+  if(!lcat(cid) || lcat(cid).type!==moneyType){ var fc3=firstLCat(moneyType); cid=fc3?fc3.id:"etc"; }
+  entries().push({id:uid(), date:curDate, type:moneyType, cat:cid, memo:memo, amount:amt, ts:Date.now(), time:normalizeTime($("#mTime").value), detail:String($("#mDetail").value||"").slice(0,1000)});
+  $("#mMemo").value=""; $("#mAmt").value=""; $("#mTime").value=""; $("#mDetail").value="";
   renderMoney(); renderLedger(); scheduleSave();
-  toast(fmtWon(amt)+" 기록했어요");
+  toast((moneyType==="income"?"+":"-")+fmtWon(amt)+" 기록했어요");
 }
 function addEntryFromQuick(){
   var date=$("#qaDate").value || todayISO();
@@ -2904,14 +2936,14 @@ function addEntryFromQuick(){
   var monthChanged = date.slice(0,7)!==curMonth;
   if(monthChanged) curMonth=date.slice(0,7);
   entries().push({id:uid(), date:date, type:qaType, cat:catId, memo:memo, amount:amount, ts:Date.now(), time:normalizeTime($("#qaTime").value), detail:String($("#qaDetail").value||"").slice(0,1000)});
-  $("#qaMemo").value=""; $("#qaAmount").value=""; $("#qaTime").value=""; $("#qaDetail").value=""; $("#qaDetail").hidden=true; $("#qaDetailBtn").textContent="＋ 상세 구매내역";
+  $("#qaMemo").value=""; $("#qaAmount").value=""; $("#qaTime").value=""; $("#qaDetail").value="";
   renderLedger(); renderMoney(); scheduleSave();
   $("#qaMemo").focus();
   toast(fmtWon(amount)+" 기록했어요");
 }
 
 /* ============================================================
-   6-3. 카테고리 관리 (형광펜 · 소비일지 분류 · 약 종류)
+   6-3. 카테고리 관리 (형광펜 · 장부 분류 · 약 종류)
    ============================================================ */
 function countUse(catId){
   var n=0;
@@ -3000,7 +3032,7 @@ function renderCatDlg(){
     var used=countLCatUse(c.id);
     lcs+='<div class="crow lcrow" data-lcat="'+c.id+'">'
       + '<input type="color" class="csw" data-lcol="'+c.id+'" value="'+c.color+'" aria-label="'+esc(c.name)+' 색">'
-      + '<input class="cname" data-lname="'+c.id+'" maxlength="12" value="'+esc(c.name)+'" aria-label="소비일지 분류 이름">'
+      + '<input class="cname" data-lname="'+c.id+'" maxlength="12" value="'+esc(c.name)+'" aria-label="장부 분류 이름">'
       + '<span class="ctype">'+(c.type==="income"?"수입":"지출")+'</span>'
       + '<span class="cuse">'+(used?used+"건":"")+'</span>'
       + '<button class="cdel" data-ldel="'+c.id+'" aria-label="'+esc(c.name)+' 삭제" title="삭제">×</button>'
@@ -3069,8 +3101,8 @@ function renderCatDlg(){
     +   '</div>'
     + '</div>'
     + '<div class="csec">'
-    +   '<div class="hd"><b>소비일지 분류</b><span>지출 '+expN+' · 수입 '+incN+'</span></div>'
-    +   '<p class="hint">일간 보드와 소비일지 탭에서 쓰는 분류예요. 지워도 그동안 적은 내역은 옮길 분류를 골라 그대로 살릴 수 있어요.</p>'
+    +   '<div class="hd"><b>장부 분류</b><span>지출 '+expN+' · 수입 '+incN+'</span></div>'
+    +   '<p class="hint">일간 보드와 장부 탭에서 쓰는 분류예요. 지워도 그동안 적은 내역은 옮길 분류를 골라 그대로 살릴 수 있어요.</p>'
     +   lcs
     +   '<div class="cadd two">'
     +     '<input type="color" id="lcColor" value="'+CAT_PALETTE[(S.ledgerCats.length+3)%CAT_PALETTE.length]+'" aria-label="새 분류 색">'
@@ -3696,17 +3728,11 @@ function bindEvents(){
   });
 
   $("#mAdd").addEventListener("click", addMoneyQuick);
-  $("#mDetailBtn").addEventListener("click", function(){
-    var d=$("#mDetail"); if(!d) return;
-    d.hidden=!d.hidden;
-    this.textContent=d.hidden?"＋ 상세 구매내역":"− 상세 구매내역 접기";
-    if(!d.hidden) d.focus();
-  });
-  $("#qaDetailBtn").addEventListener("click", function(){
-    var d=$("#qaDetail"); if(!d) return;
-    d.hidden=!d.hidden;
-    this.textContent=d.hidden?"＋ 상세 구매내역":"− 상세 구매내역 접기";
-    if(!d.hidden) d.focus();
+  var mseg=$("#mType");
+  if(mseg) mseg.addEventListener("click", function(e){
+    var b=e.target.closest("button[data-type]");
+    if(!b) return;
+    setMoneyType(b.dataset.type);
   });
   ["#mTime","#qaTime","#eTime"].forEach(function(sel){
     var el=$(sel); if(!el) return;
@@ -3805,7 +3831,7 @@ function bindEvents(){
     if(c){ e.preventDefault(); openDay(c.dataset.date); }
   });
 
-  // ---- 소비일지 ----
+  // ---- 장부 ----
   $("#lPrev").addEventListener("click", function(){ curMonth=shiftMonth(curMonth,-1); renderLedger(); });
   $("#lNext").addEventListener("click", function(){ curMonth=shiftMonth(curMonth,1); renderLedger(); });
   $("#lToday").addEventListener("click", function(){ curMonth=todayISO().slice(0,7); renderLedger(); });
