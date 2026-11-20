@@ -480,6 +480,96 @@ html.wdnd-on,html.wdnd-on body{-webkit-user-select:none;user-select:none;cursor:
 .wfoot i{font-style:normal;font-size:8.5px;font-weight:800;opacity:.6;margin:0 1px 0 1px}
 .wfoot.zero b{color:#C6BCAB}
 
+/* ---------- 주간 인덱스 탭 (다이어리 색인 라벨) ---------- */
+.week-index{display:flex;align-items:flex-end;gap:4px;margin:12px 0 0;padding:0 5px;border-bottom:1px solid var(--line);overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.week-index::-webkit-scrollbar{display:none}
+.week-index .wi{flex:0 0 auto;min-width:102px;display:flex;align-items:center;justify-content:center;gap:4px;position:relative;top:1px;margin-bottom:-1px;border:1px solid var(--line);border-bottom:0;border-radius:9px 9px 0 0;background:var(--t,#F3EFE6);color:var(--ti,#8A7F6D);font-family:var(--sans);font-size:12px;font-weight:800;letter-spacing:.2px;padding:8px 16px 7px;cursor:pointer;white-space:nowrap;opacity:.55;transition:opacity .15s,top .15s,padding .15s;touch-action:manipulation}
+.week-index .wi i{flex:none;width:6px;height:6px;border-radius:2px;background:currentColor;opacity:.4}
+.week-index .wi:hover{opacity:.85}
+.week-index .wi.on{top:0;opacity:1;background:var(--t);color:var(--ti);padding-bottom:9px;box-shadow:0 -1px 0 rgba(255,255,255,.7) inset, 0 -4px 12px -9px rgba(80,64,44,.55)}
+.week-index .wi.on i{opacity:.8}
+.week-index .wi.on::before{content:"";position:absolute;left:7px;right:7px;top:0;height:2px;border-radius:0 0 2px 2px;background:var(--ti);opacity:.35}
+.week-index .wi:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+
+.week-pane[hidden]{display:none}
+.week-pane{padding-top:11px}
+.week-pane .board-tools{margin-bottom:8px}
+.whead{border:0;background:transparent;padding:0 0 4px;margin:0;width:100%;display:flex;align-items:baseline;justify-content:space-between;gap:4px;border-bottom:1px solid var(--line);cursor:pointer;font:inherit;color:inherit;text-align:left;border-radius:4px 4px 0 0}
+.whead:hover b{color:var(--accent-deep)}
+.whead:hover span{color:var(--accent-deep)}
+.whead:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+
+/* 인덱스 모음집 공통 카드 */
+.week-pane .wtasks{min-height:70px}
+.week-pane[data-wtab="tasks"] .wcol,.week-pane[data-wtab="health"] .wcol,.week-pane[data-wtab="money"] .wcol,.week-pane[data-wtab="leisure"] .wcol{min-height:286px}
+.week-pane[data-wtab="tasks"] .wtasks{flex:1 1 auto;min-height:120px;max-height:360px}
+.hcard{display:flex;flex-direction:column;gap:3px;background:#fff;border:1px solid #E4EBF6;border-radius:8px;padding:6px 7px}
+.hcard .hrow{display:flex;align-items:center;gap:4px;min-width:0;font-size:10.5px}
+.hcard .hlab{flex:none;width:34px;font-size:9px;font-weight:800;letter-spacing:.2px;color:#A79B88}
+.hcard .hval{font-weight:800;color:#4E608F;font-size:11px;font-variant-numeric:tabular-nums}
+.hcard .hval i{font-style:normal;font-size:8.5px;font-weight:800;opacity:.6;margin-left:1px}
+.hcard .hval.none{color:#C6BCAB}
+.hcard .hmeds{display:flex;flex-wrap:wrap;gap:2px;min-width:0}
+.hcard .hmeds b{font-size:8.5px;font-weight:800;padding:0 3px;border-radius:3px;background:#EDF3FB;color:#4E608F;letter-spacing:0}
+.hcard .hmeds .none{color:#C6BCAB;font-size:10px}
+.wdots{display:flex;gap:2px}
+.wdots i{width:7px;height:7px;border-radius:50%;background:#E9E2D2;border:1px solid #DED5C2}
+.wdots i.on{background:#8FC3EC;border-color:#7FB6E4}
+.wbars{display:flex;gap:2px;align-items:flex-end;height:9px}
+.wbars i{width:4px;height:5px;border-radius:1px;background:#E7DFCD}
+.wbars i:nth-child(2){height:6px}
+.wbars i:nth-child(3){height:7px}
+.wbars i:nth-child(4){height:8px}
+.wbars i:nth-child(5){height:9px}
+.wbars i.on{background:#EFB84C}
+.wmood{font-size:13px;line-height:1}
+.hcard .hval.bm{color:#2F7A6E;font-size:10.5px}
+.hsec{display:flex;flex-direction:column;gap:2px}
+.hsec .hlab2{font-size:9px;font-weight:800;letter-spacing:.3px;color:#A79B88;margin-top:2px}
+.hmeals{display:flex;flex-direction:column;gap:3px}
+.hmeal{display:flex;gap:3px;font-size:10px;line-height:1.35;color:var(--ink-soft);min-width:0}
+.hmeal b{flex:none;font-size:8.5px;font-weight:800;color:#5E7FA8;background:#EDF3FB;border-radius:3px;padding:0 3px;align-self:flex-start}
+.hmeal em{flex:none;font-style:normal;font-size:8.5px;font-weight:800;color:#9AAFC6;font-variant-numeric:tabular-nums}
+.hmeal span{min-width:0;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.hnote{margin-top:2px;font-size:10px;line-height:1.45;color:#6E8A45;background:#F8FCF2;border:1px dashed #DEEBD2;border-radius:6px;padding:3px 5px;white-space:pre-wrap;word-break:break-word}
+.hnone{font-size:10px;color:#C6BCAB}
+.hcol .wfoot-lite{font-size:9px;font-weight:800;color:#B3A897;text-align:right}
+
+/* 장부 모음집 */
+.week-pane .money-list{border:1px solid #E6EEDC;border-radius:8px;padding:5px 7px;background:#FFFEFB;min-height:70px;max-height:330px;overflow:auto}
+.week-pane .money-list .mrow{cursor:pointer}
+.week-pane .money-list .mrow:last-child{border-bottom:0}
+.mfoot{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:4px;border-top:1px solid #E6EEDC;padding-top:4px;font-size:9.5px;font-weight:800}
+.mfoot .exp{color:#A9504A}
+.mfoot .inc{color:#2F7F60}
+.wsum{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:12px}
+.wsum .sc{background:#fff;border:1px solid #E6EEDC;border-radius:11px;padding:9px 11px}
+.wsum .sc span{display:block;font-size:10.5px;font-weight:700;color:#8FA080;letter-spacing:.2px}
+.wsum .sc b{display:block;margin-top:2px;font-size:17px;font-weight:800;color:#4C7A46;font-variant-numeric:tabular-nums}
+.wsum .sc.exp b{color:#A9504A}
+.wsum .sc.inc b{color:#2F7F60}
+.wsum .sc.bal b{color:#5D4CA8}
+
+/* 여가 모음집 */
+.week-pane .lrow .wst{flex:none;width:14px;height:14px;border-radius:3.5px;border:1px dashed #D5C9B4;display:grid;place-items:center;font-size:9.5px;font-weight:800;color:#B9AF9F;background:#fff;line-height:1;margin-top:1px}
+.week-pane .lrow .wst.s1{border-style:solid;border-color:#A9DCC4;background:#EAF8F1;color:#1F7A57}
+.week-pane .lrow .wst.s2{border-style:solid;border-color:#F0D49A;background:#FDF5E4;color:#A97315}
+.week-pane .lrow .wst.s3{border-style:solid;border-color:#E7B7B3;background:#FBEDEC;color:#AE4A45}
+.week-pane .lrow .wst.s4{border-style:solid;border-color:#BCC8E4;background:#EEF2FA;color:#4E608F}
+.week-pane .lrow.done .wtxt{color:#9C9284}
+@media (max-width:720px){
+  .week-index{gap:3px;padding:0 3px;margin-top:9px}
+  .week-index .wi{flex:1 1 0;min-width:0;font-size:10.5px;padding:6px 3px 5px;gap:3px;letter-spacing:0}
+  .week-index .wi.on{padding-bottom:7px}
+  .week-index .wi i{width:5px;height:5px}
+  .wsum{grid-template-columns:1fr;gap:6px}
+  .week-pane .wcol{min-height:0}
+}
+@media (max-width:430px){
+  .week-index .wi{font-size:9.8px;padding:5px 2px 4px}
+  .week-index .wi i{display:none}
+}
+
 .wstats{margin-top:14px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:12px}
 .stat-cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
 .sc{background:#fff;border:1px solid var(--line);border-radius:11px;padding:9px 11px}
@@ -895,6 +985,15 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
   body[data-print="daily"] .bm{font-size:5.6pt;padding:0 1mm}
   .task .del,.c-del{display:none !important}
   .wstats{display:none !important}
+  .week-pane{padding-top:0}
+  .week-pane .wcol,
+  .week-pane[data-wtab="tasks"] .wcol,
+  .week-pane[data-wtab="health"] .wcol,
+  .week-pane[data-wtab="money"] .wcol,
+  .week-pane[data-wtab="leisure"] .wcol{min-height:0}
+  .week-pane[data-wtab="tasks"] .wtasks{min-height:0;max-height:none}
+  .hcard,.week-pane .money-list{border-color:#DDD;max-height:none}
+  .hnote{background:#fff}
   .week-scroll{overflow:visible}
   .week-cols{grid-template-columns:repeat(7,1fr);gap:1.6mm}
   .wcol{border-color:#DDD;padding:1mm;gap:1mm;border-radius:2mm;break-inside:avoid}
@@ -1192,18 +1291,51 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
       </div>
     </div>
 
-    <div class="board-tools week-tools no-print" aria-label="주간 형광펜 팔레트">
-      <span class="lab">형광펜</span>
-      <div class="pal-in" id="paletteItemsWeek"></div>
+    <div class="week-index no-print" id="weekIndex" role="tablist" aria-label="주간 모음집">
+      <button class="wi" type="button" role="tab" data-wtab="tasks" aria-selected="true" style="--t:#FDF0B8;--ti:#8A6A12"><i></i>할 일</button>
+      <button class="wi" type="button" role="tab" data-wtab="health" aria-selected="false" style="--t:#CFE4FB;--ti:#3E6A9C"><i></i>건강</button>
+      <button class="wi" type="button" role="tab" data-wtab="time" aria-selected="false" style="--t:#DDD6F8;--ti:#5D4CA8"><i></i>타임테이블</button>
+      <button class="wi" type="button" role="tab" data-wtab="money" aria-selected="false" style="--t:#FBDFCB;--ti:#A9603A"><i></i>장부</button>
+      <button class="wi" type="button" role="tab" data-wtab="leisure" aria-selected="false" style="--t:#CFF0EA;--ti:#2F7A6E"><i></i>여가시간</button>
     </div>
 
-    <div class="week-scroll">
-      <div class="week-cols" id="weekCols"></div>
+    <div class="week-pane" data-wtab="tasks" id="weekPaneTasks">
+      <div class="week-scroll">
+        <div class="week-cols" id="weekCols"></div>
+      </div>
     </div>
 
-    <div class="wstats" id="weekStats">
-      <div class="stat-cards" id="statCards"></div>
-      <div class="bars" id="statBars"></div>
+    <div class="week-pane" data-wtab="health" id="weekPaneHealth" hidden>
+      <div class="week-scroll">
+        <div class="week-cols card-cols" id="weekHealth"></div>
+      </div>
+    </div>
+
+    <div class="week-pane" data-wtab="time" id="weekPaneTime" hidden>
+      <div class="board-tools week-tools no-print" aria-label="주간 형광펜 팔레트">
+        <span class="lab">형광펜</span>
+        <div class="pal-in" id="paletteItemsWeek"></div>
+      </div>
+      <div class="week-scroll">
+        <div class="week-cols" id="weekTime"></div>
+      </div>
+      <div class="wstats" id="weekStats">
+        <div class="stat-cards" id="statCards"></div>
+        <div class="bars" id="statBars"></div>
+      </div>
+    </div>
+
+    <div class="week-pane" data-wtab="money" id="weekPaneMoney" hidden>
+      <div class="week-scroll">
+        <div class="week-cols card-cols" id="weekMoney"></div>
+      </div>
+      <div class="wsum" id="weekMoneySum"></div>
+    </div>
+
+    <div class="week-pane" data-wtab="leisure" id="weekPaneLeisure" hidden>
+      <div class="week-scroll">
+        <div class="week-cols card-cols" id="weekLeisure"></div>
+      </div>
     </div>
   </section>
 
@@ -2418,11 +2550,53 @@ function renderWeek(){
   $("#weekReview").value=w.review||"";
   $$("#stars button").forEach(function(b){ b.classList.toggle("on", parseInt(b.dataset.v,10)<=w.rating); });
 
-  var today=todayISO();
-  var html="";
+  syncWeekTabs();
+  renderWeekTab();
+}
+
+/* ---------- 주간 인덱스 탭 (할 일 · 건강 · 타임테이블 · 장부 · 여가시간) ---------- */
+var WEEK_TABS=["tasks","health","time","money","leisure"];
+var weekTab="tasks";
+var weekScrollPos={};
+
+function weekHeadHTML(date){
+  var dt=parseISO(date);
+  return '<button class="whead" type="button" data-date="'+date+'" title="'+(dt.getMonth()+1)+"/"+dt.getDate()+'('+DOW_KO[dt.getDay()]+') 일간으로 보기">'
+       +   '<b>'+(dt.getMonth()+1)+"/"+dt.getDate()+'</b><span>'+DOW_KO[dt.getDay()]+'</span>'
+       + '</button>';
+}
+function syncWeekTabs(){
+  $$("#weekIndex .wi").forEach(function(b){
+    var on=(b.dataset.wtab===weekTab);
+    b.classList.toggle("on", on);
+    b.setAttribute("aria-selected", on?"true":"false");
+    b.tabIndex = on?0:-1;
+  });
+  $$(".week-pane").forEach(function(p){ p.hidden=(p.dataset.wtab!==weekTab); });
+}
+function setWeekTab(k){
+  if(WEEK_TABS.indexOf(k)<0) k="tasks";
+  var curSc=$('.week-pane[data-wtab="'+weekTab+'"] .week-scroll');
+  if(curSc) weekScrollPos[weekTab]=curSc.scrollLeft;
+  weekTab=k;
+  syncWeekTabs();
+  renderWeekTab();
+  var nextSc=$('.week-pane[data-wtab="'+k+'"] .week-scroll');
+  if(nextSc) nextSc.scrollLeft=weekScrollPos[k]||0;
+}
+function renderWeekTab(){
+  if(weekTab==="health") renderWeekHealth();
+  else if(weekTab==="time") renderWeekTime();
+  else if(weekTab==="money") renderWeekMoney();
+  else if(weekTab==="leisure") renderWeekLeisure();
+  else renderWeekTasks();
+}
+
+/* 1) 할 일 — 드래그 앤 드롭으로 날짜 이동 */
+function renderWeekTasks(){
+  var dates=weekDates(), today=todayISO(), html="";
   dates.forEach(function(date){
     var d=getDay(date);
-    var dt=parseISO(date);
     var tasks="";
     // 주간 목록에는 일정(home)·작업(work·미지정)·자기개발(study)만 — 여가 시간(leisure)은 표시하지 않는다.
     // 표시 순서는 일정 → 작업 → 자기개발, 같은 분류 안에서는 입력 순서 유지. 실행 여부(체크) 표시는 그대로 둔다.
@@ -2430,8 +2604,6 @@ function renderWeek(){
     var weekTasks=d.tasks.filter(function(t){ return t.list!=="leisure"; }).map(function(t,i){ return {t:t, i:i}; }).sort(function(a,b){
       return (weekOrder(a.t)-weekOrder(b.t)) || (a.i-b.i);
     }).map(function(x){ return x.t; });
-    // 1단 카드 안에서는 개수 제한 없이 전부 표시하고, 길어지면 할 일 칸만 안에서 스크롤한다.
-    // 표시는 실행 여부 버튼 + 분류 색 점 + 제목만 (분류·플랫폼 글자 태그는 넣지 않는다)
     weekTasks.forEach(function(t){
       var lc=(t.list==="home")?"#EFA96A":(t.list==="study"?"#EF9FB4":"#EBCB5A");
       tasks+='<div class="wtask'+(t.st===1?" done":"")+'" data-date="'+date+'" data-id="'+t.id+'">'
@@ -2439,26 +2611,137 @@ function renderWeek(){
            +   '<span class="wtxt"><i class="wdot" style="background:'+lc+'"></i>'+esc(t.text||"할 일")+'</span>'
            + '</div>';
     });
-    if(!weekTasks.length){
-      tasks+='<div class="wt-empty" data-date="'+date+'">할 일 없음</div>';
-    }
+    if(!weekTasks.length) tasks+='<div class="wt-empty" data-date="'+date+'">할 일 없음</div>';
     var addList=weekAddList[date]||"work";
     html+='<div class="wcol'+(date===today?" today":"")+'" data-date="'+date+'">'
-        +   '<div class="whead"><b>'+(dt.getMonth()+1)+"/"+dt.getDate()+'</b><span>'+DOW_KO[dt.getDay()]+'</span></div>'
+        +   weekHeadHTML(date)
         +   '<div class="wtasks">'+tasks+'</div>'
         +   '<div class="wadd-row">'
         +     '<button class="wadd-cat" type="button" data-date="'+date+'" data-list="'+addList+'" style="--wc:'+WEEK_LIST_COLOR[addList]+'" title="분류: '+WEEK_LIST_NAME[addList]+' · 누르면 바뀜" aria-label="할 일 분류 선택: '+WEEK_LIST_NAME[addList]+'">'+WEEK_LIST_TAG[addList]+'</button>'
         +     '<input class="wadd" data-date="'+date+'" placeholder="＋ 할 일" maxlength="120" aria-label="'+date+' 할 일 추가">'
         +   '</div>'
+        + '</div>';
+  });
+  $("#weekCols").innerHTML=html;
+}
+
+/* 2) 건강 — 몸무게 · 식단 · 물 · 에너지 · 기분 · 약 · 장건강 · 한 줄 */
+function renderWeekHealth(){
+  var dates=weekDates(), today=todayISO(), html="";
+  dates.forEach(function(date){
+    var d=getDay(date), h=getHealth(date), em=getEmotion(date), bm=bmStateOf(date);
+    var meals=(h.meals||[]).filter(function(m){ return (m.x&&String(m.x).trim())||m.t; });
+    var medList=S.meds.filter(function(m){ return h.meds && h.meds[m.id]; });
+    var mood=null; MOODS.forEach(function(m){ if(m.v===em.mood) mood=m; });
+    var bmLabel=""; BM_STATES.forEach(function(s){ if(s.k===bm) bmLabel=s.label; });
+    var mealHTML = meals.length
+      ? meals.map(function(m){
+          var x=String(m.x||"").split("\n").filter(function(s){ return s.trim(); }).join(" · ");
+          return '<div class="hmeal">'+(m.s?'<b>'+esc(m.s)+'</b>':"")+(m.t?'<em>'+esc(m.t)+'</em>':"")+'<span>'+esc(x||"기록")+'</span></div>';
+        }).join("")
+      : '<div class="hnone">식단 기록 없음</div>';
+    var body='<div class="hrow"><span class="hlab">몸무게</span><b class="hval'+(h.weight?'':' none')+'">'+(h.weight?esc(h.weight)+'<i>kg</i>':'–')+'</b></div>'
+      + '<div class="hrow"><span class="hlab">물</span><span class="wdots">'+weekDots(h.water,4)+'</span><span class="hval" style="font-size:9.5px">'+h.water+'/4</span></div>'
+      + '<div class="hrow"><span class="hlab">에너지</span><span class="wbars">'+weekBars(h.energy,5)+'</span>'+(!h.energy?'<span class="hval none" style="font-size:9.5px">–</span>':'')+'</div>'
+      + '<div class="hrow"><span class="hlab">기분</span><span class="wmood">'+(mood?mood.e:'–')+'</span>'+(mood?'<span class="hval none" style="font-size:9px">'+esc(mood.w)+'</span>':'')+'</div>'
+      + '<div class="hrow"><span class="hlab">약</span><span class="hmeds">'+(medList.length?medList.map(function(m){ return '<b>'+esc(m.name)+'</b>'; }).join(''):'<span class="none">–</span>')+'</span></div>'
+      + '<div class="hrow"><span class="hlab">장건강</span><span class="hval bm">'+(bmLabel||'–')+'</span></div>';
+    html+='<div class="wcol hcol'+(date===today?" today":"")+'" data-date="'+date+'">'
+        +   weekHeadHTML(date)
+        +   '<div class="hsec"><span class="hlab2">식단</span><div class="hmeals">'+mealHTML+'</div></div>'
+        +   '<div class="hcard">'+body+'</div>'
+        +   '<div class="hnote">'+(d.comment?esc(d.comment):'<span class="hnone">한 줄 컨디션 없음</span>')+'</div>'
+        + '</div>';
+  });
+  $("#weekHealth").innerHTML=html;
+}
+function weekDots(v,max){
+  var s="";
+  for(var i=1;i<=max;i++) s+='<i class="'+(v>=i?"on":"")+'"></i>';
+  return s;
+}
+function weekBars(v,max){
+  var s="";
+  for(var i=1;i<=max;i++) s+='<i class="'+(v>=i?"on":"")+'"></i>';
+  return s;
+}
+
+/* 3) 타임테이블 — 형광펜 7열 + 주간 통계 */
+function renderWeekTime(){
+  var dates=weekDates(), today=todayISO(), html="";
+  dates.forEach(function(date){
+    html+='<div class="wcol'+(date===today?" today":"")+'" data-date="'+date+'">'
+        +   weekHeadHTML(date)
         +   ttHTML(date,true)
         +   '<div class="wfoot zero"><b>0</b><i>H</i> <b>00</b><i>M</i></div>'
         + '</div>';
   });
-  var cols=$("#weekCols");
+  var cols=$("#weekTime");
   cols.innerHTML=html;
   $$(".tt-grid", cols).forEach(function(g){ bindGrid(g); renderBlocksFor(g.dataset.date); });
   refreshSums();
   renderNowLine();
+}
+
+/* 4) 장부 — 7열 수입·지출 + 주간 합계 */
+function renderWeekMoney(){
+  var dates=weekDates(), today=todayISO(), all=entries(), html="";
+  var wExp=0, wInc=0;
+  dates.forEach(function(date){
+    var list=all.filter(function(e){ return e.date===date; });
+    var exp=0, inc=0, rows="";
+    list.forEach(function(e){
+      var isInc=(e.type==="income");
+      if(isInc) inc+=e.amount; else exp+=e.amount;
+      var c=lcat(e.cat)||{name:"기타", color:"#DAD8D2"};
+      rows+='<div class="mrow'+(isInc?" inc":"")+'">'
+        +   '<div class="mline">'
+        +     (e.time?'<span class="mtm">'+esc(e.time)+'</span>':"")
+        +     '<span class="mm">'+esc(e.memo||lcatName(e.cat)||"내역")+'</span>'
+        +     '<span class="ma'+(isInc?" inc":"")+'">'+(isInc?"+":"-")+fmtNum(e.amount)+'</span>'
+        +   '</div>'
+        +   '<div class="msub"><span class="mt'+(isInc?"":" exp")+'">'+(isInc?"수입":"지출")+'</span>'
+        +     ((isInc && c.name==="수입") ? "" : '<i style="--c:'+c.color+'"></i>'+esc(c.name))+'</div>'
+        +   (e.detail?'<div class="mdet">'+esc(e.detail)+'</div>':"")
+        +   '</div>';
+    });
+    if(!rows) rows='<div class="hnone" style="padding:6px 0">기록 없음</div>';
+    wExp+=exp; wInc+=inc;
+    html+='<div class="wcol'+(date===today?" today":"")+'" data-date="'+date+'">'
+        +   weekHeadHTML(date)
+        +   '<div class="money-list">'+rows+'</div>'
+        +   ((exp||inc) ? '<div class="mfoot"><span class="exp">지출 '+fmtNum(exp)+'</span>'+(inc?'<span class="inc">수입 '+fmtNum(inc)+'</span>':"")+'</div>' : '')
+        + '</div>';
+  });
+  $("#weekMoney").innerHTML=html;
+  var bal=wInc-wExp;
+  $("#weekMoneySum").innerHTML=
+      '<div class="sc exp"><span>이번 주 총 지출</span><b>'+fmtNum(wExp)+'원</b></div>'
+    + '<div class="sc inc"><span>이번 주 총 수입</span><b>'+fmtNum(wInc)+'원</b></div>'
+    + '<div class="sc bal"><span>잔액 (수입 − 지출)</span><b>'+(bal<0?"−":"")+fmtNum(Math.abs(bal))+'원</b></div>';
+}
+
+/* 5) 여가시간 — 여가 카드 목록과 상태 */
+function renderWeekLeisure(){
+  var dates=weekDates(), today=todayISO(), html="";
+  dates.forEach(function(date){
+    var d=getDay(date);
+    var list=(d.tasks||[]).filter(function(t){ return t.list==="leisure"; });
+    var rows = list.length
+      ? list.map(function(t){
+          return '<div class="wtask lrow'+(t.st===1?" done":"")+'" data-date="'+date+'" data-id="'+t.id+'">'
+               +   '<span class="wst s'+t.st+'" title="'+ST_LABEL[t.st]+'">'+ST_SYM[t.st]+'</span>'
+               +   '<span class="wtxt">'+esc(t.text||"여가")+'</span>'
+               + '</div>';
+        }).join("")
+      : '<div class="wt-empty" data-date="'+date+'">여가 카드 없음</div>';
+    html+='<div class="wcol'+(date===today?" today":"")+'" data-date="'+date+'">'
+        +   weekHeadHTML(date)
+        +   '<div class="wtasks">'+rows+'</div>'
+        +   '<div class="wfoot-lite" style="font-size:9px;font-weight:800;color:#B3A897;text-align:right">'+list.length+'개</div>'
+        + '</div>';
+  });
+  $("#weekLeisure").innerHTML=html;
 }
 
 function renderWeekStats(){
@@ -3437,9 +3720,18 @@ function wdndDown(e){
   try{ card.setPointerCapture(e.pointerId); }catch(err){}
   clearTimeout(WDND.timer); WDND.timer=null;
   if(WDND.down.type!=="mouse"){
+    var sc0=$(".week-scroll");
+    var base={sl:sc0?sc0.scrollLeft:0, y:window.scrollY, tl:0};
+    var box=card.closest(".wtasks");
+    if(box) base.tl=box.scrollTop;
     WDND.timer=setTimeout(function(){
       WDND.timer=null;
       if(!WDND.armed || WDND.active || !WDND.down) return;
+      // 롱프레스 중에 화면이 스크롤됐다면 드래그가 아니라 스크롤 의도로 본다
+      var sc=$(".week-scroll");
+      var box2=WDND.down.el.closest(".wtasks");
+      if((sc && Math.abs(sc.scrollLeft-base.sl)>2) || Math.abs(window.scrollY-base.y)>2 ||
+         (box2 && Math.abs(box2.scrollTop-base.tl)>2)){ wdndReset(); return; }
       wdndStart(WDND.down.x, WDND.down.y);
     }, WDND_CFG.pressMs);
   }
@@ -3872,6 +4164,32 @@ function bindEvents(){
   $("#wNext").addEventListener("click", function(){ curWeek=addDays(curWeek,7); renderWeek(); });
   $("#wToday").addEventListener("click", function(){ curWeek=mondayOf(todayISO()); renderWeek(); });
 
+  // 주간 인덱스 탭 (할 일 · 건강 · 타임테이블 · 장부 · 여가시간)
+  var wIndex=$("#weekIndex");
+  if(wIndex){
+    wIndex.addEventListener("click", function(e){
+      var b=e.target.closest(".wi");
+      if(!b) return;
+      setWeekTab(b.dataset.wtab);
+    });
+    wIndex.addEventListener("keydown", function(e){
+      if(e.key!=="ArrowLeft" && e.key!=="ArrowRight") return;
+      var list=$$(".wi", wIndex), i=list.indexOf(document.activeElement);
+      if(i<0) return;
+      e.preventDefault();
+      var n=list[(i+(e.key==="ArrowRight"?1:list.length-1))%list.length];
+      setWeekTab(n.dataset.wtab); n.focus();
+    });
+  }
+  // 요일 헤더 · 모음집 열 클릭 → 그 날 일간 화면
+  ["#weekHealth","#weekMoney","#weekLeisure"].forEach(function(sel){
+    var box=$(sel); if(!box) return;
+    box.addEventListener("click", function(e){
+      var col=e.target.closest(".wcol[data-date]");
+      if(col) openDay(col.dataset.date);
+    });
+  });
+
   var goalTimer=null;
   $("#weekGoal").addEventListener("input", function(e){
     getWeek(curWeek).goal=e.target.value;
@@ -3927,6 +4245,8 @@ function bindEvents(){
       if(inp) inp.focus();
       return;
     }
+    var head=e.target.closest(".whead[data-date]");
+    if(head){ e.preventDefault(); openDay(head.dataset.date); return; }
     var task=e.target.closest(".wtask, .wt-empty");
     if(task && task.dataset.date){ openDay(task.dataset.date); }
   });
