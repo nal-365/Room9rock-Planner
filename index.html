@@ -460,6 +460,13 @@ button.mini:hover{background:#F7F3EA}
 .wadd{width:100%;border:1px dashed var(--line);border-radius:6px;background:transparent;font-size:11px;padding:3px 4px;outline:none;color:var(--ink-mute)}
 .wadd::placeholder{color:#C9BFAD}
 .wadd:focus{border-color:var(--accent);background:#FCFAFF}
+/* 주간 카드 빠른 추가: 분류 선택 칩 + 입력칸 (좁은 열에서도 넘치지 않게) */
+.wadd-row{display:flex;align-items:center;gap:3px;min-width:0}
+.wadd-row .wadd{flex:1 1 auto;min-width:0;width:auto}
+.wadd-cat{flex:none;width:16px;height:19px;padding:0;border-radius:4px;border:1px solid rgba(0,0,0,.07);background:var(--wc,#EBCB5A);color:#4A4128;font-family:inherit;font-size:9px;font-weight:800;line-height:1;letter-spacing:0;display:grid;place-items:center;cursor:pointer;touch-action:manipulation;overflow:hidden}
+.wadd-cat:hover{filter:brightness(.97)}
+.wadd-cat:active{transform:scale(.94)}
+.wadd-cat:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
 .wfoot{display:flex;align-items:baseline;justify-content:flex-end;gap:1px;border-top:1px solid var(--line);padding-top:4px;color:var(--ink-soft);font-variant-numeric:tabular-nums}
 .wfoot b{font-size:13px;font-weight:800}
 .wfoot i{font-style:normal;font-size:8.5px;font-weight:800;opacity:.6;margin:0 1px 0 1px}
@@ -807,7 +814,7 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
   .entry-form,.dlg,.toast{display:none !important}
   html,body{background:#fff !important}
   body{-webkit-print-color-adjust:exact;print-color-adjust:exact}
-  .topbar,.palette,.board-tools,.week-tools,.toast,.dlg,.add-task,.task .del,.wadd,.no-print,.seg,#printBtn,.nav,button.mini,.dday-chip,.tt-grid.empty::after{display:none !important}
+  .topbar,.palette,.board-tools,.week-tools,.toast,.dlg,.add-task,.task .del,.wadd,.wadd-row,.no-print,.seg,#printBtn,.nav,button.mini,.dday-chip,.tt-grid.empty::after{display:none !important}
   main{padding:0;max-width:none}
   .view[hidden]{display:none !important}
   /* 일간 7열 보드 인쇄 */
@@ -1387,6 +1394,12 @@ var FB_KEYS = ["work","study","home","money","leisure"];   /* 일간 열 하단 
 var CAT_PALETTE = ["#B9E3CE","#FBE49B","#FAC9D6","#FBC79C","#CFE8A6","#B8DDF2","#CBB9EF","#DAD8D2","#C7DDF7","#F3B9A8","#E3C7F2","#CBD8CA"];
 var ST_SYM  = ["", "○", "△", "×", "→"];
 var ST_LABEL= ["미완료", "완료", "일부 완료", "못함", "미룸"];
+/* 주간 카드 빠른 추가의 분류 선택 (작업 → 일정 → 자기개발 순환) */
+var WEEK_ADD_LISTS = ["work", "home", "study"];
+var WEEK_LIST_NAME = {work:"작업", home:"일정", study:"자기개발"};
+var WEEK_LIST_TAG  = {work:"작", home:"일", study:"자"};
+var WEEK_LIST_COLOR= {work:"#EBCB5A", home:"#EFA96A", study:"#EF9FB4"};
+var weekAddList = {};   /* 날짜별로 마지막에 고른 분류 기억 */
 var DOW_KO = ["일","월","화","수","목","금","토"];
 var KEY = "bgs.workroom.planner.v1";
 var BAK = "bgs.workroom.planner.v1.bak";
@@ -2421,10 +2434,14 @@ function renderWeek(){
     if(!weekTasks.length){
       tasks+='<div class="wt-empty" data-date="'+date+'">할 일 없음</div>';
     }
+    var addList=weekAddList[date]||"work";
     html+='<div class="wcol'+(date===today?" today":"")+'" data-date="'+date+'">'
         +   '<div class="whead"><b>'+(dt.getMonth()+1)+"/"+dt.getDate()+'</b><span>'+DOW_KO[dt.getDay()]+'</span></div>'
         +   '<div class="wtasks">'+tasks+'</div>'
-        +   '<input class="wadd" data-date="'+date+'" placeholder="＋ 할 일" maxlength="120" aria-label="'+date+' 할 일 추가">'
+        +   '<div class="wadd-row">'
+        +     '<button class="wadd-cat" type="button" data-date="'+date+'" data-list="'+addList+'" style="--wc:'+WEEK_LIST_COLOR[addList]+'" title="분류: '+WEEK_LIST_NAME[addList]+' · 누르면 바뀜" aria-label="할 일 분류 선택: '+WEEK_LIST_NAME[addList]+'">'+WEEK_LIST_TAG[addList]+'</button>'
+        +     '<input class="wadd" data-date="'+date+'" placeholder="＋ 할 일" maxlength="120" aria-label="'+date+' 할 일 추가">'
+        +   '</div>'
         +   ttHTML(date,true)
         +   '<div class="wfoot zero"><b>0</b><i>H</i> <b>00</b><i>M</i></div>'
         + '</div>';
@@ -2545,21 +2562,9 @@ function renderMonth(){
     var cell='<div class="'+cls+'" data-date="'+date+'" role="gridcell" tabindex="0" aria-label="'+monthLabelText(curMon)+" "+d+'일 일간 열기">';
     cell+='<div class="mcell-head"><span class="dn">'+d+'</span>'
         + (sm.mood?'<span class="mo" aria-hidden="true">'+moodEmoji(sm.mood)+'</span>':'<span class="mo none" aria-hidden="true">·</span>')+'</div>';
-    cell += sm.total
-      ? '<span class="tdb" title="집중 '+hmText(sm.focus)+'">'+hmText(sm.total)+'</span>'
-      : '';
-    var keys=Object.keys(sm.by).filter(function(c){ return sm.by[c]>0 && cat(c); })
-      .sort(function(a,b){ return sm.by[b]-sm.by[a]; });
-    if(keys.length){
-      var shown=keys.slice(0,4), rest=0;
-      keys.slice(4).forEach(function(c){ rest+=sm.by[c]; });
-      cell+='<span class="mbar" aria-hidden="true">';
-      shown.forEach(function(c){ cell+='<i style="flex:'+sm.by[c]+';--c:'+catColor(c)+'"></i>'; });
-      if(rest) cell+='<i style="flex:'+rest+';--c:#DFD8CA"></i>';
-      cell+='</span>';
-    }
     /* 할 일 — 일정(home)과 작업(work·목록 미지정)을 모두 표시한다.
-       순서는 주간과 같게 일정 → 작업, 같은 무리 안에서는 미완료 → 완료. */
+       순서는 주간과 같게 일정 → 작업, 같은 무리 안에서는 미완료 → 완료.
+       칸 안 배치는 날짜 줄 → 일정 → 작업 → 시간 총합·컬러바 → 장부 순이다. */
     var mHome=[], mWork=[];
     sm.tasks.forEach(function(t){
       var k=(t.list||"work");
@@ -2593,6 +2598,18 @@ function renderMonth(){
             + '<span class="one">'+esc(shownTxt)+'</span>'
             + (gRest>0?'<span class="more" aria-label="'+esc(g.label+" 외 "+gRest+"개 더")+'">+'+gRest+'</span>':'')+'</span>';
       });
+    }
+    if(sm.total)
+      cell+='<span class="tdb" title="집중 '+hmText(sm.focus)+'">'+hmText(sm.total)+'</span>';
+    var keys=Object.keys(sm.by).filter(function(c){ return sm.by[c]>0 && cat(c); })
+      .sort(function(a,b){ return sm.by[b]-sm.by[a]; });
+    if(keys.length){
+      var shownBar=keys.slice(0,4), rest=0;
+      keys.slice(4).forEach(function(c){ rest+=sm.by[c]; });
+      cell+='<span class="mbar" aria-hidden="true">';
+      shownBar.forEach(function(c){ cell+='<i style="flex:'+sm.by[c]+';--c:'+catColor(c)+'"></i>'; });
+      if(rest) cell+='<i style="flex:'+rest+';--c:#DFD8CA"></i>';
+      cell+='</span>';
     }
     if(sm.spend>0) cell+='<span class="mone" title="지출 '+fmtWon(sm.spend)+'">'+shortWon(sm.spend)+'</span>';
     cell+='</div>';
@@ -3684,6 +3701,23 @@ function bindEvents(){
       renderWeek();
       return;
     }
+    // 빠른 추가의 분류 칩: 작업 → 일정 → 자기개발 순환 (입력 중인 글자는 그대로 두고 칩만 바꾼다)
+    var chip=e.target.closest(".wadd-cat");
+    if(chip){
+      e.preventDefault(); e.stopPropagation();
+      var date=chip.dataset.date;
+      var cur=chip.dataset.list||"work";
+      var nx=WEEK_ADD_LISTS[(WEEK_ADD_LISTS.indexOf(cur)+1)%WEEK_ADD_LISTS.length];
+      weekAddList[date]=nx;
+      chip.dataset.list=nx;
+      chip.style.setProperty("--wc", WEEK_LIST_COLOR[nx]);
+      chip.textContent=WEEK_LIST_TAG[nx];
+      chip.title="분류: "+WEEK_LIST_NAME[nx]+" · 누르면 바뀜";
+      chip.setAttribute("aria-label", "할 일 분류 선택: "+WEEK_LIST_NAME[nx]);
+      var inp=chip.parentNode.querySelector(".wadd");
+      if(inp) inp.focus();
+      return;
+    }
     var task=e.target.closest(".wtask, .wt-empty");
     if(task && task.dataset.date){ openDay(task.dataset.date); }
   });
@@ -3691,8 +3725,8 @@ function bindEvents(){
     if(e.target.classList && e.target.classList.contains("wadd") && e.key==="Enter"){
       var v=e.target.value.trim();
       if(!v) return;
-      addTaskTo(e.target.dataset.date, v, null);
       var date=e.target.dataset.date;
+      addTaskTo(date, v, null, weekAddList[date]||"work");
       renderWeek();
       scheduleSave();
       var again=$('.wadd[data-date="'+date+'"]');
