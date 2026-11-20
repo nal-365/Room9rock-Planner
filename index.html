@@ -254,9 +254,7 @@ button.mini:hover{background:#F7F3EA}
 .mrow:hover .mx{opacity:1}
 .mrow .msub{display:flex;align-items:center;gap:4px;font-size:9.5px;color:#8FA080;font-weight:700;margin-top:1px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .mrow .msub i{width:7px;height:7px;border-radius:2px;background:var(--c,#DAD8D2);flex:none}
-.mrow .mdet{margin-top:2px;font-size:10px;line-height:1.5;color:#6E7F60;white-space:pre-wrap;word-break:break-word;-webkit-line-clamp:2;display:-webkit-box;-webkit-box-orient:vertical;overflow:hidden}
-.mrow.open .mdet{-webkit-line-clamp:unset;display:block}
-.mrow .mexp{border:0;background:transparent;color:#7E8F6C;font-size:9.5px;font-weight:800;padding:1px 0 0;cursor:pointer;text-align:left;text-decoration:underline;text-underline-offset:2px}
+.mrow .mdet{margin-top:2px;font-size:10px;line-height:1.5;color:#6E7F60;white-space:pre-wrap;word-break:break-word}
 .money-add{display:grid;grid-template-columns:minmax(0,1fr);gap:3px;margin-top:5px;min-width:0}
 .money-add select,.money-add input,.money-add textarea{border:1px solid #DCE7CF;border-radius:6px;padding:3px 5px;font-size:11px;background:#FCFEF9;outline:none;min-width:0;max-width:100%;color:var(--ink);font-family:inherit}
 .money-add select:focus,.money-add input:focus,.money-add textarea:focus{border-color:#9DBE7A}
@@ -581,9 +579,7 @@ button.mini:hover{background:#F7F3EA}
 .lt-row.lt-headrow span:nth-child(4){flex:1 1 auto}
 .lt-row.lt-headrow:hover{background:transparent}
 .lt-top{display:flex;align-items:center;gap:6px;min-width:0}
-.lt-detail{margin-top:4px;padding-left:1px;font-size:11.5px;line-height:1.55;color:var(--ink-soft);white-space:pre-wrap;word-break:break-word;-webkit-line-clamp:2;display:-webkit-box;-webkit-box-orient:vertical;overflow:hidden}
-.lt-row.open .lt-detail{-webkit-line-clamp:unset;display:block}
-.lt-more{border:0;background:transparent;color:var(--accent-deep);font-size:10px;font-weight:800;padding:2px 0 0;cursor:pointer;text-decoration:underline;text-underline-offset:2px}
+.lt-detail{margin-top:4px;padding-left:1px;font-size:11.5px;line-height:1.55;color:var(--ink-soft);white-space:pre-wrap;word-break:break-word}
 .c-meta{display:flex;align-items:center;gap:6px;flex:0 1 auto;min-width:0}
 .c-time{color:#8B7BD8;font-weight:800;font-size:11px;font-variant-numeric:tabular-nums;white-space:nowrap}
 .c-date{color:var(--ink-soft);font-variant-numeric:tabular-nums;white-space:nowrap;font-size:11.5px}
@@ -819,7 +815,6 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
   .lt-row{display:block;font-size:8pt;padding:1.4mm 0;border-bottom:1px solid #EEE}
   .lt-row.lt-headrow{font-size:6.5pt;padding-bottom:1.2mm}
   .lt-detail{font-size:7pt;margin-top:1mm}
-  .lt-more{display:none}
   .c-del{display:none}
   .lc{padding:1mm 0}
   .lc-top{font-size:7.5pt}.lc-sub{font-size:6pt}
@@ -2316,8 +2311,7 @@ function renderMoney(){
   list.forEach(function(e){
     var c=lcat(e.cat)||{name:"기타", color:"#DAD8D2"};
     var det=String(e.detail||"");
-    var longDet=(det.split("\n").length>2 || det.length>60);
-    html+='<div class="mrow'+(longDet?" fold":"")+'" data-id="'+e.id+'">'
+    html+='<div class="mrow" data-id="'+e.id+'">'
       + '<div class="mline">'
       +   (e.time?'<span class="mtm">'+esc(e.time)+'</span>':"")
       +   '<span class="mm">'+esc(e.memo||lcatName(e.cat))+'</span>'
@@ -2326,7 +2320,6 @@ function renderMoney(){
       + '</div>'
       + '<div class="msub"><i style="--c:'+c.color+'"></i>'+esc(c.name)+"</div>"
       + (det?'<div class="mdet">'+esc(det)+'</div>':"")
-      + (longDet?'<button class="mexp" data-mexp="1">상세 보기</button>':"")
       + '</div>';
   });
   if(!list.length) html='<div class="mrow" style="cursor:default;color:#C6BCAB;font-size:10px"><span class="mm">오늘 지출을 적어 보세요</span></div>';
@@ -2756,7 +2749,6 @@ function entryRowHTML(e){
   var dt=parseISO(e.date);
   var isInc=(e.type==="income");
   var det=String(e.detail||"");
-  var longDet=(det.split("\n").length>2 || det.length>90);
   return '<div class="lt-row" data-id="'+e.id+'" tabindex="0">'
     + '<div class="lt-top">'
     +   '<span class="c-meta">'
@@ -2770,7 +2762,6 @@ function entryRowHTML(e){
     +   '<button class="c-del" data-del="'+e.id+'" aria-label="삭제" title="삭제">×</button>'
     + '</div>'
     + (det?'<div class="lt-detail">'+esc(det)+'</div>':"")
-    + (longDet?'<button class="lt-more" data-lmore="1">더 보기</button>':"")
     + '</div>';
 }
 function renderLedger(){
@@ -3608,13 +3599,6 @@ function bindEvents(){
     }
     var mdel=e.target.closest("[data-mdel]");
     if(mdel){ e.stopPropagation(); deleteEntry(mdel.dataset.mdel); return; }
-    var mexp=e.target.closest("[data-mexp]");
-    if(mexp){
-      e.stopPropagation();
-      var mr=mexp.closest(".mrow");
-      if(mr){ mr.classList.toggle("open"); mexp.textContent=mr.classList.contains("open")?"접기":"상세 보기"; }
-      return;
-    }
     var mrow=e.target.closest(".mrow[data-id]");
     if(mrow){ openEntry(mrow.dataset.id); return; }
   });
@@ -3847,13 +3831,6 @@ function bindEvents(){
   $("#lRows").addEventListener("click", function(e){
     var d=e.target.closest("[data-del]");
     if(d){ e.stopPropagation(); deleteEntry(d.dataset.del); return; }
-    var lm=e.target.closest("[data-lmore]");
-    if(lm){
-      e.stopPropagation();
-      var lr=lm.closest(".lt-row");
-      if(lr){ lr.classList.toggle("open"); lm.textContent=lr.classList.contains("open")?"접기":"더 보기"; }
-      return;
-    }
     var row=e.target.closest(".lt-row");
     if(row && row.dataset.id) openEntry(row.dataset.id);
   });
