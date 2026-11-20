@@ -376,7 +376,9 @@ button.mini:hover{background:#F7F3EA}
 .ask-row .btn{flex:1;justify-content:center;padding:8px}
 
 /* ---------- 주간 ---------- */
-.week-top{display:flex;flex-wrap:wrap;gap:10px;align-items:stretch;margin-bottom:12px}
+.week-top{display:flex;flex-wrap:wrap;gap:10px;align-items:stretch;margin-bottom:10px}
+.week-tools{display:flex;align-items:center;gap:7px;padding:5px 10px;margin-bottom:10px;border:1px solid var(--line);border-radius:11px;background:linear-gradient(180deg,#FFFDF8,#FAF6EE);overflow-x:auto;-webkit-overflow-scrolling:touch;flex:none}
+.week-tools .lab{flex:none;font-size:9.5px;letter-spacing:.6px;color:#B3A897}
 .week-nav{display:flex;align-items:center;gap:6px;background:#fff;border:1px solid var(--line);border-radius:11px;padding:6px 9px}
 .week-range{text-align:center;line-height:1.15;min-width:150px}
 .week-range b{font-family:var(--serif);font-size:15px;letter-spacing:.3px;font-variant-numeric:tabular-nums}
@@ -759,7 +761,7 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
   .entry-form,.dlg,.toast{display:none !important}
   html,body{background:#fff !important}
   body{-webkit-print-color-adjust:exact;print-color-adjust:exact}
-  .topbar,.palette,.board-tools,.toast,.dlg,.add-task,.task .del,.wadd,.no-print,.seg,#printBtn,.nav,button.mini,.dday-chip,.tt-grid.empty::after{display:none !important}
+  .topbar,.palette,.board-tools,.week-tools,.toast,.dlg,.add-task,.task .del,.wadd,.no-print,.seg,#printBtn,.nav,button.mini,.dday-chip,.tt-grid.empty::after{display:none !important}
   main{padding:0;max-width:none}
   .view[hidden]{display:none !important}
   /* 일간 7열 보드 인쇄 */
@@ -1091,6 +1093,11 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
       </div>
     </div>
 
+    <div class="board-tools week-tools no-print" aria-label="주간 형광펜 팔레트">
+      <span class="lab">형광펜</span>
+      <div class="pal-in" id="paletteItemsWeek"></div>
+    </div>
+
     <div class="week-scroll">
       <div class="week-cols" id="weekCols"></div>
     </div>
@@ -1224,7 +1231,7 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
         <li><b>칠하기</b> — 위쪽 형광펜을 고르고 시간표를 위아래로 끌면 10분 단위로 칠해져요. 마우스·손가락·애플펜슬 모두 됩니다.</li>
         <li><b>지우개</b> — <b>지우개</b>를 고르고 문질러 지워요. 잘못 칠했으면 <kbd>Ctrl</kbd>+<kbd>Z</kbd>로 되돌리기.</li>
         <li><b>할 일</b> — 네모를 누를 때마다 <b>□ → ○ 완료 → △ 일부 → × 못함 → → 미룸</b> 순서로 바뀌어요.</li>
-        <li><b>주간</b> — 일간에서 칠하고 적은 내용이 그대로 모이고, 주간에서 고쳐도 일간에 바로 반영돼요.</li>
+        <li><b>주간</b> — 일간에서 칠하고 적은 내용이 그대로 모이고, 주간에서 고쳐도 일간에 바로 반영돼요. 주간 화면 위쪽 형광펜도 그대로 쓸 수 있어요.</li>
         <li><b>소비일지</b> — 날짜·시간·분류·구매내역·금액을 적고, 필요하면 <b>상세 구매내역</b>을 여러 줄로 남겨요. 월 합계와 <b>분류별 모아보기</b>가 자동으로 정리되고, 분류를 누르면 그 내역만 필터링됩니다.</li>
         <li><b>일간 열</b> — <b>건강</b>은 위에서부터 몸무게 → 오늘의 한 줄 → 식단(시간·시간대·내용, 여러 줄 가능)을 적고, 아래 트래커 한 칸에 물·약·에너지·장건강(안감·바나나·딱딱함·설사·혈변 중 하나, 누르면 선택·다시 누르면 해제)·기분(5단계)을 모아 둡니다. <b>작업·자기개발·일정·여가 시간</b>은 체크리스트로 적어요. 기분 이모지는 월간 달력에도 표시됩니다.</li>
         <li><b>월간</b> — 한 달을 달력 한 장으로 모아 봐요. 날짜를 누르면 그날 일간으로 바로 넘어가고, <b>이달의 목표</b>·<b>한 줄 리뷰</b>는 아래 통계와 함께 자동 저장돼요.</li>
@@ -1633,9 +1640,7 @@ function dayStats(date){
 /* ============================================================
    3. 형광펜 팔레트
    ============================================================ */
-function renderPalette(){
-  var box=$("#paletteItems");
-  if(!box) return;
+function paletteHTML(){
   var html="";
   S.cats.forEach(function(c){
     html += '<button class="cat'+(tool.type==="cat"&&tool.id===c.id?" on":"")+'" data-cat="'+c.id+'" title="'+esc(c.name)+' · 두 번 누르면 이름 바꾸기" style="--c:'+c.color+'">'
@@ -1648,7 +1653,14 @@ function renderPalette(){
   html += '<button class="cat addcat" data-addcat="1" title="형광펜 카테고리 관리">'
         +   '<span class="hl"></span><span class="nm">＋ 형광펜</span>'
         + '</button>';
-  box.innerHTML=html;
+  return html;
+}
+function renderPalette(){
+  var html=paletteHTML();
+  ["#paletteItems","#paletteItemsWeek"].forEach(function(sel){
+    var box=$(sel);
+    if(box) box.innerHTML=html;
+  });
 }
 function selectTool(el){
   if(el.dataset.erase){ tool={type:"erase"}; }
@@ -3082,35 +3094,8 @@ function bindEvents(){
   });
   $("#mAmt").addEventListener("keydown", function(e){ if(e.key==="Enter"){ e.preventDefault(); addMoneyQuick(); } });
 
-  // 팔레트
-  var pal=$("#paletteItems");
-  pal.addEventListener("click", function(e){
-    var el=e.target.closest(".cat");
-    if(!el) return;
-    if(el.__skipClick){ el.__skipClick=false; return; }
-    if(el.dataset.addcat){ openCatDlg("pal"); return; }
-    selectTool(el);
-  });
-  pal.addEventListener("dblclick", function(e){
-    var nm=e.target.closest(".nm");
-    if(!nm) return;
-    e.preventDefault();
-    startRename(nm);
-  });
-  // 길게 눌러 이름 바꾸기 (터치)
-  var pressTimer=null;
-  pal.addEventListener("pointerdown", function(e){
-    var nm=e.target.closest(".nm");
-    if(!nm) return;
-    clearTimeout(pressTimer);
-    pressTimer=setTimeout(function(){
-      nm.closest(".cat").__skipClick=true;
-      startRename(nm);
-    },600);
-  });
-  ["pointerup","pointercancel","pointerleave"].forEach(function(ev){
-    pal.addEventListener(ev, function(){ clearTimeout(pressTimer); });
-  });
+  // 팔레트 (일간·주간 공통)
+  ["#paletteItems","#paletteItemsWeek"].forEach(bindPalette);
 
   // 합계 모드
   $("#modeSeg").addEventListener("click", function(e){
@@ -3344,6 +3329,38 @@ function openDay(date){
   curDate=date;
   curWeek=mondayOf(date);
   setView("daily");
+}
+function bindPalette(sel){
+  var pal=$(sel);
+  if(!pal || pal.__b) return;
+  pal.__b=true;
+  pal.addEventListener("click", function(e){
+    var el=e.target.closest(".cat");
+    if(!el) return;
+    if(el.__skipClick){ el.__skipClick=false; return; }
+    if(el.dataset.addcat){ openCatDlg("pal"); return; }
+    selectTool(el);
+  });
+  pal.addEventListener("dblclick", function(e){
+    var nm=e.target.closest(".nm");
+    if(!nm) return;
+    e.preventDefault();
+    startRename(nm);
+  });
+  // 길게 눌러 이름 바꾸기 (터치)
+  var pressTimer=null;
+  pal.addEventListener("pointerdown", function(e){
+    var nm=e.target.closest(".nm");
+    if(!nm) return;
+    clearTimeout(pressTimer);
+    pressTimer=setTimeout(function(){
+      nm.closest(".cat").__skipClick=true;
+      startRename(nm);
+    },600);
+  });
+  ["pointerup","pointercancel","pointerleave"].forEach(function(ev){
+    pal.addEventListener(ev, function(){ clearTimeout(pressTimer); });
+  });
 }
 function setBarH(){
   var b=$(".topbar");
