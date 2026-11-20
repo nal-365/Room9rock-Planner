@@ -3309,6 +3309,13 @@ function bindEvents(){
     }
   });
 
+  /* 창 폭이 바뀌면 카드 상세 내역 높이를 다시 맞춰(좁은 화면에서 글자 크기가 커질 때) 잘리지 않게 한다 */
+  var cardGrowTimer=null;
+  window.addEventListener("resize", function(){
+    clearTimeout(cardGrowTimer);
+    cardGrowTimer=setTimeout(autoGrowCards, 120);
+  });
+
   $("#addMeal").addEventListener("click", function(){
     var h=getHealth(curDate);
     h.meals.push({t:"", s:"", x:""});
