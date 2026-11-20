@@ -524,6 +524,9 @@ html.wdnd-on,html.wdnd-on body{-webkit-user-select:none;user-select:none;cursor:
 .wbars i.on{background:#EFB84C}
 .wmood{font-size:13px;line-height:1}
 .hcard .hval.bm{color:#2F7A6E;font-size:10.5px}
+.hweight{display:flex;align-items:baseline;justify-content:space-between;gap:4px;background:#fff;border:1px solid #E4EBF6;border-radius:8px;padding:5px 7px}
+.hweight .hlab3{font-size:9px;font-weight:800;letter-spacing:.2px;color:#A79B88}
+.hweight .hval{font-size:13px}
 .hsec{display:flex;flex-direction:column;gap:2px}
 .hsec .hlab2{font-size:9px;font-weight:800;letter-spacing:.3px;color:#A79B88;margin-top:2px}
 .hmeals{display:flex;flex-direction:column;gap:3px}
@@ -2640,14 +2643,14 @@ function renderWeekHealth(){
           return '<div class="hmeal">'+(m.s?'<b>'+esc(m.s)+'</b>':"")+(m.t?'<em>'+esc(m.t)+'</em>':"")+'<span>'+esc(x||"기록")+'</span></div>';
         }).join("")
       : '<div class="hnone">식단 기록 없음</div>';
-    var body='<div class="hrow"><span class="hlab">몸무게</span><b class="hval'+(h.weight?'':' none')+'">'+(h.weight?esc(h.weight)+'<i>kg</i>':'–')+'</b></div>'
-      + '<div class="hrow"><span class="hlab">물</span><span class="wdots">'+weekDots(h.water,4)+'</span><span class="hval" style="font-size:9.5px">'+h.water+'/4</span></div>'
+    var body='<div class="hrow"><span class="hlab">물</span><span class="wdots">'+weekDots(h.water,4)+'</span><span class="hval'+(h.water?'':' none')+'" style="font-size:10.5px">'+(h.water?h.water+' / 4':'–')+'</span></div>'
       + '<div class="hrow"><span class="hlab">에너지</span><span class="wbars">'+weekBars(h.energy,5)+'</span>'+(!h.energy?'<span class="hval none" style="font-size:9.5px">–</span>':'')+'</div>'
       + '<div class="hrow"><span class="hlab">기분</span><span class="wmood">'+(mood?mood.e:'–')+'</span>'+(mood?'<span class="hval none" style="font-size:9px">'+esc(mood.w)+'</span>':'')+'</div>'
       + '<div class="hrow"><span class="hlab">약</span><span class="hmeds">'+(medList.length?medList.map(function(m){ return '<b>'+esc(m.name)+'</b>'; }).join(''):'<span class="none">–</span>')+'</span></div>'
       + '<div class="hrow"><span class="hlab">장건강</span><span class="hval bm">'+(bmLabel||'–')+'</span></div>';
     html+='<div class="wcol hcol'+(date===today?" today":"")+'" data-date="'+date+'">'
         +   weekHeadHTML(date)
+        +   '<div class="hweight"><span class="hlab3">공복 몸무게</span><b class="hval'+(h.weight?'':' none')+'">'+(h.weight?esc(h.weight)+'<i>kg</i>':'–')+'</b></div>'
         +   '<div class="hsec"><span class="hlab2">식단</span><div class="hmeals">'+mealHTML+'</div></div>'
         +   '<div class="hcard">'+body+'</div>'
         +   '<div class="hnote">'+(d.comment?esc(d.comment):'<span class="hnone">한 줄 컨디션 없음</span>')+'</div>'
