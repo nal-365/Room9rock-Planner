@@ -456,6 +456,14 @@ button.mini:hover{background:#F7F3EA}
 .wtask .wtxt{flex:1;min-width:0;overflow-wrap:anywhere}
 .wtask .wdot{display:inline-block;width:5px;height:5px;border-radius:1px;margin-right:4px;vertical-align:1px}
 .wtask.done .wtxt{color:#9C9284}
+/* 주간 할 일 드래그 앤 드롭 — 마우스·터치·펜슬 공통 */
+.wtask{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent}
+.wtask.drag-src{opacity:.22}
+.wtask.wtask-ghost{position:fixed;left:0;top:0;z-index:80;display:flex;align-items:flex-start;gap:4px;pointer-events:none;margin:0;padding:4px 6px;border-radius:8px;background:#fff;border:1px solid #D8C8EE;box-shadow:0 14px 30px -12px rgba(60,40,90,.5);opacity:.97;transform:rotate(-1.2deg);max-width:240px;font-size:11.5px;line-height:1.35;color:var(--ink-soft)}
+.wcol.drop-over{border-color:#B4A0E6;background:#F7F3FF;box-shadow:0 0 0 2px rgba(139,123,216,.22)}
+.wcol.drop-over .whead b,.wcol.drop-over .whead span{color:var(--accent-deep)}
+.wcol.drop-same{border-style:dashed}
+html.wdnd-on,html.wdnd-on body{-webkit-user-select:none;user-select:none;cursor:grabbing}
 .wt-empty{font-size:11.5px;line-height:1.35;padding:2px 0;color:#C6BCAB;cursor:pointer}
 .wadd{width:100%;border:1px dashed var(--line);border-radius:6px;background:transparent;font-size:11px;padding:3px 4px;outline:none;color:var(--ink-mute)}
 .wadd::placeholder{color:#C9BFAD}
@@ -3400,6 +3408,198 @@ function toast(msg, actionLabel, action){
 }
 
 /* ============================================================
+   7-B. 주간 할 일 드래그 앤 드롭
+   ============================================================
+   마우스: 6px 이상 끌면 바로 시작
+   터치·펜슬: 220ms 롱프레스 뒤 끌면 시작 (그 전에 움직이면 기존 스크롤에 양보)
+   짧은 탭/클릭은 기존처럼 openDay(), 실행 여부 버튼은 기존처럼 상태 순환 */
+var WDND_CFG={mousePx:6, touchPx:10, pressMs:220, tapPx:6, edgePx:48, scrollMax:18};
+var WDND={armed:false, active:false, down:null, ghost:null, grip:{x:0,y:0}, target:null,
+          timer:null, raf:null, suppress:false, lastX:0, lastY:0, moved:0};
+
+function wdndTouchBlock(e){ if(e.cancelable) e.preventDefault(); }
+function wdndClickGuard(e){
+  if(!WDND.suppress) return;
+  WDND.suppress=false;
+  e.stopPropagation(); e.preventDefault();
+}
+
+function wdndDown(e){
+  if(WDND.active) return;
+  if(e.pointerType==="mouse" && e.button!==0) return;
+  var card=e.target.closest?e.target.closest(".wtask"):null;
+  if(!card || !card.dataset.id || !card.dataset.date) return;
+  if(e.target.closest(".wst")) return;            // 실행 여부(○△×→) 버튼은 건드리지 않는다
+  if(e.target.closest(".wadd")) return;
+  WDND.armed=true; WDND.moved=0; WDND.suppress=false;
+  WDND.down={x:e.clientX, y:e.clientY, date:card.dataset.date, id:card.dataset.id,
+             el:card, pointerId:e.pointerId, type:e.pointerType||"mouse"};
+  try{ card.setPointerCapture(e.pointerId); }catch(err){}
+  clearTimeout(WDND.timer); WDND.timer=null;
+  if(WDND.down.type!=="mouse"){
+    WDND.timer=setTimeout(function(){
+      WDND.timer=null;
+      if(!WDND.armed || WDND.active || !WDND.down) return;
+      wdndStart(WDND.down.x, WDND.down.y);
+    }, WDND_CFG.pressMs);
+  }
+}
+
+function wdndMove(e){
+  if(!WDND.armed || !WDND.down || e.pointerId!==WDND.down.pointerId) return;
+  var dx=e.clientX-WDND.down.x, dy=e.clientY-WDND.down.y;
+  var dist=Math.sqrt(dx*dx+dy*dy);
+  if(!WDND.active){
+    if(WDND.down.type==="mouse"){
+      if(dist<WDND_CFG.mousePx) return;
+      wdndStart(e.clientX, e.clientY);
+    }else{
+      if(dist>=WDND_CFG.touchPx) wdndReset();        // 롱프레스 전 이동 → 스크롤 유지
+      return;
+    }
+  }
+  if(e.cancelable) e.preventDefault();
+  WDND.moved=Math.max(WDND.moved, dist);
+  wdndPaint(e.clientX, e.clientY);
+}
+
+function wdndStart(x,y){
+  var d=WDND.down; if(!d) return;
+  clearTimeout(WDND.timer); WDND.timer=null;
+  var r=d.el.getBoundingClientRect();
+  WDND.grip={x:d.x-r.left, y:d.y-r.top};
+  WDND.moved=0;
+  WDND.active=true;
+  var g=d.el.cloneNode(true);
+  g.removeAttribute("data-id"); g.removeAttribute("data-date");
+  g.classList.add("wtask-ghost");
+  g.classList.remove("drag-src","done");
+  g.style.width=Math.max(90, Math.min(r.width, 240))+"px";
+  document.body.appendChild(g);
+  WDND.ghost=g;
+  d.el.classList.add("drag-src");
+  document.documentElement.classList.add("wdnd-on");
+  document.addEventListener("touchmove", wdndTouchBlock, {passive:false});
+  if(navigator.vibrate){ try{ navigator.vibrate(10); }catch(err){} }
+  wdndPaint(x,y);
+  if(!WDND.raf) WDND.raf=requestAnimationFrame(wdndAutoScroll);
+}
+
+function wdndPaint(x,y){
+  WDND.lastX=x; WDND.lastY=y;
+  if(WDND.ghost){
+    // 터치·펜슬은 손가락에 카드가 가리지 않게 살짝 위로 띄운다
+    var lift=(WDND.down && WDND.down.type!=="mouse") ? 26 : 0;
+    WDND.ghost.style.left=Math.round(x-WDND.grip.x)+"px";
+    WDND.ghost.style.top =Math.round(y-WDND.grip.y-lift)+"px";
+  }
+  var col=wdndColAt(x,y);
+  if(col!==WDND.target){
+    if(WDND.target) WDND.target.classList.remove("drop-over","drop-same");
+    WDND.target=col;
+    if(col){
+      col.classList.add("drop-over");
+      col.classList.toggle("drop-same", !!(WDND.down && col.dataset.date===WDND.down.date));
+    }
+  }
+}
+
+function wdndColAt(x,y){
+  var el=document.elementFromPoint(x,y);
+  var col=(el && el.closest) ? el.closest(".wcol[data-date]") : null;
+  if(col) return col;
+  // 열 사이 간격·여백 위에 있을 때는 주간 보드 안이면 가로로 가장 가까운 열
+  var sc=$(".week-scroll"); if(!sc) return null;
+  var r=sc.getBoundingClientRect();
+  if(y<r.top-14 || y>r.bottom+14) return null;
+  var best=null, bd=1e9;
+  $$("#weekCols > .wcol").forEach(function(c){
+    var b=c.getBoundingClientRect();
+    var dd = x<b.left ? (b.left-x) : (x>b.right ? (x-b.right) : 0);
+    if(dd<bd){ bd=dd; best=c; }
+  });
+  return (best && bd<=40) ? best : null;
+}
+
+function wdndAutoScroll(){
+  WDND.raf=null;
+  if(!WDND.active) return;
+  var x=WDND.lastX, y=WDND.lastY, moved=false;
+  var sc=$(".week-scroll");
+  if(sc){
+    var r=sc.getBoundingClientRect(), edge=WDND_CFG.edgePx, sp=0;
+    if(x<r.left+edge) sp=-Math.ceil((r.left+edge-x)/4);
+    else if(x>r.right-edge) sp=Math.ceil((x-(r.right-edge))/4);
+    if(sp){
+      sp=Math.max(-WDND_CFG.scrollMax, Math.min(WDND_CFG.scrollMax, sp));
+      var before=sc.scrollLeft; sc.scrollLeft=before+sp;
+      if(sc.scrollLeft!==before) moved=true;
+    }
+    if(y<70){ window.scrollBy(0,-9); moved=true; }
+    else if(y>window.innerHeight-70){ window.scrollBy(0,9); moved=true; }
+  }
+  if(moved) wdndPaint(x,y);
+  if(WDND.active) WDND.raf=requestAnimationFrame(wdndAutoScroll);
+}
+
+function wdndUp(e){
+  if(!WDND.armed || !WDND.down) return;
+  if(e && e.pointerId!=null && e.pointerId!==WDND.down.pointerId) return;
+  var d=WDND.down;
+  clearTimeout(WDND.timer); WDND.timer=null;
+  if(!WDND.active){ WDND.armed=false; WDND.down=null; return; }   // 짧은 탭 → 기존 클릭 동작
+  var target=WDND.target ? WDND.target.dataset.date : null;
+  var dragged=WDND.moved>=WDND_CFG.tapPx;
+  wdndReset();
+  if(!dragged){                    // 롱프레스만 하고 끌지 않음 → 그 날 일간 화면
+    WDND.suppress=true;
+    setTimeout(function(){ WDND.suppress=false; }, 400);
+    openDay(d.date);
+    return;
+  }
+  WDND.suppress=true;              // 드래그 뒤 따라오는 click 무시
+  setTimeout(function(){ WDND.suppress=false; }, 400);
+  if(!target || target===d.date) return;   // 같은 날짜에 놓으면 그대로 둔다
+  wdndMoveTask(d.date, d.id, target);
+}
+
+function wdndReset(){
+  clearTimeout(WDND.timer); WDND.timer=null;
+  if(WDND.ghost && WDND.ghost.parentNode) WDND.ghost.parentNode.removeChild(WDND.ghost);
+  WDND.ghost=null;
+  if(WDND.down && WDND.down.el) WDND.down.el.classList.remove("drag-src");
+  if(WDND.target){ WDND.target.classList.remove("drop-over","drop-same"); WDND.target=null; }
+  document.documentElement.classList.remove("wdnd-on");
+  document.removeEventListener("touchmove", wdndTouchBlock, {passive:false});
+  if(WDND.raf){ cancelAnimationFrame(WDND.raf); WDND.raf=null; }
+  WDND.armed=false; WDND.active=false; WDND.down=null; WDND.moved=0;
+}
+
+function wdndMoveTask(fromDate, id, toDate){
+  if(!fromDate || !toDate || fromDate===toDate) return;
+  var from=getDay(fromDate), i=-1;
+  for(var k=0;k<from.tasks.length;k++) if(from.tasks[k].id===id){ i=k; break; }
+  if(i<0) return;
+  var t=from.tasks.splice(i,1)[0];       // 내용·분류(list)·상태(st)·platform·detail 전부 그대로
+  getDay(toDate).tasks.push(t);
+  renderWeek();
+  scheduleSave();
+  var dt=parseISO(toDate);
+  var label=(dt.getMonth()+1)+"/"+dt.getDate()+"("+DOW_KO[dt.getDay()]+")로 옮겼어요";
+  toast(label, "되돌리기", function(){
+    var to=getDay(toDate), j=-1;
+    for(var m=0;m<to.tasks.length;m++) if(to.tasks[m].id===id){ j=m; break; }
+    if(j<0) return;
+    to.tasks.splice(j,1);
+    var back=getDay(fromDate);
+    back.tasks.splice(Math.min(i, back.tasks.length), 0, t);
+    renderWeek(); scheduleSave();
+  });
+  var el=$('.wtask[data-date="'+toDate+'"][data-id="'+id+'"]');
+  if(el && el.scrollIntoView){ try{ el.scrollIntoView({block:"nearest", inline:"nearest"}); }catch(err){} }
+}
+
+/* ============================================================
    8. 이벤트 연결
    ============================================================ */
 function bindEvents(){
@@ -3693,6 +3893,15 @@ function bindEvents(){
   });
 
   var cols=$("#weekCols");
+  // 할 일 카드 드래그 앤 드롭 (마우스·터치·Apple Pencil 모두 Pointer Events로 처리)
+  cols.addEventListener("pointerdown", wdndDown);
+  document.addEventListener("pointermove", wdndMove, {passive:false});
+  document.addEventListener("pointerup", wdndUp);
+  document.addEventListener("pointercancel", wdndUp);
+  document.addEventListener("click", wdndClickGuard, true);
+  document.addEventListener("contextmenu", function(e){ if(WDND.active) e.preventDefault(); });
+  window.addEventListener("blur", function(){ if(WDND.armed || WDND.active) wdndReset(); });
+
   cols.addEventListener("click", function(e){
     var st=e.target.closest(".wst");
     if(st){
