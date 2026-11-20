@@ -269,6 +269,19 @@ button.mini:hover{background:#F7F3EA}
 .note-one::placeholder{color:#B9C9DC}
 .note-area{flex:1;min-height:60px;width:100%;border:0;outline:none;resize:none;font:inherit;font-size:11px;line-height:21px;padding:4px 2px 0;color:var(--ink);background:repeating-linear-gradient(#fff 0 20px,#E7EEF7 20px 21px)}
 .note-area::placeholder{color:#B9C9DC}
+/* 열 하단 피드백 칸 — 작업·자기개발·일정·소비일지·여가 시간 */
+.col-fb .col-body{flex:1 1 auto;min-height:auto}
+.col-feedback{display:flex;flex-direction:column;gap:2px;flex:1 1 auto;min-width:0;min-height:76px;margin-top:7px;padding:4px 5px 4px;border:1px solid var(--fb-line,#EDE6D8);border-radius:8px;background:var(--fb-bg,#FFFDF8);transition:border-color .15s,box-shadow .15s}
+.col-feedback:focus-within{border-color:var(--fb-ink,#CFC5B4);box-shadow:0 0 0 2px rgba(0,0,0,.03)}
+.fb-lab{font-family:var(--sans);font-size:9px;letter-spacing:.8px;font-weight:800;line-height:1.3;color:var(--fb-ink,#A79C88);flex:none}
+.fb-in{flex:1 1 auto;width:100%;min-width:0;min-height:52px;border:0;outline:none;resize:none;overflow:auto;font:inherit;font-size:11px;line-height:20px;padding:0 1px;color:var(--ink);background-color:transparent;background-image:repeating-linear-gradient(to bottom,transparent 0,transparent 19px,var(--fb-line,#EDE6D8) 19px,var(--fb-line,#EDE6D8) 20px)}
+.fb-in::placeholder{color:#C9BFAE}
+.col-money .money-foot{margin-top:6px}
+.col-money .money-list{flex:1 1 auto}
+@media (max-width:720px){
+  .fb-in{min-height:56px}
+  .col-feedback{min-height:84px}
+}
 /* 장건강 — 변 상태 5종 선택 칩 */
 #bmRow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:3px;max-width:212px}
 .bm{height:17px;display:inline-flex;align-items:center;justify-content:center;border:1px solid #E1E9F3;background:#FCFDFF;border-radius:999px;padding:0 4px;font-size:9.5px;letter-spacing:-.1px;color:#A3B2C4;cursor:pointer;font-weight:800;touch-action:manipulation;line-height:1.2;min-width:0;overflow:hidden;white-space:nowrap;transition:background .12s,border-color .12s,color .12s}
@@ -821,6 +834,9 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
   body[data-print="daily"] .note-one-lab{font-size:4.4pt}
   body[data-print="daily"] .note-one{font-size:6pt}
   body[data-print="daily"] .note-area{font-size:6.2pt;min-height:0;height:16mm;line-height:1.9}
+  body[data-print="daily"] .col-feedback{min-height:0;margin-top:1.2mm;padding:.8mm 1mm;border-radius:1mm;background:#fff}
+  body[data-print="daily"] .fb-lab{font-size:4.6pt;letter-spacing:.4pt}
+  body[data-print="daily"] .fb-in{font-size:6pt;line-height:1.65;min-height:8mm;padding-top:0;overflow:hidden;background-image:none}
   body[data-print="daily"] .bm{font-size:5.6pt;padding:0 1mm}
   .task .del,.c-del{display:none !important}
   .wstats{display:none !important}
@@ -1006,34 +1022,46 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
           </section>
 
           <!-- 3. Work -->
-          <section class="col">
+          <section class="col col-fb">
             <div class="col-head" style="--tint:#FDF0B8;--inkh:#8A6A12">작업</div>
             <div class="col-body">
               <div class="tasks-body" id="taskList-work"></div>
               <button class="add-task" data-add="work">＋ 할 일 추가</button>
             </div>
+            <div class="col-feedback" style="--fb-line:#EFE3B8;--fb-ink:#A0821E;--fb-bg:#FFFDF3">
+              <span class="fb-lab">피드백</span>
+              <textarea class="fb-in" data-fb="work" maxlength="1200" placeholder="오늘 피드백 · 회고" aria-label="작업 피드백"></textarea>
+            </div>
           </section>
 
           <!-- 4. 자기개발 -->
-          <section class="col">
+          <section class="col col-fb">
             <div class="col-head" style="--tint:#FAD4DF;--inkh:#9C3F58">자기개발</div>
             <div class="col-body">
               <div class="tasks-body" id="taskList-study"></div>
               <button class="add-task" data-add="study">＋ 독서·공부 추가</button>
             </div>
+            <div class="col-feedback" style="--fb-line:#F1D7E0;--fb-ink:#B06277;--fb-bg:#FFF9FB">
+              <span class="fb-lab">피드백</span>
+              <textarea class="fb-in" data-fb="study" maxlength="1200" placeholder="오늘 피드백 · 회고" aria-label="자기개발 피드백"></textarea>
+            </div>
           </section>
 
           <!-- 5. 일정 -->
-          <section class="col">
+          <section class="col col-fb">
             <div class="col-head" style="--tint:#FDE0C6;--inkh:#9A5622">일정</div>
             <div class="col-body">
               <div class="tasks-body" id="taskList-home"></div>
               <button class="add-task" data-add="home">＋ 일정 추가</button>
             </div>
+            <div class="col-feedback" style="--fb-line:#F2DFCB;--fb-ink:#AB7444;--fb-bg:#FFFBF6">
+              <span class="fb-lab">피드백</span>
+              <textarea class="fb-in" data-fb="home" maxlength="1200" placeholder="오늘 피드백 · 회고" aria-label="일정 피드백"></textarea>
+            </div>
           </section>
 
           <!-- 6. 소비일지 -->
-          <section class="col col-money">
+          <section class="col col-money col-fb">
             <div class="col-head" style="--tint:#D7F0D0;--inkh:#4C6B22">소비일지</div>
             <div class="col-body">
               <div class="money-list" id="moneyList"></div>
@@ -1055,16 +1083,24 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
               <div class="mf"><span>오늘 지출</span><b id="mToday">0원</b></div>
               <div class="mf acc"><span>이번 달 누적</span><b id="mMonth">0원</b></div>
             </div>
+            <div class="col-feedback" style="--fb-line:#DEEBD2;--fb-ink:#6E8A45;--fb-bg:#FBFFF6">
+              <span class="fb-lab">피드백</span>
+              <textarea class="fb-in" data-fb="money" maxlength="1200" placeholder="오늘 피드백 · 회고" aria-label="소비일지 피드백"></textarea>
+            </div>
           </section>
 
           <!-- 7. 여가 시간 -->
-          <section class="col col-heart">
+          <section class="col col-heart col-fb">
             <div class="col-head" style="--tint:#CFF0EA;--inkh:#2F7A6E">여가 시간</div>
             <div class="col-body">
               <div class="tasks-body" id="taskList-leisure"></div>
               <button class="add-task" data-add="leisure">＋ 여가 활동 추가</button>
               <label class="note-one-lab">여가 메모</label>
               <textarea class="note-area" id="memo" placeholder="오늘의 여가 기록" maxlength="3000"></textarea>
+            </div>
+            <div class="col-feedback" style="--fb-line:#D8EAE5;--fb-ink:#4A8C81;--fb-bg:#F8FEFC">
+              <span class="fb-lab">피드백</span>
+              <textarea class="fb-in" data-fb="leisure" maxlength="1200" placeholder="오늘 피드백 · 회고" aria-label="여가 시간 피드백"></textarea>
             </div>
           </section>
         </div>
@@ -1235,6 +1271,7 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
         <li><b>주간</b> — 일간에서 칠하고 적은 내용이 그대로 모이고, 주간에서 고쳐도 일간에 바로 반영돼요. 주간 화면 위쪽 형광펜도 그대로 쓸 수 있어요.</li>
         <li><b>소비일지</b> — 날짜·시간·분류·구매내역·금액을 적고, 필요하면 <b>상세 구매내역</b>을 여러 줄로 남겨요. 월 합계와 <b>분류별 모아보기</b>가 자동으로 정리되고, 분류를 누르면 그 내역만 필터링됩니다.</li>
         <li><b>일간 열</b> — <b>건강</b>은 위에서부터 몸무게 → 오늘의 한 줄 → 식단(시간·시간대·내용, 여러 줄 가능)을 적고, 아래 트래커 한 칸에 물·약·에너지·장건강(안감·바나나·딱딱함·설사·혈변 중 하나, 누르면 선택·다시 누르면 해제)·기분(5단계)을 모아 둡니다. <b>작업·자기개발·일정·여가 시간</b>은 체크리스트로 적어요. 기분 이모지는 월간 달력에도 표시됩니다.</li>
+        <li><b>피드백</b> — <b>작업·자기개발·일정·소비일지·여가 시간</b> 열 맨 아래 칸에 그날의 회고를 적어요. 날짜마다 따로 저장되고, 화면을 넓게 보면 건강 열과 같은 높이까지 채워집니다.</li>
         <li><b>월간</b> — 한 달을 달력 한 장으로 모아 봐요. 날짜를 누르면 그날 일간으로 바로 넘어가고, <b>이달의 목표</b>·<b>한 줄 리뷰</b>는 아래 통계와 함께 자동 저장돼요.</li>
         <li><b>카테고리 관리</b> — 위쪽 <b>카테고리</b> 버튼에서 형광펜·소비일지 분류·약 종류를 직접 추가하거나 지울 수 있어요.</li>
         <li><b>저장</b> — 모든 변경은 이 브라우저에 자동 저장돼요. <b>Google 로그인</b>하면 다른 기기와 자동으로 이어지고, 로그아웃해도 이 기기의 기록은 그대로 남아요.</li>
@@ -1296,6 +1333,7 @@ var DEF_LEDGER_CATS = [
 ];
 var DEF_MEDS = [{id:"m", name:"아침약"}, {id:"e", name:"저녁약"}];
 var MEAL_SLOTS = ["아침","점심","저녁","운동","간식","야식"];
+var FB_KEYS = ["work","study","home","money","leisure"];   /* 일간 열 하단 피드백 칸 */
 var CAT_PALETTE = ["#B9E3CE","#FBE49B","#FAC9D6","#FBC79C","#CFE8A6","#B8DDF2","#CBB9EF","#DAD8D2","#C7DDF7","#F3B9A8","#E3C7F2","#CBD8CA"];
 var ST_SYM  = ["", "○", "△", "×", "→"];
 var ST_LABEL= ["미완료", "완료", "일부 완료", "못함", "미룸"];
@@ -1494,6 +1532,11 @@ function normalize(o){
       energy:ci(hsrc.energy,0,5)
     };
     var esrc=(v.emotion && typeof v.emotion==="object")?v.emotion:{};
+    var fsrc=(v.feedback && typeof v.feedback==="object")?v.feedback:{};
+    var feedback={};
+    FB_KEYS.forEach(function(k){
+      feedback[k]=(typeof fsrc[k]==="string")?fsrc[k].slice(0,2000):"";
+    });
     s.days[d]={
       comment:typeof v.comment==="string"?v.comment.slice(0,200):"",
       memo:typeof v.memo==="string"?v.memo.slice(0,4000):"",
@@ -1503,7 +1546,8 @@ function normalize(o){
       bm:ci(v.bm,0,3),
       bmState:(function(x){ x=String(x==null?"":x); return (x==="soft"||x==="banana"||x==="hard"||x==="loose"||x==="blood")?x:""; })(v.bmState),
       health:health,
-      emotion:{mood:ci(esrc.mood,0,5)}
+      emotion:{mood:ci(esrc.mood,0,5)},
+      feedback:feedback
     };
   });
   if(o.weeks && typeof o.weeks==="object"){
@@ -1611,6 +1655,8 @@ function getDay(date){
   if(!d){ d={comment:"",tasks:[],slots:{}}; S.days[date]=d; }
   if(!d.slots) d.slots={};
   if(!Array.isArray(d.tasks)) d.tasks=[];
+  if(!d.feedback || typeof d.feedback!=="object") d.feedback={};
+  FB_KEYS.forEach(function(k){ if(typeof d.feedback[k]!=="string") d.feedback[k]=""; });
   return d;
 }
 function getWeek(monday){
@@ -1827,6 +1873,7 @@ function renderDaily(){
   renderTaskList("home");
   renderTaskList("leisure");
   renderMoney();
+  renderFeedback();
 
   var wrap=$("#dailyTT");
   var grid=$(".tt-grid", wrap);
@@ -1841,6 +1888,17 @@ function renderDaily(){
   renderDday();
   refreshSums();
   renderNowLine();
+}
+
+function renderFeedback(){
+  var d=S.days[curDate];
+  var fb=(d && d.feedback && typeof d.feedback==="object") ? d.feedback : {};
+  $$("#viewDaily .fb-in").forEach(function(el){
+    var k=el.dataset.fb;
+    if(FB_KEYS.indexOf(k)<0) return;
+    var v=(typeof fb[k]==="string")?fb[k]:"";
+    if(el.value!==v) el.value=v;
+  });
 }
 
 /* ---------- 할 일 목록 ---------- */
@@ -3021,6 +3079,15 @@ function bindEvents(){
 
   board.addEventListener("input", function(e){
     var el=e.target;
+    if(el.classList.contains("fb-in")){
+      var fk=el.dataset.fb;
+      if(FB_KEYS.indexOf(fk)>=0){
+        var fd=getDay(curDate);
+        fd.feedback[fk]=String(el.value||"").slice(0,2000);
+        scheduleSave();
+      }
+      return;
+    }
     if(el.classList.contains("txt")){
       var row=el.closest(".task"); var id=row.dataset.id;
       var d=getDay(curDate);
@@ -3403,6 +3470,9 @@ function hasRealData(){
   Object.keys(S.days).forEach(function(k){
     var d=S.days[k]; if(!d) return;
     if((d.tasks&&d.tasks.length)||Object.keys(d.slots||{}).length||d.comment||d.memo) found=true;
+    if(d.feedback && typeof d.feedback==="object"){
+      for(var i=0;i<FB_KEYS.length;i++){ if(d.feedback[FB_KEYS[i]]){ found=true; break; } }
+    }
   });
   if(entries().length) found=true;
   Object.keys(S.weeks||{}).forEach(function(k){
