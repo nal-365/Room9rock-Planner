@@ -179,8 +179,9 @@ button.mini:hover{background:#F7F3EA}
 .tr-lab{font-weight:800;letter-spacing:.2px;color:#93A7C0;font-size:10px;line-height:1.15;white-space:nowrap}
 .tr-in{display:flex;align-items:center;gap:4px;min-width:0;flex-wrap:wrap}
 .tr-in.energy{align-items:flex-end;flex-wrap:nowrap;height:17px}
-.tr-in.mood-row{flex-direction:column;align-items:stretch;gap:1px;flex-wrap:nowrap}
-#moodPick{display:flex;align-items:center;gap:3px;height:20px}
+.tr-in.mood-row{flex-direction:column;align-items:stretch;gap:1px;flex-wrap:nowrap;container-type:inline-size}
+/* 기분 5단계: 트래커 줄 폭이 좁아져도(7열 중간 폭·인쇄) 칸 밖으로 넘치지 않게 5등분 그리드 + 폭에 맞춘 글자 크기 */
+#moodPick{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);align-items:center;gap:2px;width:100%;max-width:112px;min-width:0;height:20px;padding-right:1px}
 .wbtn{width:14px;height:18px;border-radius:3px 3px 5px 5px;border:1px solid #BED4EE;background:#F3F8FE;cursor:pointer;padding:0;touch-action:manipulation;flex:none}
 .wbtn.on{background:#8FC0F0;border-color:#6FA9E4}
 .med{height:18px;border:1px solid #D8E3F2;background:#FBFDFF;border-radius:999px;padding:0 7px;font-size:10.5px;line-height:16px;color:#7D90AB;cursor:pointer;font-weight:700;touch-action:manipulation;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:none}
@@ -259,7 +260,7 @@ button.mini:hover{background:#F7F3EA}
 /* 여가 시간 */
 .col-heart .col-body{gap:4px}
 .col-heart .note-area{flex:none;height:72px;min-height:0}
-.mood-btn{width:20px;height:20px;display:grid;place-items:center;border:0;background:transparent;font-size:14px;line-height:1;cursor:pointer;padding:0;opacity:.32;filter:grayscale(1);transition:transform .12s,opacity .12s;touch-action:manipulation;flex:none}
+.mood-btn{width:100%;max-width:20px;min-width:0;height:20px;display:grid;place-items:center;border:0;background:transparent;font-size:14px;font-size:clamp(9px,calc(15cqw - 1.5px),14px);line-height:1;cursor:pointer;padding:0;opacity:.32;filter:grayscale(1);transition:transform .12s,opacity .12s;touch-action:manipulation;flex:none}
 .mood-btn.on{opacity:1;filter:none;transform:scale(1.14)}
 .mood-word{font-size:9px;color:#6E8FB0;font-weight:800;text-align:center;letter-spacing:.2px;line-height:1.2}
 .mood-word:empty{display:none}
@@ -815,7 +816,7 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
   body[data-print="daily"] .money-add{display:none}
   body[data-print="daily"] .mf{font-size:5.4pt}
   body[data-print="daily"] .mf b{font-size:7.4pt}
-  body[data-print="daily"] .mood-btn{width:3.6mm;height:3.6mm;font-size:8pt}
+  body[data-print="daily"] .mood-btn{width:100%;height:3.6mm}
   body[data-print="daily"] .mood-word{font-size:4.8pt}
   body[data-print="daily"] .note-one-lab{font-size:4.4pt}
   body[data-print="daily"] .note-one{font-size:6pt}
