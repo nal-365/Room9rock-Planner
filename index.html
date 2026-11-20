@@ -226,6 +226,20 @@ button.mini:hover{background:#F7F3EA}
 .add-task{margin-top:6px;border:1px dashed var(--line-strong);background:transparent;border-radius:7px;padding:4px 7px;font-size:10.5px;font-weight:700;color:var(--ink-mute);cursor:pointer;width:100%;touch-action:manipulation;text-align:left}
 .add-task:hover{background:#FBF7EF;color:var(--ink-soft)}
 
+/* 작업 카드 (상태·플랫폼·할 일·상세 내역) */
+#taskList-work{gap:5px}
+.wcard{display:block;border-bottom:1px solid #F1E5C4;border-radius:7px;padding:3px 4px 4px;background:#FFFDF4;min-height:0}
+.wcard-top{display:flex;align-items:center;gap:3px;min-width:0}
+.wcard .st{width:18px;height:18px;font-size:11px}
+.wcard .wplat{flex:1 1 auto;min-width:0;border:1px solid #EFE2BC;background:#FBF4DA;border-radius:5px;padding:1px 1px 1px 3px;font-size:9.5px;font-weight:800;color:#8A6A12;outline:none;cursor:pointer;font-family:var(--sans);text-overflow:ellipsis}
+.wcard .wplat:focus{border-color:#DDC681}
+.wcard .wplat.on{background:#FBEDBB;border-color:#E5CF86;color:#7A5D0B}
+.wcard .wplat:not(.on){background:#FDFAF0;border-color:#F1EBDC;color:#B3A585;font-weight:700}
+.wcard .txt{display:block;width:100%;font-size:12px;font-weight:600;padding:3px 0 0}
+.wcard .wdet{display:block;width:100%;border:0;border-top:1px dashed #F1E7CE;margin-top:3px;padding:3px 0 0;background:transparent;font:inherit;font-size:10.5px;line-height:1.5;color:var(--ink-soft);outline:none;resize:none;overflow:hidden;min-height:15px;height:auto}
+.wcard .wdet::placeholder{color:#CFC5B4}
+.wcard .del{opacity:.45}
+
 /* Money */
 .money-list{display:flex;flex-direction:column;gap:2px;overflow:auto;min-height:50px}
 .mrow{display:block;border-bottom:1px dashed #E6EEDC;padding:3px 0 4px;font-size:11.5px;cursor:pointer;min-width:0}
@@ -424,6 +438,7 @@ button.mini:hover{background:#F7F3EA}
 .wtask .wst.s4{border-style:solid;border-color:#BCC8E4;background:#EEF2FA;color:#4E608F}
 .wtask .wtxt{flex:1;min-width:0;overflow-wrap:anywhere}
 .wtask.done .wtxt{color:#9C9284}
+.wtag{display:inline-block;max-width:62px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;vertical-align:1px;margin-right:3px;padding:0 3px;border-radius:3px;background:#FBF4DA;color:#8A6A12;font-size:8px;font-weight:800;line-height:1.45;letter-spacing:0}
 .wmore{border:0;background:transparent;color:var(--accent-deep);font-size:10px;font-weight:800;text-align:left;padding:1px 0;cursor:pointer}
 .wadd{width:100%;border:1px dashed var(--line);border-radius:6px;background:transparent;font-size:11px;padding:3px 4px;outline:none;color:var(--ink-mute)}
 .wadd::placeholder{color:#C9BFAD}
@@ -665,6 +680,9 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
   .col-head{text-align:left;padding:5px 9px}
   .tracker{gap:6px}
   .task .txt{font-size:12.5px}
+  .wcard .wplat{font-size:11px;padding:2px 3px}
+  .wcard .txt{font-size:13px}
+  .wcard .wdet{font-size:11.5px}
   .note-area{min-height:150px}
   .task .del{opacity:.55}
   .week-top{gap:7px}
@@ -799,6 +817,12 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
   body[data-print="daily"] .task{min-height:4.1mm}
   body[data-print="daily"] .task .txt{font-size:6.5pt}
   body[data-print="daily"] .task .st{width:7pt;height:7pt;font-size:4.6pt;border-radius:1px}
+  body[data-print="daily"] #taskList-work{gap:.8mm}
+  body[data-print="daily"] .wcard{padding:.4mm .5mm .5mm;border-radius:1.5mm;background:#fff}
+  body[data-print="daily"] .wcard-top{gap:.6mm}
+  body[data-print="daily"] .wcard .wplat{font-size:4.8pt;padding:0 .4mm;border-radius:1px;-webkit-appearance:none;appearance:none;text-indent:0}
+  body[data-print="daily"] .wcard .txt{font-size:6.4pt;padding:.2mm 0 0}
+  body[data-print="daily"] .wcard .wdet{font-size:5.6pt;line-height:1.4;margin-top:.4mm;padding-top:.4mm}
   body[data-print="daily"] .total-val b{font-size:11pt;color:#5B4BA6}
   body[data-print="daily"] .total-val i{font-size:6pt}
   body[data-print="daily"] .total-sub{font-size:4.8pt}
@@ -848,6 +872,7 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
   .wtasks{min-height:0;max-height:none;overflow:visible}
   .wtask{font-size:5.4pt;padding:0}
   .wtask .wst{width:6.5pt;height:6.5pt;font-size:4.6pt;border-radius:1px}
+  .wtag{font-size:4.4pt;padding:0 .5mm;margin-right:.6mm;max-width:none}
   .wcol .tt{--hour-h:4.75mm;padding-top:3px}
   .wcol .tt-hours{width:9pt}
   .wcol .tt-hours .hr span{font-size:4.6pt;top:-2px}
@@ -1022,11 +1047,11 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
           </section>
 
           <!-- 3. Work -->
-          <section class="col col-fb">
+          <section class="col col-work col-fb">
             <div class="col-head" style="--tint:#FDF0B8;--inkh:#8A6A12">작업</div>
             <div class="col-body">
               <div class="tasks-body" id="taskList-work"></div>
-              <button class="add-task" data-add="work">＋ 할 일 추가</button>
+              <button class="add-task" data-add="work">＋ 작업 카드 추가</button>
             </div>
             <div class="col-feedback" style="--fb-line:#EFE3B8;--fb-ink:#A0821E;--fb-bg:#FFFDF3">
               <span class="fb-lab">피드백</span>
@@ -1268,12 +1293,13 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
         <li><b>칠하기</b> — 위쪽 형광펜을 고르고 시간표를 위아래로 끌면 10분 단위로 칠해져요. 마우스·손가락·애플펜슬 모두 됩니다.</li>
         <li><b>지우개</b> — <b>지우개</b>를 고르고 문질러 지워요. 잘못 칠했으면 <kbd>Ctrl</kbd>+<kbd>Z</kbd>로 되돌리기.</li>
         <li><b>할 일</b> — 네모를 누를 때마다 <b>□ → ○ 완료 → △ 일부 → × 못함 → → 미룸</b> 순서로 바뀌어요.</li>
+        <li><b>작업 카드</b> — <b>작업</b> 열은 카드로 적어요. 위줄에서 상태·플랫폼(카카오·OGQ·스마트스토어 등)을 고르고, 제목 아래 <b>상세 내역</b>에 여러 줄로 메모해요. 플랫폼 목록은 카드의 <b>＋ 플랫폼 관리</b>나 카테고리 관리에서 직접 추가·이름 바꾸기·삭제할 수 있어요.</li>
         <li><b>주간</b> — 일간에서 칠하고 적은 내용이 그대로 모이고, 주간에서 고쳐도 일간에 바로 반영돼요. 주간 화면 위쪽 형광펜도 그대로 쓸 수 있어요.</li>
         <li><b>소비일지</b> — 날짜·시간·분류·구매내역·금액을 적고, 필요하면 <b>상세 구매내역</b>을 여러 줄로 남겨요. 월 합계와 <b>분류별 모아보기</b>가 자동으로 정리되고, 분류를 누르면 그 내역만 필터링됩니다.</li>
-        <li><b>일간 열</b> — <b>건강</b>은 위에서부터 몸무게 → 오늘의 한 줄 → 식단(시간·시간대·내용, 여러 줄 가능)을 적고, 아래 트래커 한 칸에 물·약·에너지·장건강(안감·바나나·딱딱함·설사·혈변 중 하나, 누르면 선택·다시 누르면 해제)·기분(5단계)을 모아 둡니다. <b>작업·자기개발·일정·여가 시간</b>은 체크리스트로 적어요. 기분 이모지는 월간 달력에도 표시됩니다.</li>
+        <li><b>일간 열</b> — <b>건강</b>은 위에서부터 몸무게 → 오늘의 한 줄 → 식단(시간·시간대·내용, 여러 줄 가능)을 적고, 아래 트래커 한 칸에 물·약·에너지·장건강(안감·바나나·딱딱함·설사·혈변 중 하나, 누르면 선택·다시 누르면 해제)·기분(5단계)을 모아 둡니다. <b>작업</b>은 플랫폼·상세 내역이 붙은 카드로, <b>자기개발·일정·여가 시간</b>은 체크리스트로 적어요. 기분 이모지는 월간 달력에도 표시됩니다.</li>
         <li><b>피드백</b> — <b>작업·자기개발·일정·소비일지·여가 시간</b> 열 맨 아래 칸에 그날의 회고를 적어요. 날짜마다 따로 저장되고, 화면을 넓게 보면 건강 열과 같은 높이까지 채워집니다.</li>
         <li><b>월간</b> — 한 달을 달력 한 장으로 모아 봐요. 날짜를 누르면 그날 일간으로 바로 넘어가고, <b>이달의 목표</b>·<b>한 줄 리뷰</b>는 아래 통계와 함께 자동 저장돼요.</li>
-        <li><b>카테고리 관리</b> — 위쪽 <b>카테고리</b> 버튼에서 형광펜·소비일지 분류·약 종류를 직접 추가하거나 지울 수 있어요.</li>
+        <li><b>카테고리 관리</b> — 위쪽 <b>카테고리</b> 버튼에서 형광펜·소비일지 분류·<b>작업 플랫폼</b>·약 종류를 직접 추가하거나 지울 수 있어요.</li>
         <li><b>저장</b> — 모든 변경은 이 브라우저에 자동 저장돼요. <b>Google 로그인</b>하면 다른 기기와 자동으로 이어지고, 로그아웃해도 이 기기의 기록은 그대로 남아요.</li>
       </ul>
       <h4>형광펜 이름 (직접 바꾸기)</h4>
@@ -1332,6 +1358,7 @@ var DEF_LEDGER_CATS = [
   {id:"income",  name:"수입",      type:"income",  color:"#A9DCC4"}
 ];
 var DEF_MEDS = [{id:"m", name:"아침약"}, {id:"e", name:"저녁약"}];
+var DEF_PLATFORMS = ["카카오","OGQ","스마트스토어","LINE","크라우드픽","SNS","기타"];
 var MEAL_SLOTS = ["아침","점심","저녁","운동","간식","야식"];
 var FB_KEYS = ["work","study","home","money","leisure"];   /* 일간 열 하단 피드백 칸 */
 var CAT_PALETTE = ["#B9E3CE","#FBE49B","#FAC9D6","#FBC79C","#CFE8A6","#B8DDF2","#CBB9EF","#DAD8D2","#C7DDF7","#F3B9A8","#E3C7F2","#CBD8CA"];
@@ -1402,6 +1429,7 @@ function blankState(){
     cats: DEF_CATS.map(function(c){ return {id:c.id, name:c.name, color:c.color, exc:c.exc?1:0}; }),
     ledgerCats: DEF_LEDGER_CATS.map(function(c){ return {id:c.id, name:c.name, type:c.type, color:c.color}; }),
     meds: DEF_MEDS.map(function(m){ return {id:m.id, name:m.name}; }),
+    workPlatforms: DEF_PLATFORMS.map(function(n,i){ return {id:"w"+(i+1), name:n}; }),
     settings:{ names:{}, mode:"all", dday:{label:"",date:""}, helpSeen:false },
     ledger:{entries:[]},
     savedAt:null
@@ -1481,6 +1509,31 @@ function normalize(o){
     s.meds=builtMeds;
   }
 
+  /* ---- 작업 플랫폼 ---- */
+  var builtPlat=[], seenPlat={};
+  if(Array.isArray(o.workPlatforms)){
+    o.workPlatforms.forEach(function(p){
+      var id="", nm="";
+      if(typeof p==="string"){ nm=cleanName(p); }
+      else if(p && typeof p==="object"){
+        id=String(p.id||"").replace(/[^a-zA-Z0-9_-]/g,"").slice(0,24);
+        nm=cleanName(p.name);
+      }
+      if(!nm) return;
+      if(!id || seenPlat[id]){
+        var k=builtPlat.length+1; id="w"+k;
+        while(seenPlat[id]){ k++; id="w"+k; }
+      }
+      seenPlat[id]=1;
+      builtPlat.push({id:id, name:nm});
+    });
+  }
+  if(!builtPlat.length){
+    builtPlat=DEF_PLATFORMS.map(function(n,i){ return {id:"w"+(i+1), name:n}; });
+    seenPlat={}; builtPlat.forEach(function(p){ seenPlat[p.id]=1; });
+  }
+  s.workPlatforms=builtPlat;
+
   /* ---- 하루 기록 ---- */
   var days = (o.days && typeof o.days==="object") ? o.days : {};
   Object.keys(days).forEach(function(d){
@@ -1499,7 +1552,9 @@ function normalize(o){
         if(!t || typeof t.text!=="string") return;
         var st=parseInt(t.st,10); if(!isFinite(st)||st<0||st>4) st=0;
         var lk=(t.list==="home"||t.list==="study"||t.list==="leisure")?t.list:"work";
-        tasks.push({id:t.id||uid(), text:t.text.slice(0,200), st:st, list:lk});
+        var plat=String(t.platform==null?"":t.platform).slice(0,24);
+        if(plat && !seenPlat[plat]) plat="";
+        tasks.push({id:t.id||uid(), text:t.text.slice(0,200), st:st, list:lk, platform:plat, detail:String(t.detail==null?"":t.detail).slice(0,2000)});
       });
     }
     var hsrc=(v.health && typeof v.health==="object")?v.health:{};
@@ -1909,13 +1964,44 @@ function renderTaskList(kind){
   var box=$("#taskList-"+kind);
   if(!box) return;
   var list=tasksOf(curDate,kind);
-  var html=list.map(taskRowHTML).join("");
+  var isWork=(kind==="work");
+  var html=list.map(isWork?workCardHTML:taskRowHTML).join("");
   if(!list.length){
+    var ph={study:"읽은 책·공부 기록", home:"일정을 적어 보세요", leisure:"여가 활동을 적어 보세요", work:"작업 카드에 플랫폼·상세를 적어 보세요"}[kind]||"할 일을 적어 보세요";
     html='<div class="task empty"><span class="st"></span><span class="txt-ph" style="font-size:10.5px;color:#CFC5B4">'
-       +(kind==="study"?"읽은 책·공부 기록":(kind==="home"?"일정을 적어 보세요":(kind==="leisure"?"여가 활동을 적어 보세요":"할 일을 적어 보세요")))
-       +'</span></div>';
+       + ph + '</span></div>';
   }
   box.innerHTML=html;
+  if(isWork) autoGrowCards();
+}
+
+/* ---------- 작업 카드 (플랫폼·상세 내역) ---------- */
+function platList(){ return (S && Array.isArray(S.workPlatforms)) ? S.workPlatforms : []; }
+function platById(id){ var a=platList(); for(var i=0;i<a.length;i++) if(a[i].id===id) return a[i]; return null; }
+function platName(id){ var p=platById(id); return p?p.name:""; }
+function takenPlatIds(){ var o={}; platList().forEach(function(p){ o[p.id]=1; }); return o; }
+function platOptionsHTML(sel){
+  var h='<option value="">플랫폼</option>';
+  platList().forEach(function(p){
+    h+='<option value="'+esc(p.id)+'"'+(p.id===sel?" selected":"")+'>'+esc(p.name)+'</option>';
+  });
+  h+='<option value="__manage">＋ 플랫폼 관리</option>';
+  return h;
+}
+function workCardHTML(t){
+  var st=t.st||0;
+  return '<div class="task wcard" data-id="'+t.id+'">'
+       +   '<div class="wcard-top">'
+       +     '<button class="st s'+st+'" title="'+ST_LABEL[st]+' · 누르면 상태 변경" aria-label="상태 '+ST_LABEL[st]+'">'+ST_SYM[st]+'</button>'
+       +     '<select class="wplat'+(t.platform?" on":"")+'" aria-label="플랫폼" title="플랫폼 선택">'+platOptionsHTML(t.platform||"")+'</select>'
+       +     '<button class="del" title="삭제" aria-label="삭제">×</button>'
+       +   '</div>'
+       +   '<input class="txt" value="'+esc(t.text)+'" placeholder="할 일" maxlength="120" aria-label="할 일">'
+       +   '<textarea class="wdet" rows="1" maxlength="2000" placeholder="상세 내역 (여러 줄)" aria-label="상세 내역">'+esc(t.detail||"")+'</textarea>'
+       + '</div>';
+}
+function autoGrowCards(){
+  $$("#taskList-work .wdet").forEach(function(el){ autoGrowTa(el,1); });
 }
 function taskRowHTML(t){
   return '<div class="task" data-id="'+t.id+'">'
@@ -1933,7 +2019,7 @@ function cycleTask(date, id){
 }
 function addTaskTo(date, text, afterId, list){
   var d=getDay(date);
-  var t={id:uid(), text:text||"", st:0, list:list||"work"};
+  var t={id:uid(), text:text||"", st:0, list:list||"work", platform:"", detail:""};
   if(afterId){
     var i=-1;
     for(var k=0;k<d.tasks.length;k++) if(d.tasks[k].id===afterId) i=k;
@@ -1977,9 +2063,9 @@ function getHealth(date){
   h.energy=clampInt(h.energy,0,5);
   return h;
 }
-function autoGrowTa(el){
+function autoGrowTa(el, minRows){
   if(!el || el.tagName!=="TEXTAREA") return;
-  el.rows=Math.max(2, String(el.value||"").split("\n").length);
+  el.rows=Math.max(minRows||2, String(el.value||"").split("\n").length);
   el.style.height="auto";
   var box=el.offsetHeight-el.clientHeight; // 테두리 두께 보정
   var full=el.scrollHeight+box;
@@ -2208,9 +2294,12 @@ function renderWeek(){
     }).map(function(x){ return x.t; });
     sortedTasks.slice(0,maxShow).forEach(function(t){
       var lc=(t.list==="home")?"#EFA96A":(t.list==="study"?"#EF9FB4":(t.list==="leisure"?"#5FC4AE":"#EBCB5A"));
+      var pn=((t.list||"work")==="work")?platName(t.platform):"";
       tasks+='<div class="wtask'+(t.st===1?" done":"")+'" data-date="'+date+'" data-id="'+t.id+'">'
            +   '<button class="wst s'+t.st+'" data-date="'+date+'" data-id="'+t.id+'" title="'+ST_LABEL[t.st]+'">'+ST_SYM[t.st]+'</button>'
-           +   '<span class="wtxt"><i style="display:inline-block;width:5px;height:5px;border-radius:1px;background:'+lc+';margin-right:4px;vertical-align:1px"></i>'+esc(t.text||"할 일")+'</span>'
+           +   '<span class="wtxt"><i style="display:inline-block;width:5px;height:5px;border-radius:1px;background:'+lc+';margin-right:4px;vertical-align:1px"></i>'
+           +   (pn?'<span class="wtag" title="'+esc(pn)+'">'+esc(pn)+'</span> ':"")
+           +   esc(t.text||"할 일")+'</span>'
            + '</div>';
     });
     if(sortedTasks.length>maxShow){
@@ -2654,6 +2743,7 @@ function syncCatViews(o){
   if(view==="week") renderWeek();
   if(o.ledger) renderLedger();
   if(o.health) renderHealth();
+  if(o.plat) renderTaskList("work");
   scheduleSave();
 }
 
@@ -2664,6 +2754,12 @@ function openCatDlg(focus){
   if(focus==="med"){
     setTimeout(function(){
       var el=$("#mdName");
+      if(el){ try{ el.scrollIntoView({block:"center"}); }catch(e){} el.focus(); }
+    },40);
+  }
+  if(focus==="plat"){
+    setTimeout(function(){
+      var el=$("#plName");
       if(el){ try{ el.scrollIntoView({block:"center"}); }catch(e){} el.focus(); }
     },40);
   }
@@ -2710,6 +2806,16 @@ function renderCatDlg(){
       + '</div>';
   });
 
+  var plats="";
+  platList().forEach(function(p){
+    var used=countPlatformUse(p.id);
+    plats+='<div class="crow mdcrow" data-platrow="'+p.id+'">'
+      + '<input class="cname" data-plname="'+p.id+'" maxlength="12" value="'+esc(p.name)+'" aria-label="플랫폼 이름">'
+      + '<span class="cuse">'+(used?used+"개":"")+'</span>'
+      + '<button class="cdel" data-pldel="'+p.id+'" aria-label="'+esc(p.name)+' 삭제" title="삭제">×</button>'
+      + '</div>';
+  });
+
   body.innerHTML =
       '<div class="csec">'
     +   '<div class="hd"><b>형광펜</b><span>'+S.cats.length+'개</span></div>'
@@ -2730,6 +2836,15 @@ function renderCatDlg(){
     +     '<input type="text" id="lcName" maxlength="12" placeholder="새 분류 이름 (예: 반려동물)" aria-label="새 분류 이름">'
     +     '<select id="lcType" aria-label="구분"><option value="expense">지출</option><option value="income">수입</option></select>'
     +     '<button class="btn primary" id="lcAdd">추가</button>'
+    +   '</div>'
+    + '</div>'
+    + '<div class="csec">'
+    +   '<div class="hd"><b>작업 플랫폼</b><span>'+platList().length+'개</span></div>'
+    +   '<p class="hint">일간 ‘작업’ 카드에서 고르는 플랫폼이에요. 이름을 고쳐도 그동안 적은 작업에 그대로 따라가고, 지울 때는 작업을 다른 플랫폼으로 옮길 수 있어요.</p>'
+    +   plats
+    +   '<div class="cadd mdcadd">'
+    +     '<input type="text" id="plName" maxlength="12" placeholder="새 플랫폼 이름 (예: 유튜브)" aria-label="새 플랫폼 이름">'
+    +     '<button class="btn primary" id="plAdd">추가</button>'
     +   '</div>'
     + '</div>'
     + '<div class="csec">'
@@ -2855,6 +2970,67 @@ function delMed(id){
     msg:"‘"+esc(m.name)+"’ 복용 체크가 "+n+"일치 있어요. 약을 지우면 그 체크도 함께 사라져요.",
     ok:"삭제", danger:true
   }).then(function(v){ if(v!==false) applyMedDelete(id); });
+}
+
+/* ---------- 작업 플랫폼 관리 ---------- */
+function countPlatformUse(id){
+  var n=0;
+  Object.keys(S.days).forEach(function(k){
+    var d=S.days[k]; if(!d || !Array.isArray(d.tasks)) return;
+    d.tasks.forEach(function(t){ if((t.list||"work")==="work" && t.platform===id) n++; });
+  });
+  return n;
+}
+function addPlatform(name){
+  if(!name){ toast("플랫폼 이름을 적어 주세요"); return; }
+  if(platList().length>=12){ toast("플랫폼은 12개까지 만들 수 있어요"); return; }
+  var nm=String(name).replace(/\s+/g," ").trim().slice(0,12);
+  for(var i=0;i<S.workPlatforms.length;i++) if(S.workPlatforms[i].name===nm){ toast("‘"+nm+"’ 플랫폼이 이미 있어요"); return; }
+  var id=freeId("w"+uid().slice(-5), takenPlatIds());
+  S.workPlatforms.push({id:id, name:nm});
+  syncCatViews({plat:true}); renderCatDlg();
+  var f=$("#plName"); if(f) f.focus();
+  toast("‘"+nm+"’ 플랫폼을 추가했어요");
+}
+function renamePlatform(id, name){
+  var p=platById(id); if(!p) return false;
+  var nm=String(name==null?"":name).replace(/\s+/g," ").trim().slice(0,12);
+  if(!nm) return false;
+  for(var i=0;i<S.workPlatforms.length;i++){
+    if(S.workPlatforms[i].id!==id && S.workPlatforms[i].name===nm){ toast("‘"+nm+"’ 플랫폼이 이미 있어요"); return false; }
+  }
+  if(p.name===nm) return true;
+  p.name=nm;
+  syncCatViews({plat:true});
+  return true;
+}
+function applyPlatformDelete(id, moveTo){
+  Object.keys(S.days).forEach(function(k){
+    var d=S.days[k]; if(!d || !Array.isArray(d.tasks)) return;
+    d.tasks.forEach(function(t){
+      if((t.list||"work")!=="work" || t.platform!==id) return;
+      t.platform=moveTo||"";
+    });
+  });
+  S.workPlatforms=S.workPlatforms.filter(function(p){ return p.id!==id; });
+  syncCatViews({plat:true}); renderCatDlg();
+  toast(moveTo?"작업을 옮기고 플랫폼을 지웠어요":"플랫폼을 지웠어요");
+}
+function delPlatform(id){
+  var p=platById(id); if(!p) return;
+  var others=S.workPlatforms.filter(function(x){ return x.id!==id; });
+  if(!others.length){ toast("플랫폼은 하나 이상 있어야 해요"); return; }
+  var n=countPlatformUse(id);
+  if(!n){ applyPlatformDelete(id, ""); return; }
+  ask({
+    title:"플랫폼 삭제",
+    msg:"‘"+esc(p.name)+"’ 플랫폼을 단 작업이 "+n+"개 있어요. 그 작업을 다른 플랫폼으로 옮기거나 플랫폼 표시만 지울 수 있어요.",
+    select: others.map(function(o){ return {value:o.id, label:"‘"+o.name+"’ 쪽으로 옮기기"}; }).concat([{value:"", label:"플랫폼 표시만 지우기"}]),
+    ok:"삭제", danger:true
+  }).then(function(v){
+    if(v===false) return;
+    applyPlatformDelete(id, v||"");
+  });
 }
 
 /* ---------- 확인 대화상자 ---------- */
@@ -3094,6 +3270,12 @@ function bindEvents(){
       for(var k=0;k<d.tasks.length;k++) if(d.tasks[k].id===id) d.tasks[k].text=el.value;
       scheduleSave(); return;
     }
+    if(el.classList.contains("wdet")){
+      var wc=el.closest(".wcard"); if(!wc) return;
+      var dw=getDay(curDate);
+      for(var m=0;m<dw.tasks.length;m++) if(dw.tasks[m].id===wc.dataset.id) dw.tasks[m].detail=el.value.slice(0,2000);
+      autoGrowTa(el,1); scheduleSave(); return;
+    }
     if(el.id==="weight"){
       var hv=el.value.replace(/[^\d.]/g,"").slice(0,5);
       if(hv!==el.value) el.value=hv;
@@ -3136,7 +3318,18 @@ function bindEvents(){
 
   board.addEventListener("change", function(e){
     var el=e.target;
-    if(!el.classList || !el.classList.contains("ms")) return;
+    if(!el.classList) return;
+    if(el.classList.contains("wplat")){
+      var wc=el.closest(".wcard"); if(!wc) return;
+      var dg=getDay(curDate), tt=null;
+      for(var k=0;k<dg.tasks.length;k++) if(dg.tasks[k].id===wc.dataset.id){ tt=dg.tasks[k]; break; }
+      if(!tt){ el.value=""; return; }
+      if(el.value==="__manage"){ el.value=tt.platform||""; openCatDlg("plat"); return; }
+      tt.platform=el.value||"";
+      el.classList.toggle("on", !!tt.platform);
+      scheduleSave(); return;
+    }
+    if(!el.classList.contains("ms")) return;
     var row=el.closest(".meal"); if(!row) return;
     var idx=parseInt(row.dataset.i,10);
     var h=getHealth(curDate); if(!h.meals[idx]) return;
@@ -3341,6 +3534,9 @@ function bindEvents(){
     }else if(t.dataset && t.dataset.mname){
       var m=medById(t.dataset.mname);
       if(m){ var v3=t.value.trim(); if(v3) m.name=v3.slice(0,14); else t.value=m.name; syncCatViews({health:true}); }
+    }else if(t.dataset && t.dataset.plname){
+      var pl=platById(t.dataset.plname);
+      if(pl){ if(!renamePlatform(pl.id, t.value)) t.value=pl.name; }
     }
   });
   cb.addEventListener("click", function(e){
@@ -3348,15 +3544,18 @@ function bindEvents(){
     if(t.id==="pcAdd"){ addPaletteCat(($("#pcName").value||"").trim(), $("#pcColor").value); return; }
     if(t.id==="lcAdd"){ addLedgerCat(($("#lcName").value||"").trim(), $("#lcType").value, $("#lcColor").value); return; }
     if(t.id==="mdAdd"){ addMed(($("#mdName").value||"").trim()); return; }
+    if(t.id==="plAdd"){ addPlatform(($("#plName").value||"").trim()); return; }
     if(t.dataset.pdel){ delPaletteCat(t.dataset.pdel); return; }
     if(t.dataset.ldel){ delLedgerCat(t.dataset.ldel); return; }
     if(t.dataset.mdel){ delMed(t.dataset.mdel); return; }
+    if(t.dataset.pldel){ delPlatform(t.dataset.pldel); return; }
   });
   cb.addEventListener("keydown", function(e){
     if(e.key!=="Enter") return;
     if(e.target.id==="pcName"){ e.preventDefault(); addPaletteCat(e.target.value.trim(), $("#pcColor").value); }
     else if(e.target.id==="lcName"){ e.preventDefault(); addLedgerCat(e.target.value.trim(), $("#lcType").value, $("#lcColor").value); }
     else if(e.target.id==="mdName"){ e.preventDefault(); addMed(e.target.value.trim()); }
+    else if(e.target.id==="plName"){ e.preventDefault(); addPlatform(e.target.value.trim()); }
   });
   $("#askOk").addEventListener("click", function(){
     var sel=$("#askSel");
