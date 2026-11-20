@@ -2552,8 +2552,8 @@ function renderMonth(){
       {label:"작업", kind:"work", color:"#EBCB5A", list:pendFirst(mWork)}
     ].filter(function(g){ return g.list.length; });
     if(mgroups.length){
-      // 일정·작업이 함께 있는 날은 한 줄씩, 한 종류만 있는 날은 두 개까지 제목을 보여 준다
-      var perMax=(mgroups.length>1)?1:2;
+      // 한 줄에 제목 두 개까지 보여 주고, 남는 개수는 +N 으로 표시한다
+      var perMax=2;
       mgroups.forEach(function(g, gi){
         var gDone=0;
         g.list.forEach(function(t){ if(t.st===1) gDone++; });
