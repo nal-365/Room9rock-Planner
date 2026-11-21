@@ -544,11 +544,13 @@ html.wdnd-on,html.wdnd-on body{-webkit-user-select:none;user-select:none;cursor:
 .hweight .hval{font-size:13px}
 .hsec{display:flex;flex-direction:column;gap:2px}
 .hsec .hlab2{font-size:9px;font-weight:800;letter-spacing:.3px;color:#A79B88;margin-top:2px}
-.hmeals{display:flex;flex-direction:column;gap:3px}
-.hmeal{display:flex;gap:3px;font-size:10px;line-height:1.35;color:var(--ink-soft);min-width:0}
-.hmeal b{flex:none;font-size:8.5px;font-weight:800;color:#5E7FA8;background:#EDF3FB;border-radius:3px;padding:0 3px;align-self:flex-start}
-.hmeal em{flex:none;font-style:normal;font-size:8.5px;font-weight:800;color:#9AAFC6;font-variant-numeric:tabular-nums}
-.hmeal span{min-width:0;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.hmeals{display:flex;flex-direction:column;gap:4px}
+.hmeal{display:block;border:1px solid #E7EEF8;border-radius:8px;background:#FBFDFF;padding:4px 6px 5px}
+.hmeal-top{display:flex;align-items:center;gap:4px;min-width:0}
+.hmeal .hmt{flex:none;font-size:9.5px;font-weight:800;color:#4E608F;font-variant-numeric:tabular-nums;letter-spacing:.2px}
+.hmeal .hmt.none{font-size:8.5px;font-weight:700;color:#B9C6D8;letter-spacing:0}
+.hmeal .hms{flex:0 1 auto;min-width:0;font-size:8.5px;font-weight:800;color:#5E7FA8;background:#EDF3FB;border:1px solid #DDE8F6;border-radius:999px;padding:0 5px;line-height:1.5;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hmeal .hmx{margin-top:3px;padding-top:3px;border-top:1px dashed #EDF2F9;font-size:10px;line-height:1.45;color:var(--ink-soft);white-space:pre-wrap;word-break:keep-all;overflow-wrap:anywhere}
 .hnote{margin-top:2px;font-size:10px;line-height:1.45;color:#6E8A45;background:#F8FCF2;border:1px dashed #DEEBD2;border-radius:6px;padding:3px 5px;white-space:pre-wrap;word-break:break-word}
 .hnone{font-size:10px;color:#C6BCAB}
 .hcol .wfoot-lite{font-size:9px;font-weight:800;color:#B3A897;text-align:right}
@@ -580,7 +582,29 @@ html.wdnd-on,html.wdnd-on body{-webkit-user-select:none;user-select:none;cursor:
 .wsum .sc.inc b{color:#2F7F60}
 .wsum .sc.bal b{color:#5D4CA8}
 
-/* 여가 모음집 — 실행 여부 표시 없이 제목만 */
+/* 여가 모음집 — 일간 '여가 시간' 카드와 같은 결의 카드(카테고리 배지 · 제목 · 상세 내역), 실행 여부 표시 없음 */
+.week-pane .wtasks>.lcard{display:block;margin:0 0 5px;padding:5px 6px 6px;border:1px solid #D9EDE7;border-radius:9px;background:#F7FEFC;box-shadow:0 1px 0 rgba(47,122,110,.05);cursor:pointer;transition:background .12s,border-color .12s,box-shadow .12s}
+.week-pane .wtasks>.lcard:last-child{margin-bottom:0}
+.week-pane .wtasks>.lcard:hover{background:#F0FBF8;border-color:#C6E5DD;box-shadow:0 3px 10px -7px rgba(40,92,84,.55)}
+.week-pane .lcard .lbadge{display:inline-block;max-width:100%;padding:1px 6px;border:1px solid #B9E1D7;border-radius:999px;background:#DCF3EC;color:#256A5B;font-size:9px;font-weight:800;line-height:1.45;letter-spacing:.15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;vertical-align:middle}
+.week-pane .lcard .ltitle{display:block;margin:1px 0 0;font-size:12px;font-weight:700;line-height:1.35;color:#2B4A43;white-space:pre-wrap;word-break:keep-all;overflow-wrap:anywhere}
+.week-pane .lcard .lbadge+.ltitle{margin-top:4px}
+.week-pane .lcard .ldet{margin-top:4px;padding-top:4px;border-top:1px dashed #DCEEE9;font-size:10.5px;line-height:1.5;color:#6E8A82;white-space:pre-wrap;word-break:keep-all;overflow-wrap:anywhere}
+/* 주간 할 일 모음집 — 일간 작업·자기개발 카드처럼 상태 버튼 · 분류 태그 · 제목 · 상세 내역 카드 (드래그 이동 유지) */
+.wtask.tcard{--tc-bg:#FFFDF4;--tc-line:#F1E5C4;--tc-tag-bg:#FBF1C9;--tc-tag-bd:#EEDC9E;--tc-tag-ink:#8A6A12;--tc-det:#F1E7CE;--tc-title:#4A4436;
+  display:block;margin:0 0 5px;padding:5px 6px 6px;border:1px solid var(--tc-line);border-radius:9px;background:var(--tc-bg);min-height:0;font-size:12px;line-height:1.35;color:var(--tc-title);cursor:pointer;transition:background .12s,border-color .12s,box-shadow .12s}
+.wtask.tcard.t-home{--tc-bg:#FFFCF6;--tc-line:#F3E1CB;--tc-tag-bg:#FCEBDA;--tc-tag-bd:#F1D4B7;--tc-tag-ink:#9A6327;--tc-det:#F3E4D2;--tc-title:#4F4232}
+.wtask.tcard.t-study{--tc-bg:#FFFAFC;--tc-line:#F2DCE4;--tc-tag-bg:#FCE9F0;--tc-tag-bd:#F1D2DD;--tc-tag-ink:#9C3F58;--tc-det:#F3DDE4;--tc-title:#4C3A40}
+.wtask.tcard:last-child{margin-bottom:0}
+.wtask.tcard:hover{border-color:var(--tc-tag-bd);box-shadow:0 3px 10px -7px rgba(120,96,40,.45)}
+.wtask.tcard .tcard-top{display:flex;align-items:center;gap:4px;min-width:0}
+.wtask.tcard .ttag{margin-left:auto;flex:0 1 auto;min-width:0;max-width:78%;padding:1px 6px;border:1px solid var(--tc-tag-bd);border-radius:999px;background:var(--tc-tag-bg);color:var(--tc-tag-ink);font-size:9px;font-weight:800;line-height:1.45;letter-spacing:.15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;vertical-align:middle}
+.wtask.tcard .ttitle{display:block;margin:4px 0 0;font-size:12px;font-weight:700;line-height:1.35;color:var(--tc-title);white-space:pre-wrap;word-break:keep-all;overflow-wrap:anywhere}
+.wtask.tcard .tdet{margin-top:4px;padding-top:4px;border-top:1px dashed var(--tc-det);font-size:10.5px;line-height:1.5;color:#8A8272;white-space:pre-wrap;word-break:keep-all;overflow-wrap:anywhere}
+.wtask.tcard.done .ttitle{color:#9C9284}
+.wtask.tcard.done .tdet{color:#AFA797}
+/* 드래그 고스트도 카드 모양 그대로 */
+.wtask.tcard.wtask-ghost{display:block;margin:0;max-width:240px;opacity:.97;background:#fff;box-shadow:0 14px 30px -12px rgba(60,40,90,.5);transform:rotate(-1.2deg);border-radius:9px;pointer-events:none}
 .week-pane .lcount{margin-top:auto;border-top:1px dashed var(--line);padding-top:4px;font-size:9px;font-weight:800;color:#B3A897;text-align:right;letter-spacing:.2px}
 @media (max-width:720px){
   .week-index{gap:3px;padding:0 5px;margin-top:9px}
@@ -593,6 +617,16 @@ html.wdnd-on,html.wdnd-on body{-webkit-user-select:none;user-select:none;cursor:
   .week-board{border-radius:6px}
   .week-pane[data-wtab] .week-cols{--wbh:280px}
   .wcol{padding:8px 8px 10px}
+  .week-pane .wtasks>.lcard{padding:4px 5px 5px;border-radius:8px;margin-bottom:4px}
+  .week-pane .lcard .lbadge{font-size:8.5px;padding:0 4px}
+  .week-pane .lcard .ltitle{font-size:11px}
+  .week-pane .lcard .ldet{font-size:10px;line-height:1.45}
+  .wtask.tcard{padding:4px 5px 5px;border-radius:8px;margin-bottom:4px}
+  .wtask.tcard .ttag{font-size:8.5px;padding:0 4px}
+  .wtask.tcard .ttitle{font-size:11px;margin-top:3px}
+  .wtask.tcard .tdet{font-size:10px;line-height:1.45}
+  .hmeal{padding:3px 5px 4px;border-radius:7px}
+  .hmeal .hmx{font-size:9.5px;line-height:1.42}
   .wtask{font-size:11.5px;min-height:24px;gap:4px}
   .wtask .wst{width:16px;height:16px;font-size:10px;border-radius:4px}
   .whead b{font-size:11.5px}
@@ -1044,6 +1078,22 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
   .wtask .wst{width:6.5pt;height:6.5pt;font-size:4.6pt;border-radius:1px}
   .wtask .wdot{width:3pt;height:3pt;margin-right:.8mm}
   .wt-empty{font-size:5.4pt;padding:0}
+  /* 여가 모음집 카드 — 인쇄에서는 테두리·여백을 줄이고 흰 바탕으로 */
+  body[data-print="week"] .week-pane .wtasks>.lcard{padding:.5mm .7mm .6mm;margin-bottom:.7mm;border-radius:1mm;border-color:#DDD;background:#fff;box-shadow:none}
+  body[data-print="week"] .lcard .lbadge{padding:0 .6mm;border-radius:1mm;border-color:#CCC;background:#fff;color:#2F7A6E;font-size:4.4pt;letter-spacing:0}
+  body[data-print="week"] .lcard .ltitle{font-size:5.4pt;line-height:1.3;margin-top:0}
+  body[data-print="week"] .lcard .lbadge+.ltitle{margin-top:.3mm}
+  body[data-print="week"] .lcard .ldet{margin-top:.3mm;padding-top:.3mm;font-size:4.8pt;line-height:1.3;color:#555}
+  /* 주간 할 일 카드 — 인쇄에서는 밀도를 높인 카드 */
+  body[data-print="week"] .wtask.tcard{padding:.5mm .7mm .6mm;margin-bottom:.7mm;border-radius:1mm;border-color:#DDD;background:#fff;box-shadow:none;font-size:5.4pt}
+  body[data-print="week"] .wtask.tcard .wst{width:6.5pt;height:6.5pt;font-size:4.6pt;border-radius:1px}
+  body[data-print="week"] .wtask.tcard .ttag{padding:0 .6mm;border-radius:1mm;border-color:#CCC;background:#fff;font-size:4.4pt;letter-spacing:0}
+  body[data-print="week"] .wtask.tcard .ttitle{font-size:5.4pt;line-height:1.3;margin-top:.5mm}
+  body[data-print="week"] .wtask.tcard .tdet{margin-top:.3mm;padding-top:.3mm;font-size:4.8pt;line-height:1.3;color:#555}
+  body[data-print="week"] .hmeal{padding:.5mm .7mm .6mm;border-radius:1mm;border-color:#DDD;background:#fff}
+  body[data-print="week"] .hmeal .hmt{font-size:4.6pt}
+  body[data-print="week"] .hmeal .hms{font-size:4.2pt;padding:0 .6mm;border-radius:1mm;background:#fff;border-color:#CCC}
+  body[data-print="week"] .hmeal .hmx{font-size:4.8pt;line-height:1.3;margin-top:.3mm;padding-top:.3mm}
   .wcol .tt{--hour-h:4.75mm;padding-top:3px}
   .wcol .tt-hours{width:9pt}
   .wcol .tt-hours .hr span{font-size:4.6pt;top:-2px}
@@ -1522,7 +1572,7 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
         <li><b>지우개</b> — <b>지우개</b>를 고르고 문질러 지워요. 잘못 칠했으면 <kbd>Ctrl</kbd>+<kbd>Z</kbd>로 되돌리기.</li>
         <li><b>할 일</b> — 네모를 누를 때마다 <b>□ → ○ 완료 → △ 일부 → × 못함 → → 미룸</b> 순서로 바뀌어요.</li>
         <li><b>카드</b> — <b>작업·자기개발·여가 시간</b> 열은 카드로 적어요. <b>작업·자기개발</b> 카드는 위줄에서 상태와 분류(플랫폼·카테고리)를 고르고, <b>여가 시간</b> 카드는 상태 없이 분류만 골라요. 제목 아래 <b>상세 내역</b>에 여러 줄로 메모해요. 분류 목록은 카드의 <b>＋ 플랫폼 관리</b>·<b>＋ 카테고리 관리</b>나 카테고리 관리에서 직접 추가·이름 바꾸기·삭제할 수 있어요.</li>
-        <li><b>주간</b> — 일간에서 칠하고 적은 내용이 그대로 모이고, 주간에서 고쳐도 일간에 바로 반영돼요. 주간 화면 위쪽 형광펜도 그대로 쓸 수 있어요.</li>
+        <li><b>주간</b> — 일간에서 칠하고 적은 내용이 그대로 모이고, 주간에서 고쳐도 일간에 바로 반영돼요. 주간 화면 위쪽 형광펜도 그대로 쓸 수 있어요. 주간 위쪽 <b>할 일</b> 탭은 상태·분류 태그·제목·상세 내역이 붙은 카드로(끌어서 날짜 이동, 맨 아래 <b>작/일/자</b>로 분류 골라 빠른 추가), <b>건강</b> 탭은 식단을 시간·시간대와 내용 카드로, <b>여가시간</b> 탭은 카테고리 배지·제목·상세 내역 카드로 모아 보여 줘요.</li>
         <li><b>장부</b> — 날짜·시간·수입/지출·분류·내용·금액을 적고 상세 내역을 여러 줄로 남겨요. 총 지출·총 수입·잔액과 <b>분류별 모아보기</b>가 자동으로 정리되고, 분류를 누르면 그 내역만 필터링됩니다.</li>
         <li><b>일간 열</b> — <b>건강</b>은 위에서부터 몸무게 → 오늘의 한 줄 → 식단(시간·시간대·내용, 여러 줄 가능)을 적고, 아래 트래커 한 칸에 물·약·에너지·장건강(안감·바나나·딱딱함·설사·혈변 중 하나, 누르면 선택·다시 누르면 해제)·기분(5단계)을 모아 둡니다. <b>작업·자기개발·여가 시간</b>은 분류·상세 내역이 붙은 카드로, <b>일정</b>은 체크리스트로 적어요. <b>장부</b>는 맨 위에 오늘 지출·오늘 수입과 이번 달 지출·수입 합계를 두고, 그 아래에서 수입/지출을 골라 시간·분류·내용·금액·상세 내역을 적어요. 기분 이모지는 월간 달력에도 표시됩니다.</li>
         <li><b>피드백</b> — <b>작업·자기개발·일정·장부·여가 시간</b> 열 맨 아래 칸에 그날의 회고를 적어요. 날짜마다 따로 저장되고, 화면을 넓게 보면 건강 열과 같은 높이까지 채워집니다.</li>
@@ -2671,10 +2721,18 @@ function renderWeekTasks(){
       return (weekOrder(a.t)-weekOrder(b.t)) || (a.i-b.i);
     }).map(function(x){ return x.t; });
     weekTasks.forEach(function(t){
-      var lc=(t.list==="home")?"#EFA96A":(t.list==="study"?"#EF9FB4":"#EBCB5A");
-      tasks+='<div class="wtask'+(t.st===1?" done":"")+'" data-date="'+date+'" data-id="'+t.id+'">'
-           +   '<button class="wst s'+t.st+'" data-date="'+date+'" data-id="'+t.id+'" title="'+ST_LABEL[t.st]+'">'+ST_SYM[t.st]+'</button>'
-           +   '<span class="wtxt"><i class="wdot" style="background:'+lc+'"></i>'+esc(t.text||"할 일")+'</span>'
+      // 일간 카드와 같은 결: 상태 버튼 · 분류(일정/플랫폼/카테고리) 태그 · 제목 · 상세 내역
+      var lst=(t.list==="home")?"home":(t.list==="study"?"study":"work");
+      var st=t.st||0;
+      var tag=(lst==="home")?"일정":(lst==="study"?(kindName("study",t.category)||"자기개발"):(platName(t.platform)||"작업"));
+      var det=String(t.detail==null?"":t.detail).replace(/\s+$/,"");
+      tasks+='<div class="wtask tcard t-'+lst+(st===1?" done":"")+'" data-date="'+date+'" data-id="'+t.id+'">'
+           +   '<div class="tcard-top">'
+           +     '<button class="wst s'+st+'" data-date="'+date+'" data-id="'+t.id+'" title="'+ST_LABEL[st]+' · 누르면 상태 변경" aria-label="상태 '+ST_LABEL[st]+'">'+ST_SYM[st]+'</button>'
+           +     '<span class="ttag">'+esc(tag)+'</span>'
+           +   '</div>'
+           +   '<b class="ttitle">'+esc(t.text||"할 일")+'</b>'
+           +   (det ? '<div class="tdet">'+esc(det)+'</div>' : '')
            + '</div>';
     });
     if(!weekTasks.length) tasks+='<div class="wt-empty" data-date="'+date+'">할 일 없음</div>';
@@ -2702,8 +2760,15 @@ function renderWeekHealth(){
     var bmLabel=""; BM_STATES.forEach(function(s){ if(s.k===bm) bmLabel=s.label; });
     var mealHTML = meals.length
       ? meals.map(function(m){
-          var x=String(m.x||"").split("\n").filter(function(s){ return s.trim(); }).join(" · ");
-          return '<div class="hmeal">'+(m.s?'<b>'+esc(m.s)+'</b>':"")+(m.t?'<em>'+esc(m.t)+'</em>':"")+'<span>'+esc(x||"기록")+'</span></div>';
+          // 일간 건강 열의 식단 카드와 같은 결: 위줄 시간·시간대, 아래 내용 여러 줄 그대로
+          var x=String(m.x==null?"":m.x).replace(/\s+$/,"");
+          return '<div class="hmeal">'
+               +   '<div class="hmeal-top">'
+               +     (m.t ? '<span class="hmt">'+esc(m.t)+'</span>' : '<span class="hmt none">시간 미기록</span>')
+               +     (m.s ? '<span class="hms">'+esc(m.s)+'</span>' : '')
+               +   '</div>'
+               +   '<div class="hmx">'+esc(x||"기록")+'</div>'
+               + '</div>';
         }).join("")
       : '<div class="hnone">식단 기록 없음</div>';
     var body='<div class="hrow"><span class="hlab">물</span><span class="wdots">'+weekDots(h.water,4)+'</span><span class="hval'+(h.water?'':' none')+'" style="font-size:10.5px">'+(h.water?h.water+' / 4':'–')+'</span></div>'
@@ -2790,17 +2855,21 @@ function renderWeekMoney(){
     + '<div class="sc bal"><span>잔액 (수입 − 지출)</span><b>'+(bal<0?"−":"")+fmtNum(Math.abs(bal))+'원</b></div>';
 }
 
-/* 5) 여가시간 — 여가 카드 목록 (실행 여부 표시 없이 제목만) */
+/* 5) 여가시간 — 일간 '여가 시간' 열과 같은 카드(카테고리 배지 · 제목 · 상세 내역) */
 function renderWeekLeisure(){
   var dates=weekDates(), today=todayISO(), html="";
   dates.forEach(function(date){
     var d=getDay(date);
     var list=(d.tasks||[]).filter(function(t){ return t.list==="leisure"; });
-    // 여가시간 보드는 실행 여부(○△×→) 표시 없이 카드 제목만 모아 보여 준다.
+    // 여가시간 보드는 실행 여부(○△×→) 버튼 없이 카테고리 배지·제목·상세 내역을 접기 없이 모두 보여 준다.
     var rows = list.length
       ? list.map(function(t){
-          return '<div class="wtask lrow" data-date="'+date+'" data-id="'+t.id+'">'
-               +   '<span class="wtxt">'+esc(t.text||"여가")+'</span>'
+          var cat=kindName("leisure", t.category);
+          var det=String(t.detail==null?"":t.detail).replace(/\s+$/,"");
+          return '<div class="lcard" data-date="'+date+'" data-id="'+t.id+'">'
+               +   (cat ? '<span class="lbadge">'+esc(cat)+'</span>' : '')
+               +   '<b class="ltitle">'+esc(t.text||"여가")+'</b>'
+               +   (det ? '<div class="ldet">'+esc(det)+'</div>' : '')
                + '</div>';
         }).join("")
       : '<div class="wt-empty" data-date="'+date+'">여가 카드 없음</div>';
