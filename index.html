@@ -437,32 +437,40 @@ button.mini:hover{background:#F7F3EA}
 .stars button.on{color:#EFB84C}
 .review-box input{flex:1;min-width:0;border:0;background:transparent;outline:none;font-size:13px}
 
-.week-scroll{overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;padding-bottom:3px}
-.week-cols{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:7px;min-width:0}
-.wcol{display:flex;flex-direction:column;gap:6px;background:var(--paper2);border:1px solid var(--line);border-radius:11px;padding:8px 7px 7px;min-width:0}
-.wcol.today{border-color:#CFC2F0;box-shadow:0 0 0 2px rgba(139,123,216,.13)}
-.whead{display:flex;align-items:baseline;justify-content:space-between;gap:4px;border-bottom:1px solid var(--line);padding-bottom:4px}
-.whead b{font-family:var(--serif);font-size:13.5px;letter-spacing:.2px;font-variant-numeric:tabular-nums}
-.whead span{font-size:9.5px;font-weight:800;color:var(--ink-mute);letter-spacing:.4px}
-.wcol.today .whead b,.wcol.today .whead span{color:var(--accent-deep)}
-.wtasks{display:flex;flex-direction:column;gap:1px;min-height:96px;max-height:150px;overflow-y:auto}
-.wtask{display:flex;align-items:flex-start;gap:4px;font-size:11.5px;line-height:1.35;padding:2px 0;color:var(--ink-soft);cursor:pointer;border-radius:4px}
-.wtask:hover{background:#FAF6EE}
-.wtask .wst{flex:none;width:14px;height:14px;border-radius:3.5px;border:1px dashed #D5C9B4;display:grid;place-items:center;font-size:9.5px;font-weight:800;color:#B9AF9F;background:#fff;padding:0;cursor:pointer;line-height:1;margin-top:1px}
+/* 주간도 일간과 같은 파스텔 프레임 + 1장의 흰 연결 보드 */
+.week-scroll{overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch}
+.week-frame{background:linear-gradient(180deg,#DFEAF9,#D3E1F4);padding:13px;border-radius:16px;box-shadow:0 24px 54px -36px rgba(56,84,120,.6),inset 0 1px 0 rgba(255,255,255,.7)}
+.week-board{background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(60,80,110,.1);display:flex;flex-direction:column;overflow:hidden}
+.week-board .board-tools{border:0;border-bottom:1px solid #EDE7DA;border-radius:0;margin:0;position:static;box-shadow:none}
+.week-cols{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));min-width:0;align-items:stretch;align-content:stretch;min-height:var(--wbh,420px)}
+.wcol{display:flex;flex-direction:column;gap:6px;min-width:0;padding:9px 10px 11px;background:transparent}
+.wcol+.wcol{border-left:1px dashed #EFCBD6}
+.wcol.today{background:linear-gradient(180deg,#FAF7FF 0,#FEFDFF 48%)}
+.whead{display:flex;align-items:center;justify-content:center;gap:5px;width:100%;margin:0;border:0;border-radius:999px;padding:5px 7px;background:var(--ph-bg,#EDF3FB);color:var(--ph-ink,#3E6A9C);cursor:pointer;font:inherit;text-align:center;touch-action:manipulation;flex:none;transition:filter .14s,box-shadow .14s}
+.whead:hover{filter:brightness(.975)}
+.whead b{font-family:var(--serif);font-size:12.5px;font-weight:600;letter-spacing:.2px;font-variant-numeric:tabular-nums;line-height:1.15}
+.whead span{font-size:9.5px;font-weight:800;letter-spacing:.3px;opacity:.78;line-height:1}
+.wcol.today .whead{box-shadow:inset 0 0 0 1.5px var(--ph-ink,#5D4CA8),0 5px 12px -9px rgba(93,76,168,.7)}
+.wcol.today .whead b{font-weight:800}
+.whead:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.wtasks{display:flex;flex-direction:column;gap:0;min-height:70px;flex:1 1 auto}
+.wtask{display:flex;align-items:center;gap:5px;font-size:12.5px;line-height:1.35;min-height:26px;padding:2px 0;border-bottom:1px dashed var(--line);color:var(--ink-soft);cursor:pointer}
+.wtask:hover{background:#FBF8FF}
+.wtask .wst{flex:none;width:18px;height:18px;border-radius:5px;border:1.4px dashed #D5C9B4;display:grid;place-items:center;font-size:11.5px;font-weight:700;color:#B9AF9F;background:#fff;padding:0;cursor:pointer;line-height:1;touch-action:manipulation}
 .wtask .wst.s1{border-style:solid;border-color:#A9DCC4;background:#EAF8F1;color:#1F7A57}
 .wtask .wst.s2{border-style:solid;border-color:#F0D49A;background:#FDF5E4;color:#A97315}
 .wtask .wst.s3{border-style:solid;border-color:#E7B7B3;background:#FBEDEC;color:#AE4A45}
 .wtask .wst.s4{border-style:solid;border-color:#BCC8E4;background:#EEF2FA;color:#4E608F}
 .wtask .wtxt{flex:1;min-width:0;overflow-wrap:anywhere}
-.wtask .wdot{display:inline-block;width:5px;height:5px;border-radius:1px;margin-right:4px;vertical-align:1px}
+.wtask .wdot{display:inline-block;width:6px;height:6px;border-radius:2px;margin-right:5px;vertical-align:1px}
 .wtask.done .wtxt{color:#9C9284}
 /* 주간 할 일 드래그 앤 드롭 — 마우스·터치·펜슬 공통 */
 .wtask{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent}
 .wtask.drag-src{opacity:.22}
 .wtask.wtask-ghost{position:fixed;left:0;top:0;z-index:80;display:flex;align-items:flex-start;gap:4px;pointer-events:none;margin:0;padding:4px 6px;border-radius:8px;background:#fff;border:1px solid #D8C8EE;box-shadow:0 14px 30px -12px rgba(60,40,90,.5);opacity:.97;transform:rotate(-1.2deg);max-width:240px;font-size:11.5px;line-height:1.35;color:var(--ink-soft)}
-.wcol.drop-over{border-color:#B4A0E6;background:#F7F3FF;box-shadow:0 0 0 2px rgba(139,123,216,.22)}
-.wcol.drop-over .whead b,.wcol.drop-over .whead span{color:var(--accent-deep)}
-.wcol.drop-same{border-style:dashed}
+.wcol.drop-over{background:#F9F6FF;box-shadow:inset 0 0 0 2px rgba(139,123,216,.34)}
+.wcol.drop-over .whead{box-shadow:inset 0 0 0 1.5px var(--accent,#8B7BD8)}
+.wcol.drop-same{box-shadow:inset 0 0 0 1px rgba(139,123,216,.22)}
 html.wdnd-on,html.wdnd-on body{-webkit-user-select:none;user-select:none;cursor:grabbing}
 .wt-empty{font-size:11.5px;line-height:1.35;padding:2px 0;color:#C6BCAB;cursor:pointer}
 .wadd{width:100%;border:1px dashed var(--line);border-radius:6px;background:transparent;font-size:11px;padding:3px 4px;outline:none;color:var(--ink-mute)}
@@ -475,15 +483,16 @@ html.wdnd-on,html.wdnd-on body{-webkit-user-select:none;user-select:none;cursor:
 .wadd-cat:hover{filter:brightness(.97)}
 .wadd-cat:active{transform:scale(.94)}
 .wadd-cat:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
-.wfoot{display:flex;align-items:baseline;justify-content:flex-end;gap:1px;border-top:1px solid var(--line);padding-top:4px;color:var(--ink-soft);font-variant-numeric:tabular-nums}
-.wfoot b{font-size:13px;font-weight:800}
-.wfoot i{font-style:normal;font-size:8.5px;font-weight:800;opacity:.6;margin:0 1px 0 1px}
+.wfoot{display:flex;align-items:baseline;justify-content:flex-end;gap:1px;margin-top:auto;border-top:1px solid #E6DCF8;padding-top:5px;color:#6E5CCB;font-variant-numeric:tabular-nums;letter-spacing:-.4px}
+.wfoot .wfl{font-family:var(--sans);font-style:normal;letter-spacing:.2px;font-size:9px;font-weight:800;color:#9A8FD0;margin-right:auto;opacity:.9}
+.wfoot b{font-size:15px;font-weight:800;line-height:1.05}
+.wfoot i{font-style:normal;font-size:8.5px;font-weight:800;opacity:.7;margin:0 2px 0 1px;letter-spacing:0}
 .wfoot.zero b{color:#C6BCAB}
 
 /* ---------- 주간 인덱스 탭 (다이어리 색인 라벨) ---------- */
-.week-index{display:flex;align-items:flex-end;gap:4px;margin:12px 0 0;padding:0 5px;border-bottom:1px solid var(--line);overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.week-index{display:flex;align-items:flex-end;gap:4px;margin:14px 0 0;padding:0 12px;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;scrollbar-width:none}
 .week-index::-webkit-scrollbar{display:none}
-.week-index .wi{flex:0 0 auto;min-width:102px;display:flex;align-items:center;justify-content:center;gap:4px;position:relative;top:1px;margin-bottom:-1px;border:1px solid var(--line);border-bottom:0;border-radius:9px 9px 0 0;background:var(--t,#F3EFE6);color:var(--ti,#8A7F6D);font-family:var(--sans);font-size:12px;font-weight:800;letter-spacing:.2px;padding:8px 16px 7px;cursor:pointer;white-space:nowrap;opacity:.55;transition:opacity .15s,top .15s,padding .15s;touch-action:manipulation}
+.week-index .wi{flex:0 0 auto;min-width:102px;display:flex;align-items:center;justify-content:center;gap:4px;position:relative;top:1px;margin-bottom:-1px;border:1px solid rgba(120,140,170,.18);border-bottom:0;border-radius:9px 9px 0 0;background:var(--t,#F3EFE6);color:var(--ti,#8A7F6D);font-family:var(--sans);font-size:12px;font-weight:800;letter-spacing:.2px;padding:8px 16px 7px;cursor:pointer;white-space:nowrap;opacity:.55;transition:opacity .15s,top .15s,padding .15s;touch-action:manipulation}
 .week-index .wi i{flex:none;width:6px;height:6px;border-radius:2px;background:currentColor;opacity:.4}
 .week-index .wi:hover{opacity:.85}
 .week-index .wi.on{top:0;opacity:1;background:var(--t);color:var(--ti);padding-bottom:9px;box-shadow:0 -1px 0 rgba(255,255,255,.7) inset, 0 -4px 12px -9px rgba(80,64,44,.55)}
@@ -492,17 +501,21 @@ html.wdnd-on,html.wdnd-on body{-webkit-user-select:none;user-select:none;cursor:
 .week-index .wi:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
 
 .week-pane[hidden]{display:none}
-.week-pane{padding-top:11px}
-.week-pane .board-tools{margin-bottom:8px}
-.whead{border:0;background:transparent;padding:0 0 4px;margin:0;width:100%;display:flex;align-items:baseline;justify-content:space-between;gap:4px;border-bottom:1px solid var(--line);cursor:pointer;font:inherit;color:inherit;text-align:left;border-radius:4px 4px 0 0}
-.whead:hover b{color:var(--accent-deep)}
-.whead:hover span{color:var(--accent-deep)}
-.whead:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
-
+.week-pane{padding-top:0}
 /* 인덱스 모음집 공통 카드 */
 .week-pane .wtasks{min-height:70px}
-.week-pane[data-wtab="tasks"] .wcol,.week-pane[data-wtab="health"] .wcol,.week-pane[data-wtab="money"] .wcol,.week-pane[data-wtab="leisure"] .wcol{min-height:286px}
-.week-pane[data-wtab="tasks"] .wtasks{flex:1 1 auto;min-height:120px;max-height:360px}
+.week-pane[data-wtab="tasks"] .week-cols{--wbh:400px}
+.week-pane[data-wtab="health"] .week-cols{--wbh:320px}
+.week-pane[data-wtab="time"] .week-cols{--wbh:0}
+.week-pane[data-wtab="money"] .week-cols{--wbh:300px}
+.week-pane[data-wtab="leisure"] .week-cols{--wbh:250px}
+.week-pane[data-wtab="tasks"] .wtasks{flex:1 1 auto;min-height:120px}
+/* 인덱스 탭 색 = 보드 상단 요일 필 색 */
+.week-pane[data-wtab="tasks"]{--ph-bg:#FDF0B8;--ph-ink:#8A6A12}
+.week-pane[data-wtab="health"]{--ph-bg:#CFE4FB;--ph-ink:#3E6A9C}
+.week-pane[data-wtab="time"]{--ph-bg:#DDD6F8;--ph-ink:#5D4CA8}
+.week-pane[data-wtab="money"]{--ph-bg:#FBDFCB;--ph-ink:#A9603A}
+.week-pane[data-wtab="leisure"]{--ph-bg:#CFF0EA;--ph-ink:#2F7A6E}
 .hcard{display:flex;flex-direction:column;gap:3px;background:#fff;border:1px solid #E4EBF6;border-radius:8px;padding:6px 7px}
 .hcard .hrow{display:flex;align-items:center;gap:4px;min-width:0;font-size:10.5px}
 .hcard .hlab{flex:none;width:34px;font-size:9px;font-weight:800;letter-spacing:.2px;color:#A79B88}
@@ -537,16 +550,22 @@ html.wdnd-on,html.wdnd-on body{-webkit-user-select:none;user-select:none;cursor:
 .hnote{margin-top:2px;font-size:10px;line-height:1.45;color:#6E8A45;background:#F8FCF2;border:1px dashed #DEEBD2;border-radius:6px;padding:3px 5px;white-space:pre-wrap;word-break:break-word}
 .hnone{font-size:10px;color:#C6BCAB}
 .hcol .wfoot-lite{font-size:9px;font-weight:800;color:#B3A897;text-align:right}
-
+/* 주간 보드 안에서는 흰 보드 위에 놓이므로 카드 면을 살짝만 띄운다 */
+.week-pane .hcard,.week-pane .hweight{background:#FBFDFF}
+.hcol .hsec{flex:0 0 auto}
 /* 장부 모음집 */
-.week-pane .money-list{border:1px solid #E6EEDC;border-radius:8px;padding:5px 7px;background:#FFFEFB;min-height:70px;max-height:330px;overflow:auto}
-.week-pane .money-list .mrow{cursor:pointer}
+.week-pane .money-list{border:0;border-radius:0;padding:0;background:transparent;min-height:60px;max-height:none;overflow:visible;gap:0}
+.week-pane .money-list .mrow{cursor:pointer;padding:4px 0 5px}
 .week-pane .money-list .mrow:last-child{border-bottom:0}
+.week-pane .money-top{margin:0 0 2px;padding:0 0 5px}
+.week-pane .money-top .mf{font-size:9.5px}
+.week-pane .money-top .mf b{font-size:15px;letter-spacing:.2px}
+.week-pane .money-top .mf .mval i{font-size:8.5px}
 .mfoot{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:4px;border-top:1px solid #E6EEDC;padding-top:4px;font-size:9.5px;font-weight:800}
 .mfoot .exp{color:#A9504A}
 .mfoot .inc{color:#2F7F60}
-.wsum{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:12px}
-.wsum .sc{background:#fff;border:1px solid #E6EEDC;border-radius:11px;padding:9px 11px}
+.wsum{display:flex;flex-wrap:wrap;justify-content:flex-start;gap:8px;margin-top:12px}
+.wsum .sc{flex:1 1 168px;max-width:280px;min-width:0;background:#fff;border:1px solid #E6EEDC;border-radius:11px;padding:8px 11px}
 .wsum .sc span{display:block;font-size:10.5px;font-weight:700;color:#8FA080;letter-spacing:.2px}
 .wsum .sc b{display:block;margin-top:2px;font-size:17px;font-weight:800;color:#4C7A46;font-variant-numeric:tabular-nums}
 .wsum .sc.exp b{color:#A9504A}
@@ -554,19 +573,28 @@ html.wdnd-on,html.wdnd-on body{-webkit-user-select:none;user-select:none;cursor:
 .wsum .sc.bal b{color:#5D4CA8}
 
 /* 여가 모음집 */
-.week-pane .lrow .wst{flex:none;width:14px;height:14px;border-radius:3.5px;border:1px dashed #D5C9B4;display:grid;place-items:center;font-size:9.5px;font-weight:800;color:#B9AF9F;background:#fff;line-height:1;margin-top:1px}
+.week-pane .lrow .wst{flex:none;width:18px;height:18px;border-radius:5px;border:1.4px dashed #D5C9B4;display:grid;place-items:center;font-size:11.5px;font-weight:700;color:#B9AF9F;background:#fff;line-height:1}
 .week-pane .lrow .wst.s1{border-style:solid;border-color:#A9DCC4;background:#EAF8F1;color:#1F7A57}
 .week-pane .lrow .wst.s2{border-style:solid;border-color:#F0D49A;background:#FDF5E4;color:#A97315}
 .week-pane .lrow .wst.s3{border-style:solid;border-color:#E7B7B3;background:#FBEDEC;color:#AE4A45}
 .week-pane .lrow .wst.s4{border-style:solid;border-color:#BCC8E4;background:#EEF2FA;color:#4E608F}
 .week-pane .lrow.done .wtxt{color:#9C9284}
+.week-pane .lcount{margin-top:auto;border-top:1px dashed var(--line);padding-top:4px;font-size:9px;font-weight:800;color:#B3A897;text-align:right;letter-spacing:.2px}
 @media (max-width:720px){
-  .week-index{gap:3px;padding:0 3px;margin-top:9px}
+  .week-index{gap:3px;padding:0 5px;margin-top:9px}
   .week-index .wi{flex:1 1 0;min-width:0;font-size:10.5px;padding:6px 3px 5px;gap:3px;letter-spacing:0}
   .week-index .wi.on{padding-bottom:7px}
   .week-index .wi i{width:5px;height:5px}
-  .wsum{grid-template-columns:1fr;gap:6px}
-  .week-pane .wcol{min-height:0}
+  .wsum{display:grid;grid-template-columns:1fr;gap:6px}
+  .wsum .sc{max-width:none}
+  .week-frame{padding:7px;border-radius:12px}
+  .week-board{border-radius:6px}
+  .week-pane[data-wtab] .week-cols{--wbh:280px}
+  .wcol{padding:8px 8px 10px}
+  .wtask{font-size:11.5px;min-height:24px;gap:4px}
+  .wtask .wst{width:16px;height:16px;font-size:10px;border-radius:4px}
+  .whead b{font-size:11.5px}
+  .whead span{font-size:9px}
 }
 @media (max-width:430px){
   .week-index .wi{font-size:9.8px;padding:5px 2px 4px}
@@ -756,6 +784,7 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
   .col:nth-child(4n+1){border-left:0}
   .col:nth-child(n+5){border-top:1px dashed #EFCBD6}
   .week-cols{grid-template-columns:repeat(7,132px);min-width:max-content}
+  .week-board .board-tools{position:static;box-shadow:none;background:linear-gradient(180deg,#FFFDF8,#FAF6EE)}
   .wstats{grid-template-columns:1fr}
 }
 @media (max-width:980px){
@@ -994,12 +1023,18 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
   .week-pane[data-wtab="health"] .wcol,
   .week-pane[data-wtab="money"] .wcol,
   .week-pane[data-wtab="leisure"] .wcol{min-height:0}
+  .week-pane .week-cols{--wbh:0}
+  .week-pane[data-wtab] .week-cols{--wbh:0}
   .week-pane[data-wtab="tasks"] .wtasks{min-height:0;max-height:none}
   .hcard,.week-pane .money-list{border-color:#DDD;max-height:none}
   .hnote{background:#fff}
   .week-scroll{overflow:visible}
-  .week-cols{grid-template-columns:repeat(7,1fr);gap:1.6mm}
-  .wcol{border-color:#DDD;padding:1mm;gap:1mm;border-radius:2mm;break-inside:avoid}
+  .week-frame{background:#fff;padding:0;box-shadow:none;border-radius:0}
+  .week-board{box-shadow:none;border:1px solid #DDE4EC;border-radius:0;overflow:visible}
+  .week-index{margin-top:0;padding:0}
+  .week-cols{grid-template-columns:repeat(7,1fr);gap:0}
+  .wcol{border-color:#DDD;padding:1mm;gap:1mm;border-radius:0;break-inside:avoid}
+  .wcol+.wcol{border-left:1px dashed #E8CBD4}
   .whead b{font-size:7pt}
   .whead span{font-size:5.6pt}
   .wtasks{min-height:0;max-height:none;overflow:visible}
@@ -1303,24 +1338,36 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
     </div>
 
     <div class="week-pane" data-wtab="tasks" id="weekPaneTasks">
-      <div class="week-scroll">
-        <div class="week-cols" id="weekCols"></div>
+      <div class="week-frame">
+        <div class="week-board">
+          <div class="week-scroll">
+            <div class="week-cols" id="weekCols"></div>
+          </div>
+        </div>
       </div>
     </div>
 
     <div class="week-pane" data-wtab="health" id="weekPaneHealth" hidden>
-      <div class="week-scroll">
-        <div class="week-cols card-cols" id="weekHealth"></div>
+      <div class="week-frame">
+        <div class="week-board">
+          <div class="week-scroll">
+            <div class="week-cols card-cols" id="weekHealth"></div>
+          </div>
+        </div>
       </div>
     </div>
 
     <div class="week-pane" data-wtab="time" id="weekPaneTime" hidden>
-      <div class="board-tools week-tools no-print" aria-label="주간 형광펜 팔레트">
-        <span class="lab">형광펜</span>
-        <div class="pal-in" id="paletteItemsWeek"></div>
-      </div>
-      <div class="week-scroll">
-        <div class="week-cols" id="weekTime"></div>
+      <div class="week-frame">
+        <div class="week-board">
+          <div class="board-tools week-tools no-print" aria-label="주간 형광펜 팔레트">
+            <span class="lab">형광펜</span>
+            <div class="pal-in" id="paletteItemsWeek"></div>
+          </div>
+          <div class="week-scroll">
+            <div class="week-cols" id="weekTime"></div>
+          </div>
+        </div>
       </div>
       <div class="wstats" id="weekStats">
         <div class="stat-cards" id="statCards"></div>
@@ -1329,15 +1376,23 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
     </div>
 
     <div class="week-pane" data-wtab="money" id="weekPaneMoney" hidden>
-      <div class="week-scroll">
-        <div class="week-cols card-cols" id="weekMoney"></div>
+      <div class="week-frame">
+        <div class="week-board">
+          <div class="week-scroll">
+            <div class="week-cols card-cols" id="weekMoney"></div>
+          </div>
+        </div>
       </div>
       <div class="wsum" id="weekMoneySum"></div>
     </div>
 
     <div class="week-pane" data-wtab="leisure" id="weekPaneLeisure" hidden>
-      <div class="week-scroll">
-        <div class="week-cols card-cols" id="weekLeisure"></div>
+      <div class="week-frame">
+        <div class="week-board">
+          <div class="week-scroll">
+            <div class="week-cols card-cols" id="weekLeisure"></div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -2525,7 +2580,7 @@ function refreshSums(){
     var st=dayStats(col.dataset.date);
     var f=col.querySelector(".wfoot");
     if(f){
-      f.innerHTML='<b>'+fmtHM(st.total).h+'</b><i>H</i> <b>'+fmtHM(st.total).m+'</b><i>M</i>';
+      f.innerHTML='<span class="wfl">합계</span><b>'+fmtHM(st.total).h+'</b><i>H</i> <b>'+fmtHM(st.total).m+'</b><i>M</i>';
       f.classList.toggle("zero", st.total===0);
     }
   });
@@ -2712,8 +2767,11 @@ function renderWeekMoney(){
     wExp+=exp; wInc+=inc;
     html+='<div class="wcol'+(date===today?" today":"")+'" data-date="'+date+'">'
         +   weekHeadHTML(date)
+        +   '<div class="money-top">'
+        +     '<div class="mf"><span>지출</span><span class="mval"><b>'+fmtNum(exp)+'</b><i>원</i></span></div>'
+        +     (inc ? '<div class="mf in"><span>수입</span><span class="mval"><b>'+fmtNum(inc)+'</b><i>원</i></span></div>' : '')
+        +   '</div>'
         +   '<div class="money-list">'+rows+'</div>'
-        +   ((exp||inc) ? '<div class="mfoot"><span class="exp">지출 '+fmtNum(exp)+'</span>'+(inc?'<span class="inc">수입 '+fmtNum(inc)+'</span>':"")+'</div>' : '')
         + '</div>';
   });
   $("#weekMoney").innerHTML=html;
@@ -2741,7 +2799,7 @@ function renderWeekLeisure(){
     html+='<div class="wcol'+(date===today?" today":"")+'" data-date="'+date+'">'
         +   weekHeadHTML(date)
         +   '<div class="wtasks">'+rows+'</div>'
-        +   '<div class="wfoot-lite" style="font-size:9px;font-weight:800;color:#B3A897;text-align:right">'+list.length+'개</div>'
+        +   '<div class="lcount">'+list.length+'개</div>'
         + '</div>';
   });
   $("#weekLeisure").innerHTML=html;
