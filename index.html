@@ -257,11 +257,13 @@ button.mini:hover{background:#F7F3EA}
 .mrow.inc{border-bottom-color:#D7EDE4}
 .mrow .msub .mt{flex:none;font-size:8.5px;font-weight:800;padding:0 3px;border-radius:3px;background:#DDF3E8;color:#1F7A57;letter-spacing:0}
 .mrow .msub .mt.exp{background:#FBECEA;color:#A9504A}
-.mrow .mdet{margin-top:2px;font-size:10px;line-height:1.5;color:#6E7F60;white-space:pre-wrap;word-break:break-word}
 /* 일간·주간 장부 카드 — 내역 1건마다 건강 식단 카드처럼 둥근 테두리·연한 초록 톤 배경의 독립 카드 박스
-   3줄 구조: 1줄 시간·수입/지출 배지·카테고리(일간은 삭제 ×), 2줄 내역·금액, 3줄 상세 내역 */
-.mrow.mcard{display:flex;flex-direction:column;gap:2px;padding:5px 7px 6px;border:1px solid #DFEBCF;border-radius:8px;background:#FCFEF6;box-shadow:0 1px 2px -1px rgba(84,120,54,.10);cursor:pointer;transition:background .12s,border-color .12s}
-.mrow.mcard .mc-top{display:flex;align-items:center;gap:4px;min-width:0;line-height:1.3}
+   3줄 구조: 1줄 시간·카테고리·수입/지출 배지(일간은 맨 끝에 삭제 ×), 2줄 내역·금액, 3줄 상세 내역
+   — 1~3줄의 오른쪽 열(수입/지출 배지 · 금액 · 상세 금액)이 한 줄로 딱 맞도록 카드를 2열 그리드로 깐다.
+     왼쪽 열 = 시간·카테고리 / 내역 / 상세 항목명, 오른쪽 열 = 금액 계열 */
+.mrow.mcard{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:8px;row-gap:1px;align-items:baseline;padding:5px 7px 6px;border:1px solid #DFEBCF;border-radius:8px;background:#FCFEF6;box-shadow:0 1px 2px -1px rgba(84,120,54,.10);cursor:pointer;transition:background .12s,border-color .12s}
+.mrow.mcard>*{min-width:0}
+.mrow.mcard .mc-top{grid-column:1 / -1;display:flex;align-items:center;gap:4px;min-width:0;line-height:1.3}
 .mrow.mcard .mc-top .mtm{flex:none;font-weight:800;font-size:9.5px;color:#7E8F6C;font-variant-numeric:tabular-nums}
 .mrow.mcard .mc-top .mtm.none{font-weight:700;color:#C6BCAB}
 .mrow.mcard .mc-top .mt{flex:none;font-size:8.5px;font-weight:800;padding:0 4px;border-radius:3px;background:#FBECEA;color:#A9504A;letter-spacing:0;line-height:1.5}
@@ -269,13 +271,15 @@ button.mini:hover{background:#F7F3EA}
 .mrow.mcard .mc-top .mc-cat{flex:1 1 auto;min-width:0;display:flex;align-items:center;gap:3px;font-size:9.5px;font-weight:700;color:#8FA080;overflow:hidden;white-space:nowrap}
 .mrow.mcard .mc-top .mc-cat span{min-width:0;overflow:hidden;text-overflow:ellipsis}
 .mrow.mcard .mc-top .mc-cat i{width:7px;height:7px;border-radius:2px;background:var(--c,#DAD8D2);flex:none}
-.mrow.mcard .mc-top .mx{margin-left:auto;opacity:.36}
+.mrow.mcard .mc-top .mx{flex:none;margin-left:1px;opacity:.36;border:0;background:transparent;color:#C6BCAB;cursor:pointer;font-size:12px;padding:0 1px;line-height:1}
 .mrow.mcard:hover .mc-top .mx{opacity:1}
-.mrow.mcard .mc-mid{display:flex;align-items:baseline;gap:8px;min-width:0}
-.mrow.mcard .mc-mid .mc-memo{flex:1 1 auto;min-width:0;font-size:11.5px;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;line-height:1.35}
-.mrow.mcard .mc-mid .ma{flex:none;font-weight:800;font-size:11.5px;color:#A9504A;font-variant-numeric:tabular-nums;white-space:nowrap;line-height:1.35}
-.mrow.mcard .mc-mid .ma.inc{color:#2F7F60}
-.mrow.mcard .mdet{margin-top:1px;padding-top:2px;border-top:1px dashed #E3EED7;font-size:10px;line-height:1.5;color:#6E7F60}
+.mrow.mcard .mc-memo{grid-column:1;font-size:11.5px;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;line-height:1.35}
+.mrow.mcard .ma{grid-column:2;justify-self:end;text-align:right;font-weight:800;font-size:11.5px;color:#A9504A;font-variant-numeric:tabular-nums;white-space:nowrap;line-height:1.35}
+.mrow.mcard .ma.inc{color:#2F7F60}
+/* 3줄 — 상세 내역: 왼쪽 열 항목명 / 오른쪽 열 금액. 금액이 없는 메모 줄은 왼쪽 열만 차지한다. */
+.mrow.mcard .mc-sep{grid-column:1 / -1;height:0;margin:2px 0 0;border-top:1px dashed #E3EED7}
+.mrow.mcard .md-name{grid-column:1;font-size:10px;line-height:1.5;color:#6E7F60;white-space:pre-wrap;word-break:break-word;overflow-wrap:anywhere}
+.mrow.mcard .md-amt{grid-column:2;justify-self:end;text-align:right;font-size:10px;line-height:1.5;color:#7E8F6C;font-variant-numeric:tabular-nums;white-space:nowrap}
 .mrow.mcard:hover{background:#F8FCEE;border-color:#D3E4BE}
 .mrow.mcard.inc{border-color:#D5EBDC;background:#F9FEFB}
 .mrow.mcard.inc:hover{background:#F3FCF7;border-color:#C7E5D5}
@@ -616,9 +620,10 @@ html.wdnd-on,html.wdnd-on body{-webkit-user-select:none;user-select:none;cursor:
 .week-pane .money-list .mrow.mcard .mc-top .mtm{font-size:9px}
 .week-pane .money-list .mrow.mcard .mc-top .mt{font-size:8px;padding:0 3px}
 .week-pane .money-list .mrow.mcard .mc-top .mc-cat{font-size:9px}
-.week-pane .money-list .mrow.mcard .mc-mid .mc-memo{font-size:11px}
-.week-pane .money-list .mrow.mcard .mc-mid .ma{font-size:11px}
-.week-pane .money-list .mrow.mcard .mdet{font-size:9.5px;line-height:1.45;margin-top:.5px;padding-top:2px}
+.week-pane .money-list .mrow.mcard .mc-memo{font-size:11px}
+.week-pane .money-list .mrow.mcard .ma{font-size:11px}
+.week-pane .money-list .mrow.mcard .md-name,.week-pane .money-list .mrow.mcard .md-amt{font-size:9.5px;line-height:1.45}
+.week-pane .money-list .mrow.mcard .mc-sep{margin-top:1px}
 .week-pane .money-top{margin:0 0 2px;padding:0 0 5px}
 .week-pane .money-top .mf{font-size:9.5px}
 .week-pane .money-top .mf b{font-size:15px;letter-spacing:.2px}
@@ -688,7 +693,7 @@ html.wdnd-on,html.wdnd-on body{-webkit-user-select:none;user-select:none;cursor:
   .mrow.mcard .mc-top .mx{opacity:.55}
   .mrow.mcard{padding:4px 6px 5px;border-radius:7px}
   .week-pane .money-list .mrow.mcard{padding:3px 5px 4px}
-  .week-pane .money-list .mrow.mcard .mdet{font-size:9px}
+  .week-pane .money-list .mrow.mcard .md-name,.week-pane .money-list .mrow.mcard .md-amt{font-size:9px}
   .wtask{font-size:11.5px;min-height:24px;gap:4px}
   .wtask .wst{width:16px;height:16px;font-size:10px;border-radius:4px}
   .whead b{font-size:11.5px}
@@ -790,30 +795,34 @@ html.wdnd-on,html.wdnd-on body{-webkit-user-select:none;user-select:none;cursor:
 .btn.danger{color:#B4544E;border-color:#EBCBC8;background:#FFF6F5}
 
 .ledger-grid{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(0,1fr);gap:12px;align-items:start}
-.ledger-table-card{background:var(--paper2);border:1px solid var(--line);border-radius:12px;padding:12px 14px;min-width:0}
+.ledger-table-card{--lt-cols:74px 50px minmax(0,.55fr) minmax(0,1.45fr) 100px 74px;background:var(--paper2);border:1px solid var(--line);border-radius:12px;padding:12px 14px;min-width:0}
 .lt-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:4px;min-height:22px}
 .filter-chip{border:1px solid #D6CBF3;background:var(--accent-soft);color:var(--accent-deep);font-size:10.5px;font-weight:800;border-radius:999px;padding:3px 9px;cursor:pointer}
-.lt-row{display:block;padding:7px 2px 8px;border-bottom:1px dashed var(--line);cursor:pointer;font-size:12.5px;min-width:0}
+.lt-row{display:grid;grid-template-columns:var(--lt-cols,74px 50px minmax(0,.55fr) minmax(0,1.45fr) 100px 74px);column-gap:8px;align-items:center;padding:7px 2px 8px;border-bottom:1px dashed var(--line);cursor:pointer;font-size:12.5px;min-width:0}
+.lt-row>*{min-width:0}
 .lt-row:hover{background:#FAF6EE}
-.lt-row.lt-headrow{border-bottom:1px solid var(--line-strong);color:var(--ink-mute);font-size:9.5px;font-weight:800;letter-spacing:.7px;cursor:default;padding:2px 2px 6px;display:flex;gap:8px}
-.lt-row.lt-headrow span:nth-child(4){flex:1 1 auto}
+.lt-row.lt-headrow{border-bottom:1px solid var(--line-strong);color:var(--ink-mute);font-size:9.5px;font-weight:800;letter-spacing:.7px;cursor:default;padding:2px 2px 6px}
+.lt-row.lt-headrow .c-num{text-align:right;letter-spacing:0}
+.lt-row.lt-headrow .c-typeh{text-align:left;letter-spacing:0}
+.lt-row.lt-headrow .c-typeh{font-size:8.5px;white-space:nowrap}
 .lt-row.lt-headrow:hover{background:transparent}
-.lt-top{display:flex;align-items:center;gap:6px;min-width:0}
-.lt-detail{margin-top:4px;padding-left:1px;font-size:11.5px;line-height:1.55;color:var(--ink-soft);white-space:pre-wrap;word-break:break-word}
-.c-meta{display:flex;align-items:center;gap:6px;flex:0 1 auto;min-width:0}
+.lt-detail{grid-column:3 / -1;margin-top:3px;padding-left:1px;font-size:11.5px;line-height:1.55;color:var(--ink-soft);white-space:pre-wrap;word-break:break-word}
 .c-time{color:#8B7BD8;font-weight:800;font-size:11px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.c-time.none{color:#C6BCAB;font-weight:700}
 .c-date{color:var(--ink-soft);font-variant-numeric:tabular-nums;white-space:nowrap;font-size:11.5px}
+.c-date .c-dow{font-style:normal;font-size:10px;color:var(--ink-mute);margin-left:1px}
 .c-type{display:inline-flex;align-items:center;gap:4px;font-size:11.5px;color:var(--ink-soft);white-space:nowrap}
 .c-type i{width:7px;height:7px;border-radius:50%;background:#DBA9A4;flex:none}
 .c-type.income i{background:#8ECFB2}
-.c-cat{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--ink-soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.c-type-cell{display:flex;align-items:center;gap:2px;min-width:0}
+.c-cat{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--ink-soft);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .c-cat i{width:9px;height:9px;border-radius:2.5px;background:var(--c);flex:none}
 .c-memo{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink)}
 .c-amt{text-align:right;font-variant-numeric:tabular-nums;font-weight:800;white-space:nowrap}
 .c-amt.exp{color:#A9504A}
 .c-amt.inc{color:#2F7F60}
 .c-num{text-align:right}
-.c-del{border:0;background:transparent;color:#C6BCAB;font-size:14px;cursor:pointer;border-radius:5px;opacity:0;padding:0;line-height:1;height:22px}
+.c-del{flex:none;margin-left:auto;border:0;background:transparent;color:#C6BCAB;font-size:14px;cursor:pointer;border-radius:5px;opacity:0;padding:0;line-height:1;height:20px;width:14px}
 .lt-row:hover .c-del{opacity:1}
 .c-del:hover{background:#FBEDEC;color:#AE4A45}
 .lt-empty{display:none;text-align:center;font-size:12px;color:#BFB5A4;padding:26px 0}
@@ -969,12 +978,22 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
   .qa-row .won{order:5}
   .qa-add{order:6;flex:0 0 62px}
   .sum b{font-size:17px}
-  .lt-row.lt-headrow{display:none}
-  .lt-top{flex-wrap:wrap;gap:4px 6px}
-  .c-memo{flex:1 1 100%;order:3;white-space:normal}
-  .c-amt{order:2;margin-left:auto}
-  .c-del{order:1;opacity:.45;height:20px;margin-left:0}
-  .lt-detail{font-size:11px}
+  .lt-row{font-size:11px;column-gap:5px;padding:6px 1px 7px}
+  .ledger-table-card{--lt-cols:44px 34px minmax(0,.8fr) minmax(0,1.2fr) 64px 44px;padding:10px 10px}
+  .lt-row.lt-headrow{font-size:9px;letter-spacing:.3px;padding:2px 1px 5px}
+  .lt-row.lt-headrow .c-typeh{font-size:7.5px;letter-spacing:0}
+  .c-date{font-size:11px}
+  .c-date .c-dow{display:none}
+  .c-time{font-size:10px}
+  .c-time.none{font-size:9px}
+  .c-cat{font-size:11px;gap:4px}
+  .c-cat i{width:7px;height:7px}
+  .c-memo{white-space:normal;line-height:1.35;word-break:keep-all;overflow-wrap:anywhere}
+  .c-amt{font-size:11px}
+  .c-type{font-size:10px;gap:3px}
+  .c-type i{width:6px;height:6px}
+  .c-del{width:12px;font-size:13px;opacity:.5}
+  .lt-detail{font-size:11px;grid-column:3 / -1}
   .ledger-table-card{padding:10px 10px}
 }
 @media (max-width:420px){
@@ -1033,8 +1052,10 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
   .quick-add{display:none !important}
   .ledger-grid{grid-template-columns:1fr;gap:5mm}
   .ledger-table-card,.ledger-side{border:1px solid #DDD;border-radius:0;padding:2mm 3mm}
-  .lt-row{display:block;font-size:8pt;padding:1.4mm 0;border-bottom:1px solid #EEE}
+  .lt-row{display:grid;font-size:8pt;column-gap:2mm;padding:1.4mm 0;border-bottom:1px solid #EEE}
+  .ledger-table-card{--lt-cols:17mm 11mm 26mm minmax(0,1fr) 22mm 18mm}
   .lt-row.lt-headrow{font-size:6.5pt;padding-bottom:1.2mm}
+  .lt-row.lt-headrow .c-typeh{font-size:5.8pt}
   .lt-detail{font-size:7pt;margin-top:1mm}
   .c-del{display:none}
   .lc{padding:1mm 0}
@@ -1105,9 +1126,9 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
   body[data-print="daily"] .mrow.mcard .mc-top .mtm{font-size:5pt}
   body[data-print="daily"] .mrow.mcard .mc-top .mt{font-size:4.6pt;padding:0 .5mm;border-radius:.5mm}
   body[data-print="daily"] .mrow.mcard .mc-top .mc-cat{font-size:5pt}
-  body[data-print="daily"] .mrow.mcard .mc-mid .mc-memo{font-size:6.2pt}
-  body[data-print="daily"] .mrow.mcard .mc-mid .ma{font-size:6.4pt}
-  body[data-print="daily"] .mrow.mcard .mdet{font-size:5.2pt;line-height:1.4;margin-top:.2mm;padding-top:.2mm}
+  body[data-print="daily"] .mrow.mcard .mc-memo{font-size:6.2pt}
+  body[data-print="daily"] .mrow.mcard .ma{font-size:6.4pt}
+  body[data-print="daily"] .mrow.mcard .md-name,body[data-print="daily"] .mrow.mcard .md-amt{font-size:5.2pt;line-height:1.4}
   body[data-print="daily"] .money-add{display:none}
   body[data-print="daily"] .mf{font-size:5.4pt}
   body[data-print="daily"] .mf b{font-size:7.4pt}
@@ -1172,9 +1193,9 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
   body[data-print="week"] .week-pane .money-list .mrow.mcard .mc-top .mtm{font-size:4.6pt}
   body[data-print="week"] .week-pane .money-list .mrow.mcard .mc-top .mt{font-size:4.2pt;padding:0 .5mm;border-radius:.5mm}
   body[data-print="week"] .week-pane .money-list .mrow.mcard .mc-top .mc-cat{font-size:4.6pt}
-  body[data-print="week"] .week-pane .money-list .mrow.mcard .mc-mid .mc-memo{font-size:5pt}
-  body[data-print="week"] .week-pane .money-list .mrow.mcard .mc-mid .ma{font-size:5pt}
-  body[data-print="week"] .week-pane .money-list .mrow.mcard .mdet{font-size:4.4pt;line-height:1.3;margin-top:.2mm;padding-top:.2mm}
+  body[data-print="week"] .week-pane .money-list .mrow.mcard .mc-memo{font-size:5pt}
+  body[data-print="week"] .week-pane .money-list .mrow.mcard .ma{font-size:5pt}
+  body[data-print="week"] .week-pane .money-list .mrow.mcard .md-name,body[data-print="week"] .week-pane .money-list .mrow.mcard .md-amt{font-size:4.4pt;line-height:1.3}
   .wcol .tt{--hour-h:4.75mm;padding-top:3px}
   .wcol .tt-cell{margin:.3px;border-radius:1px}
   .wcol .tt-hours{width:9pt}
@@ -1609,7 +1630,7 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
             <button class="filter-chip" id="lFilter" hidden></button>
           </div>
           <div class="lt-row lt-headrow">
-            <span>날짜·시간</span><span>구분</span><span>분류</span><span>구매 내역</span><span class="c-num">금액</span>
+            <span>날짜</span><span>시간</span><span>카테고리</span><span>내역</span><span class="c-num">금액</span><span class="c-typeh">지출/수입구분</span>
           </div>
           <div id="lRows"></div>
           <div class="lt-empty" id="lEmpty">아직 기록이 없어요. 위에서 첫 내역을 적어 보세요.</div>
@@ -2650,6 +2671,53 @@ function renderEmotion(){
   $("#moodWord").textContent=found?found.w:"";
 }
 
+/* ---------- Money (당일) hoisting helpers ---------- */
+/* 상세 내역 한 줄이 줄 끝에 금액을 달고 있으면 항목명과 금액으로 나눈다.
+   예) '아이스 아메리카노 4,500원' → {name:'아이스 아메리카노', amt:'4,500원'}
+       '교통비 정리' → {name:'교통비 정리', amt:''}  (금액 없음 → 메모 줄) */
+function splitDetailAmount(line){
+  var s=String(line==null?"":line).replace(/\s+$/,"");
+  if(!s) return {name:"", amt:""};
+  var m=s.match(/^(.*?)\s*([+\-−]?\s*\d[\d,]*(?:\.\d+)?\s*원?)$/);
+  if(!m) return {name:s, amt:""};
+  var amt=m[2].replace(/\s+/g,"");
+  var digits=(amt.match(/\d/g)||[]).length;
+  if(digits<2) return {name:s, amt:""};   /* 한 자리 숫자는 금액으로 보지 않는다 */
+  return {name:m[1].replace(/\s+$/,""), amt:amt};
+}
+/* 일간·주간 공통 장부 카드 — 2열 그리드로 깔아 1~3줄의 오른쪽 열이 일직선으로 맞는다.
+   1줄 시간·카테고리·수입/지출 배지(＋일간 전용 삭제 ×) / 2줄 내역·금액 / 3줄 상세 내역(항목명·금액) */
+function moneyCardHTML(e, opts){
+  opts=opts||{};
+  var c=lcat(e.cat)||{name:"기타", color:"#DAD8D2"};
+  var det=String(e.detail==null?"":e.detail).replace(/\s+$/,"");
+  var isInc=(e.type==="income");
+  var h='<div class="mrow mcard'+(isInc?" inc":"")+'"'+(opts.del?' data-id="'+e.id+'"':"")+'>'
+    + '<div class="mc-top">'
+    +   '<span class="mtm'+(e.time?'':' none')+'">'+esc(e.time||"--:--")+'</span>'
+    +   '<span class="mc-cat">'
+    +     ((c.name && !(isInc && c.name==="수입")) ? '<i style="--c:'+c.color+'"></i><span>'+esc(c.name)+'</span>' : '')
+    +   '</span>'
+    +   '<span class="mt'+(isInc?" inc":" exp")+'">'+(isInc?"수입":"지출")+'</span>'
+    +   (opts.del ? '<button class="mx" data-mdel="'+e.id+'" aria-label="삭제">×</button>' : '')
+    + '</div>'
+    + '<span class="mc-memo">'+esc(e.memo||lcatName(e.cat)||"내역")+'</span>'
+    + '<span class="ma'+(isInc?" inc":"")+'">'+(isInc?"+":"-")+fmtNum(e.amount)+'</span>';
+  if(det){
+    var lines=det.split(/\r?\n/), body="";
+    lines.forEach(function(line){
+      var s=line.replace(/\s+$/,"");
+      if(!s) return;
+      var p=splitDetailAmount(s);
+      body += p.amt
+        ? '<span class="md-name">'+esc(p.name)+'</span><span class="md-amt">'+esc(p.amt)+'</span>'
+        : '<span class="md-name memo">'+esc(s)+'</span>';
+    });
+    if(body) h+='<i class="mc-sep" aria-hidden="true"></i>'+body;
+  }
+  return h+'</div>';
+}
+
 /* ---------- Money (당일) ---------- */
 function renderMoney(){
   if(!$("#moneyList")) return;
@@ -2657,27 +2725,7 @@ function renderMoney(){
   // (먼저 입력한 항목이 위, 나중에 입력한 항목이 아래)
   var list=entries().filter(function(e){ return e.date===curDate; });
   var html="";
-  list.forEach(function(e){
-    var c=lcat(e.cat)||{name:"기타", color:"#DAD8D2"};
-    var det=String(e.detail==null?"":e.detail).replace(/\s+$/,"");
-    var isInc=(e.type==="income");
-    // 3줄 구조: 1줄 시간·수입/지출 배지·카테고리(삭제 ×) / 2줄 내역·금액 / 3줄 상세 내역(여러 줄 전체)
-    html+='<div class="mrow mcard'+(isInc?" inc":"")+'" data-id="'+e.id+'">'
-      + '<div class="mc-top">'
-      +   '<span class="mtm'+(e.time?'':' none')+'">'+esc(e.time||"--:--")+'</span>'
-      +   '<span class="mt'+(isInc?" inc":" exp")+'">'+(isInc?"수입":"지출")+'</span>'
-      +   '<span class="mc-cat">'
-      +     ((c.name && !(isInc && c.name==="수입")) ? '<i style="--c:'+c.color+'"></i><span>'+esc(c.name)+'</span>' : '')
-      +   '</span>'
-      +   '<button class="mx" data-mdel="'+e.id+'" aria-label="삭제">×</button>'
-      + '</div>'
-      + '<div class="mc-mid">'
-      +   '<span class="mc-memo">'+esc(e.memo||lcatName(e.cat)||"내역")+'</span>'
-      +   '<span class="ma'+(isInc?" inc":"")+'">'+(isInc?"+":"-")+fmtNum(e.amount)+'</span>'
-      + '</div>'
-      + (det?'<div class="mdet">'+esc(det)+'</div>':"")
-      + '</div>';
-  });
+  list.forEach(function(e){ html+=moneyCardHTML(e, {del:true}); });
   if(!list.length) html='<div class="mrow mempty"><span class="mm">오늘 수입·지출을 적어 보세요</span></div>';
   $("#moneyList").innerHTML=html;
 
@@ -2951,23 +2999,7 @@ function renderWeekMoney(){
     list.forEach(function(e){
       var isInc=(e.type==="income");
       if(isInc) inc+=e.amount; else exp+=e.amount;
-      var c=lcat(e.cat)||{name:"기타", color:"#DAD8D2"};
-      var det=String(e.detail==null?"":e.detail).replace(/\s+$/,"");
-      // 일간 장부와 같은 3줄 카드: 1줄 시간·수입/지출 배지·카테고리 / 2줄 내역·금액 / 3줄 상세 내역
-      rows+='<div class="mrow mcard'+(isInc?" inc":"")+'">'
-        +   '<div class="mc-top">'
-        +     '<span class="mtm'+(e.time?'':' none')+'">'+esc(e.time||"--:--")+'</span>'
-        +     '<span class="mt'+(isInc?' inc':' exp')+'">'+(isInc?'수입':'지출')+'</span>'
-        +     '<span class="mc-cat">'
-        +       ((c.name && !(isInc && c.name==="수입")) ? '<i style="--c:'+c.color+'"></i><span>'+esc(c.name)+'</span>' : '')
-        +     '</span>'
-        +   '</div>'
-        +   '<div class="mc-mid">'
-        +     '<span class="mc-memo">'+esc(e.memo||lcatName(e.cat)||"내역")+'</span>'
-        +     '<span class="ma'+(isInc?' inc':'')+'">'+(isInc?'+':'-')+fmtNum(e.amount)+'</span>'
-        +   '</div>'
-        +   (det?'<div class="mdet">'+esc(det)+'</div>':"")
-        + '</div>';
+      rows+=moneyCardHTML(e);
     });
     if(!rows) rows='<div class="mrow mempty"><span class="mm">기록 없음</span></div>';
     wExp+=exp; wInc+=inc;
@@ -3258,19 +3290,18 @@ function entryRowHTML(e){
   var c=lcat(e.cat) || firstLCat(e.type==="income"?"income":"expense") || {name:"기타", color:"#DAD8D2"};
   var dt=parseISO(e.date);
   var isInc=(e.type==="income");
-  var det=String(e.detail||"");
+  var det=String(e.detail||"").replace(/\s+$/,"");
+  // 월간 장부 열 순서: 날짜 | 시간 | 카테고리 | 내역 | 금액 | 지출/수입구분
   return '<div class="lt-row" data-id="'+e.id+'" tabindex="0">'
-    + '<div class="lt-top">'
-    +   '<span class="c-meta">'
-    +     '<span class="c-date">'+(dt.getMonth()+1)+"/"+dt.getDate()+' ('+DOW_KO[dt.getDay()]+')</span>'
-    +     (e.time?'<span class="c-time">'+esc(e.time)+'</span>':"")
-    +     '<span class="c-type'+(isInc?" income":"")+'"><i></i>'+(isInc?"수입":"지출")+'</span>'
-    +     (isInc && c.name==="수입" ? "" : '<span class="c-cat" style="--c:'+c.color+'"><i></i>'+esc(c.name)+'</span>')
-    +   '</span>'
-    +   '<span class="c-memo">'+esc(e.memo || c.name)+'</span>'
-    +   '<span class="c-amt '+(isInc?"inc":"exp")+'">'+(isInc?"+":"−")+fmtWon(e.amount)+'</span>'
+    + '<span class="c-date">'+(dt.getMonth()+1)+"/"+dt.getDate()+'<i class="c-dow">('+DOW_KO[dt.getDay()]+')</i></span>'
+    + '<span class="c-time'+(e.time?'':' none')+'">'+esc(e.time||"--:--")+'</span>'
+    + '<span class="c-cat" style="--c:'+c.color+'"><i></i>'+esc(c.name)+'</span>'
+    + '<span class="c-memo">'+esc(e.memo || c.name)+'</span>'
+    + '<span class="c-amt '+(isInc?"inc":"exp")+'">'+(isInc?"+":"−")+fmtWon(e.amount)+'</span>'
+    + '<span class="c-type-cell">'
+    +   '<span class="c-type'+(isInc?" income":"")+'"><i></i>'+(isInc?"수입":"지출")+'</span>'
     +   '<button class="c-del" data-del="'+e.id+'" aria-label="삭제" title="삭제">×</button>'
-    + '</div>'
+    + '</span>'
     + (det?'<div class="lt-detail">'+esc(det)+'</div>':"")
     + '</div>';
 }
