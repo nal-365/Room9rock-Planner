@@ -1037,12 +1037,12 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
   .hcard,.week-pane .money-list{border-color:#DDD;max-height:none}
   .hnote{background:#fff}
   .week-scroll{overflow:visible}
-  .week-frame{background:#fff;padding:0;box-shadow:none;border-radius:0}
+  .week-frame,.week-pane[data-wtab] .week-frame{background:#fff;padding:0;box-shadow:none;border-radius:0}
   .week-board{box-shadow:none;border:1px solid #DDE4EC;border-radius:0;overflow:visible}
   .week-index{margin-top:0;padding:0}
   .week-cols{grid-template-columns:repeat(7,1fr);gap:0}
   .wcol{border-color:#DDD;padding:1mm;gap:1mm;border-radius:0;break-inside:avoid}
-  .wcol+.wcol{border-left:1px dashed #E8CBD4}
+  .wcol+.wcol,.week-pane[data-wtab] .wcol+.wcol{border-left:1px dashed #E8CBD4}
   .whead b{font-size:7pt}
   .whead span{font-size:5.6pt}
   .wtasks{min-height:0;max-height:none;overflow:visible}
