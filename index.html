@@ -352,29 +352,34 @@ button.mini:hover{background:#F7F3EA}
 .tr-comment{margin-bottom:1px}
 .tr-comment .tr-in{flex-wrap:nowrap}
 
-/* ---------- 타임테이블 ---------- */
+/* ---------- 타임테이블 (10분 블럭 · 24시간 × 6칸, 모트모트형) ---------- */
 .tt{display:flex;gap:6px;padding-top:9px}
-.tt-hours{flex:none;width:24px;position:relative}
-.tt-hours .hr{height:var(--hour-h);position:relative}
-.tt-hours .hr span{position:absolute;right:0;top:-6px;font-size:10px;color:#A79C8B;font-variant-numeric:tabular-nums;line-height:1}
-.tt-grid{--cell-h:calc(var(--hour-h) / 6);position:relative;flex:1;min-width:0;height:calc(var(--hour-h) * 24);background-color:var(--paper2);border-top:1px solid var(--line-strong);border-bottom:1px solid var(--line-strong);border-left:1px solid var(--line-soft);border-right:1px solid var(--line-soft);
+.tt-hours{flex:none;width:22px;position:relative}
+.tt-hours .hr{height:var(--hour-h);position:relative;display:flex;align-items:center;justify-content:flex-end}
+.tt-hours .hr span{font-size:9.5px;color:#A79C8B;font-variant-numeric:tabular-nums;line-height:1;letter-spacing:-.2px;padding-right:1px}
+.tt-grid{--cell-h:calc(var(--hour-h) / 6);position:relative;flex:1;min-width:0;height:calc(var(--hour-h) * 24 + 2px);background-color:var(--paper2);border-top:1px solid var(--line-strong);border-bottom:1px solid var(--line-strong);border-left:1px solid var(--line-soft);border-right:1px solid var(--line-soft);
   background-image:
-    repeating-linear-gradient(to bottom, rgba(228,218,201,.55) 0, rgba(228,218,201,.55) 1px, transparent 1px, transparent var(--cell-h)),
-    repeating-linear-gradient(to bottom, rgba(198,184,162,.75) 0, rgba(198,184,162,.75) 1px, transparent 1px, transparent calc(var(--cell-h) * 6));
-  touch-action:none;user-select:none;-webkit-user-select:none;cursor:crosshair;border-radius:2px;overflow:hidden;outline:none}
-.tt-grid.empty::after{content:"위아래로 끌어서 칠해 보세요";position:absolute;left:0;right:0;top:46%;text-align:center;font-size:10.5px;color:#CFC5B2;pointer-events:none;letter-spacing:.3px}
-.tt-mid{position:absolute;left:50%;top:0;bottom:0;width:0;border-left:1px dotted rgba(198,184,162,.55);pointer-events:none}
-.tt-blocks{position:absolute;inset:0;pointer-events:none}
-.blk{position:absolute;left:5px;right:6px;border-radius:5px;box-shadow:inset 0 0 0 1px rgba(90,75,50,.05);opacity:.97}
-.tt-now{position:absolute;left:0;right:0;height:0;border-top:1.5px solid rgba(205,106,90,.85);pointer-events:none;z-index:3}
-.tt-now::before{content:"";position:absolute;left:-2px;top:-3.5px;width:5px;height:5px;border-radius:50%;background:var(--red)}
+    repeating-linear-gradient(to right, rgba(214,202,182,.62) 0 1px, transparent 1px calc(100% / 6)),
+    repeating-linear-gradient(to bottom, rgba(198,184,162,.8) 0 1px, transparent 1px var(--hour-h));
+  touch-action:none;user-select:none;-webkit-user-select:none;cursor:crosshair;border-radius:3px;overflow:hidden;outline:none}
+.tt-cells{position:absolute;inset:0;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));grid-template-rows:repeat(24,var(--hour-h))}
+.tt-cell{display:block;min-width:0;min-height:0;margin:1px;border-radius:3px;background:transparent;transition:background .1s}
+.tt-grid:not(.painting) .tt-cell:not(.on):hover{background:rgba(139,123,216,.1)}
+.tt-cell.on{box-shadow:inset 0 0 0 1px rgba(70,56,32,.06)}
+.tt-cell.now{box-shadow:inset 0 0 0 1.6px rgba(205,106,90,.9)}
+.tt-cell.on.now{box-shadow:inset 0 0 0 1.6px rgba(205,106,90,.92)}
+.tt-grid.empty::after{content:"10분 블럭을 눌러 칠해 보세요";position:absolute;left:0;right:0;top:44%;text-align:center;font-size:10.5px;color:#CFC5B2;pointer-events:none;letter-spacing:.3px;z-index:2}
+.tt-now{position:absolute;width:0;border-left:2px solid rgba(205,106,90,.9);pointer-events:none;z-index:3;box-shadow:0 0 5px rgba(205,106,90,.3)}
+.tt-now::before{content:"";position:absolute;left:-5px;top:-2px;width:8px;height:8px;border-radius:50%;background:var(--red);box-shadow:0 0 0 2px rgba(255,253,250,.92)}
 .tt-grid.painting{cursor:crosshair}
 .tt.mini{padding-top:6px;gap:3px;--hour-h:26px}
 .tt.mini .tt-hours{width:15px}
-.tt.mini .tt-grid{border-radius:1px}
-.tt.mini .blk{left:2px;right:2px;border-radius:3px}
+.tt.mini .tt-grid{border-radius:2px}
+.tt.mini .tt-cell{margin:.5px;border-radius:2px}
+.tt.mini .tt-cell.now,.tt.mini .tt-cell.on.now{box-shadow:inset 0 0 0 1px rgba(205,106,90,.9)}
+.tt.mini .tt-now::before{width:6px;height:6px;left:-4px;top:-1.5px}
 .tt.mini .tt-grid.empty::after{display:none}
-.tt.mini .tt-hours .hr span{font-size:8px;top:-4px}
+.tt.mini .tt-hours .hr span{font-size:8px;letter-spacing:-.3px}
 
 .chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:10px;min-height:22px}
 .col-time .chips{gap:1px 7px;margin-top:4px;min-height:0}
@@ -1013,7 +1018,7 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
   .entry-form,.dlg,.toast{display:none !important}
   html,body{background:#fff !important}
   body{-webkit-print-color-adjust:exact;print-color-adjust:exact}
-  .topbar,.palette,.board-tools,.week-tools,.toast,.dlg,.add-task,.task .del,.wadd,.wadd-row,.no-print,.seg,#printBtn,.nav,button.mini,.dday-chip,.tt-grid.empty::after{display:none !important}
+  .topbar,.palette,.board-tools,.week-tools,.toast,.dlg,.add-task,.task .del,.wadd,.wadd-row,.no-print,.seg,#printBtn,.nav,button.mini,.dday-chip,.tt-grid.empty::after,.tt-now{display:none !important}
   main{padding:0;max-width:none}
   .view[hidden]{display:none !important}
   /* 일간 7열 보드 인쇄 */
@@ -1030,6 +1035,7 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
   body[data-print="daily"] .weather span{font-size:5.5pt}
   body[data-print="daily"] .dday-chip{font-size:6.5pt;padding:0 1.5mm}
   body[data-print="daily"] #viewDaily .tt{--hour-h:4.85mm;padding-top:3px}
+  body[data-print="daily"] .tt-cell{margin:.35px;border-radius:1px}
   body[data-print="daily"] .tt-hours{width:8pt}
   body[data-print="daily"] .tt-hours .hr span{font-size:4.6pt;top:-2px}
   body[data-print="daily"] .tt-grid.empty::after{display:none}
@@ -1146,6 +1152,7 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
   body[data-print="week"] .week-pane .money-list .mrow.mcard .mc-mid .ma{font-size:5pt}
   body[data-print="week"] .week-pane .money-list .mrow.mcard .mdet{font-size:4.4pt;line-height:1.3;margin-top:.2mm;padding-top:.2mm}
   .wcol .tt{--hour-h:4.75mm;padding-top:3px}
+  .wcol .tt-cell{margin:.3px;border-radius:1px}
   .wcol .tt-hours{width:9pt}
   .wcol .tt-hours .hr span{font-size:4.6pt;top:-2px}
   .wfoot b{font-size:7pt}
@@ -1619,7 +1626,7 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
     <div class="dlg-head"><strong>사용법 &amp; 설정</strong><button class="x" data-close="1" aria-label="닫기">✕</button></div>
     <div class="dlg-body">
       <ul class="tips">
-        <li><b>칠하기</b> — 위쪽 형광펜을 고르고 시간표를 위아래로 끌면 10분 단위로 칠해져요. 마우스·손가락·애플펜슬 모두 됩니다.</li>
+        <li><b>칠하기</b> — 위쪽 형광펜을 고르고 타임테이블의 10분 블럭을 누르거나 끌면 칠해져요. 한 시간이 6칸(10분)으로 나뉘어 있어 세로로 한 칸씩, 가로로 10분씩 이어서 칠할 수 있습니다. 마우스·손가락·애플펜슬 모두 됩니다.</li>
         <li><b>지우개</b> — <b>지우개</b>를 고르고 문질러 지워요. 잘못 칠했으면 <kbd>Ctrl</kbd>+<kbd>Z</kbd>로 되돌리기.</li>
         <li><b>할 일</b> — 네모를 누를 때마다 <b>□ → ○ 완료 → △ 일부 → × 못함 → → 미룸</b> 순서로 바뀌어요.</li>
         <li><b>카드</b> — <b>작업·자기개발·여가 시간</b> 열은 카드로 적어요. <b>작업·자기개발</b> 카드는 위줄에서 상태와 분류(플랫폼·카테고리)를 고르고, <b>여가 시간</b> 카드는 상태 없이 분류만 골라요. 제목 아래 <b>상세 내역</b>에 여러 줄로 메모해요. 분류 목록은 카드의 <b>＋ 플랫폼 관리</b>·<b>＋ 카테고리 관리</b>나 카테고리 관리에서 직접 추가·이름 바꾸기·삭제할 수 있어요.</li>
@@ -2167,20 +2174,29 @@ function hoursHTML(){
   for(var i=0;i<24;i++) h+='<div class="hr"><span>'+pad(i)+'</span></div>';
   return h;
 }
+function ttCellsHTML(){
+  var h="";
+  for(var i=0;i<SLOTS;i++) h+='<i class="tt-cell" data-i="'+i+'"></i>';
+  return h;
+}
 function ttHTML(date, mini){
   return '<div class="tt'+(mini?" mini":"")+'">'
        +   '<div class="tt-hours">'+hoursHTML()+'</div>'
-       +   '<div class="tt-grid'+(mini?" mini":"")+'" data-date="'+date+'" role="application" aria-label="'+date+' 타임테이블">'
-       +     '<div class="tt-mid"></div><div class="tt-blocks"></div><div class="tt-now" hidden></div>'
+       +   '<div class="tt-grid'+(mini?" mini":"")+'" data-date="'+date+'" role="application" aria-label="'+date+' 타임테이블, 1시간 6칸 10분 블럭">'
+       +     '<div class="tt-cells" aria-hidden="true">'+ttCellsHTML()+'</div>'
+       +     '<div class="tt-now" hidden></div>'
        +   '</div>'
        + '</div>';
 }
-function slotAt(grid, clientY){
-  var r=grid.getBoundingClientRect();
-  var cell=r.height/SLOTS;
-  var i=Math.floor((clientY-r.top)/cell);
-  if(i<0) i=0; if(i>=SLOTS) i=SLOTS-1;
-  return i;
+/* 블럭 좌표 → slots 인덱스 (행 = 시, 열 = 10분) */
+function slotAt(grid, clientX, clientY){
+  var box=grid.querySelector(".tt-cells")||grid;
+  var r=box.getBoundingClientRect();
+  var col=Math.floor((clientX-r.left)/(r.width/6));
+  var row=Math.floor((clientY-r.top)/(r.height/24));
+  if(col<0) col=0; else if(col>5) col=5;
+  if(row<0) row=0; else if(row>23) row=23;
+  return row*6+col;
 }
 var stroke=null;
 
@@ -2202,16 +2218,16 @@ function onDown(e){
   var date=grid.dataset.date;
   getDay(date);
   pushUndo(date);
-  var idx=slotAt(grid,e.clientY);
-  stroke={grid:grid, date:date, id:e.pointerId, last:idx, val:(tool.type==="erase"?null:tool.id)};
+  var idx=slotAt(grid, e.clientX, e.clientY);
+  stroke={grid:grid, date:date, id:e.pointerId, anchor:idx, last:idx, val:(tool.type==="erase"?null:tool.id)};
   grid.classList.add("painting");
   paintRange(date, idx, idx, stroke.val);
 }
 function onMove(e){
   if(!stroke || e.pointerId!==stroke.id) return;
-  var idx=slotAt(stroke.grid, e.clientY);
+  var idx=slotAt(stroke.grid, e.clientX, e.clientY);
   if(idx===stroke.last) return;
-  paintRange(stroke.date, stroke.last, idx, stroke.val);
+  paintRange(stroke.date, stroke.anchor, idx, stroke.val);
   stroke.last=idx;
 }
 function onUp(e){
@@ -2221,14 +2237,16 @@ function onUp(e){
   scheduleSave();
   renderNowLine();
 }
+/* 시작 블럭과 지금 블럭 사이를 행·열 사각형으로 채운다 */
 function paintRange(date, from, to, val){
   var d=getDay(date);
-  var step = from<=to ? 1 : -1;
-  var i=from;
-  while(true){
-    if(val) d.slots[i]=val; else delete d.slots[i];
-    if(i===to) break;
-    i+=step;
+  var r1=Math.floor(from/6), c1=from%6, r2=Math.floor(to/6), c2=to%6;
+  var r0=Math.min(r1,r2), r3=Math.max(r1,r2), c0=Math.min(c1,c2), c3=Math.max(c1,c2);
+  for(var r=r0;r<=r3;r++){
+    for(var c=c0;c<=c3;c++){
+      var i=r*6+c;
+      if(val) d.slots[i]=val; else delete d.slots[i];
+    }
   }
   renderBlocksFor(date);
   refreshSums();
@@ -2239,41 +2257,50 @@ function renderBlocksFor(date){
   if(!grids.length) return;
   var d=S.days[date];
   var slots=(d&&d.slots)||{};
-  var runs=[], i=0;
-  while(i<SLOTS){
-    var c=slots[i];
-    if(!c){ i++; continue; }
-    var j=i;
-    while(j+1<SLOTS && slots[j+1]===c) j++;
-    runs.push([i,j,c]);
-    i=j+1;
-  }
+  var filled=Object.keys(slots).length;
   grids.forEach(function(g){
-    var layer=g.querySelector(".tt-blocks");
-    if(!layer) return;
-    var h="";
-    for(var k=0;k<runs.length;k++){
-      var a=runs[k][0], b=runs[k][1], id=runs[k][2];
-      var nm=esc(catName(id));
-      h+='<div class="blk" style="top:calc('+a+' * var(--cell-h));height:calc('+(b-a+1)+' * var(--cell-h));background:'+catColor(id)+'" title="'+nm+' '+slotTime(a)+'–'+slotTime(b+1)+'"></div>';
+    var cells=g.querySelectorAll(".tt-cell");
+    for(var i=0;i<cells.length;i++){
+      var el=cells[i], cid=slots[i];
+      if(cid){
+        el.classList.add("on");
+        el.style.background=catColor(cid);
+        el.title=catName(cid)+" "+slotTime(i)+"–"+slotTime(i+1);
+      } else if(el.classList.contains("on")){
+        el.classList.remove("on");
+        el.style.background="";
+        el.removeAttribute("title");
+      }
     }
-    layer.innerHTML=h;
-    g.classList.toggle("empty", runs.length===0);
+    g.classList.toggle("empty", filled===0);
   });
 }
 function renderAllBlocks(){
   Object.keys(S.days).forEach(renderBlocksFor);
 }
+/* 오늘의 현재 시각 — 지금 시(hour) 줄 안에서 분(min) 위치에 세로선, 해당 10분 블럭은 테두리 강조 */
 function renderNowLine(){
   var now=new Date();
-  var idx=now.getHours()*6+Math.floor(now.getMinutes()/10);
+  var hour=now.getHours(), min=now.getMinutes();
+  var idx=hour*6+Math.floor(min/10);
+  var x=((min*60+now.getSeconds())/3600*100).toFixed(3)+"%";
   var today=todayISO();
   $$(".tt-grid").forEach(function(g){
     var line=g.querySelector(".tt-now");
-    if(!line) return;
     var on=(g.dataset.date===today);
-    line.hidden=!on;
-    if(on) line.style.top="calc("+idx+" * var(--cell-h))";
+    if(line){
+      line.hidden=!on;
+      if(on){
+        line.style.top="calc("+hour+" * var(--hour-h))";
+        line.style.height="var(--hour-h)";
+        line.style.left=x;
+      }
+    }
+    var cells=g.querySelectorAll(".tt-cell");
+    for(var i=0;i<cells.length;i++){
+      var el=cells[i], isNow=(on && i===idx);
+      if(isNow!==el.classList.contains("now")) el.classList.toggle("now", isNow);
+    }
   });
 }
 
@@ -2323,6 +2350,7 @@ function renderDaily(){
     bindGrid(g);
   } else if(grid.dataset.date!==curDate){
     grid.dataset.date=curDate;
+    grid.setAttribute("aria-label", curDate+" 타임테이블, 1시간 6칸 10분 블럭");
   }
   renderBlocksFor(curDate);
   renderDday();
