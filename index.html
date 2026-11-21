@@ -226,7 +226,7 @@ button.mini:hover{background:#F7F3EA}
 .add-task{margin-top:6px;border:1px dashed var(--line-strong);background:transparent;border-radius:7px;padding:4px 7px;font-size:10.5px;font-weight:700;color:var(--ink-mute);cursor:pointer;width:100%;touch-action:manipulation;text-align:left}
 .add-task:hover{background:#FBF7EF;color:var(--ink-soft)}
 
-/* 작업·자기개발·여가 카드 (상태·분류·할 일·상세 내역) */
+/* 작업·자기개발·여가 카드 (분류·할 일·상세 내역 · 실행 여부 상태는 작업·자기개발만) */
 #taskList-work,#taskList-study,#taskList-leisure{gap:5px}
 .wcard{--wc-bg:#FFFDF4;--wc-line:#F1E5C4;--wc-sel-bg:#FBF4DA;--wc-sel-bd:#EFE2BC;--wc-sel-ink:#8A6A12;--wc-on-bg:#FBEDBB;--wc-on-bd:#E5CF86;--wc-on-ink:#7A5D0B;--wc-off-bg:#FDFAF0;--wc-off-bd:#F1EBDC;--wc-off-ink:#B3A585;--wc-det:#F1E7CE;display:block;border-bottom:1px solid var(--wc-line);border-radius:7px;padding:3px 4px 4px;background:var(--wc-bg);min-height:0}
 .wcard-study{--wc-bg:#FFF9FB;--wc-line:#F3DCE4;--wc-sel-bg:#FCE9F0;--wc-sel-bd:#F2D2DD;--wc-sel-ink:#9C3F58;--wc-on-bg:#FADCE8;--wc-on-bd:#EDBDCF;--wc-on-ink:#8A3149;--wc-off-bg:#FFFAFC;--wc-off-bd:#F6E6EC;--wc-off-ink:#C4A0AC;--wc-det:#F3DDE4}
@@ -2790,7 +2790,7 @@ function renderWeekMoney(){
     + '<div class="sc bal"><span>잔액 (수입 − 지출)</span><b>'+(bal<0?"−":"")+fmtNum(Math.abs(bal))+'원</b></div>';
 }
 
-/* 5) 여가시간 — 여가 카드 목록과 상태 */
+/* 5) 여가시간 — 여가 카드 목록 (실행 여부 표시 없이 제목만) */
 function renderWeekLeisure(){
   var dates=weekDates(), today=todayISO(), html="";
   dates.forEach(function(date){
