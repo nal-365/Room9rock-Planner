@@ -510,12 +510,14 @@ html.wdnd-on,html.wdnd-on body{-webkit-user-select:none;user-select:none;cursor:
 .week-pane[data-wtab="money"] .week-cols{--wbh:300px}
 .week-pane[data-wtab="leisure"] .week-cols{--wbh:250px}
 .week-pane[data-wtab="tasks"] .wtasks{flex:1 1 auto;min-height:120px}
-/* 인덱스 탭 색 = 보드 상단 요일 필 색 */
-.week-pane[data-wtab="tasks"]{--ph-bg:#FDF0B8;--ph-ink:#8A6A12}
-.week-pane[data-wtab="health"]{--ph-bg:#CFE4FB;--ph-ink:#3E6A9C}
-.week-pane[data-wtab="time"]{--ph-bg:#DDD6F8;--ph-ink:#5D4CA8}
-.week-pane[data-wtab="money"]{--ph-bg:#D7F0D0;--ph-ink:#4C6B22}
-.week-pane[data-wtab="leisure"]{--ph-bg:#CFF0EA;--ph-ink:#2F7A6E}
+/* 인덱스 탭 색 = 보드 상단 요일 필 색 = 보드 프레임 색 (일간 각 열 헤더 팔레트와 동일)
+   --wf-a/--wf-b: 프레임 그라데이션(위/아래), --wf-b는 인덱스 탭 --t와 같은 색
+   --wf-dash: 열 세로 점선, --wf-today/--wf-today2: 오늘 열 배경, --wf-sh: 프레임 그림자 톤 */
+.week-pane[data-wtab="tasks"]{--ph-bg:#FDF0B8;--ph-ink:#8A6A12;--wf-a:#FEF7DA;--wf-b:#FDF0B8;--wf-dash:#F0E7C7;--wf-today:#FEFBEB;--wf-today2:#FFFEFA;--wf-sh:rgba(122,94,18,.45)}
+.week-pane[data-wtab="health"]{--ph-bg:#CFE4FB;--ph-ink:#3E6A9C;--wf-a:#DFEEFD;--wf-b:#CFE4FB;--wf-dash:#D2DEEF;--wf-today:#F2F7FE;--wf-today2:#FCFEFF;--wf-sh:rgba(52,80,124,.5)}
+.week-pane[data-wtab="time"]{--ph-bg:#DDD6F8;--ph-ink:#5D4CA8;--wf-a:#EDE9FC;--wf-b:#DDD6F8;--wf-dash:#DFD9F1;--wf-today:#F5F4FD;--wf-today2:#FEFDFF;--wf-sh:rgba(78,62,120,.48)}
+.week-pane[data-wtab="money"]{--ph-bg:#D7F0D0;--ph-ink:#4C6B22;--wf-a:#E7F6E1;--wf-b:#D7F0D0;--wf-dash:#DCE7CF;--wf-today:#F4FBEF;--wf-today2:#FDFEFA;--wf-sh:rgba(58,92,36,.55)}
+.week-pane[data-wtab="leisure"]{--ph-bg:#CFF0EA;--ph-ink:#2F7A6E;--wf-a:#DFF8F4;--wf-b:#CFF0EA;--wf-dash:#D2E7E3;--wf-today:#F2FBF9;--wf-today2:#FDFFFE;--wf-sh:rgba(40,92,84,.42)}
 .hcard{display:flex;flex-direction:column;gap:3px;background:#fff;border:1px solid #E4EBF6;border-radius:8px;padding:6px 7px}
 .hcard .hrow{display:flex;align-items:center;gap:4px;min-width:0;font-size:10.5px}
 .hcard .hlab{flex:none;width:34px;font-size:9px;font-weight:800;letter-spacing:.2px;color:#A79B88}
@@ -561,10 +563,11 @@ html.wdnd-on,html.wdnd-on body{-webkit-user-select:none;user-select:none;cursor:
 .week-pane .money-top .mf{font-size:9.5px}
 .week-pane .money-top .mf b{font-size:15px;letter-spacing:.2px}
 .week-pane .money-top .mf .mval i{font-size:8.5px}
-/* 장부 인덱스 탭 — 일간 장부 열과 같은 초록(#D7F0D0·#4C6B22)으로 프레임·요일 필·점선 구분선 통일 */
-.week-pane[data-wtab="money"] .week-frame{background:linear-gradient(180deg,#E7F6E1,#D7F0D0);box-shadow:0 24px 54px -36px rgba(58,92,36,.55),inset 0 1px 0 rgba(255,255,255,.7)}
-.week-pane[data-wtab="money"] .wcol+.wcol{border-left:1px dashed #DCE7CF}
-.week-pane[data-wtab="money"] .wcol.today{background:linear-gradient(180deg,#F4FBEF 0,#FDFEFA 48%)}
+/* 5개 인덱스 탭 공통 — 프레임·세로 점선·오늘 열 강조를 그 탭의 색 하나로 통일 */
+.week-pane[data-wtab] .week-frame{background:linear-gradient(180deg,var(--wf-a,#DFEAF9),var(--wf-b,#D3E1F4));box-shadow:0 24px 54px -36px var(--wf-sh,rgba(56,84,120,.6)),inset 0 1px 0 rgba(255,255,255,.7)}
+.week-pane[data-wtab] .wcol+.wcol{border-left:1px dashed var(--wf-dash,#EFCBD6)}
+.week-pane[data-wtab] .wcol.today{background:linear-gradient(180deg,var(--wf-today,#FAF7FF) 0,var(--wf-today2,#FEFDFF) 48%)}
+.week-pane[data-wtab] .wcol.today .whead{box-shadow:inset 0 0 0 1.5px var(--ph-ink,#5D4CA8),0 5px 12px -9px var(--wf-sh,rgba(93,76,168,.7))}
 .week-pane[data-wtab="money"] .wsum .sc.bal b{color:#3F5C2E}
 .mfoot{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:4px;border-top:1px solid #E6EEDC;padding-top:4px;font-size:9.5px;font-weight:800}
 .mfoot .exp{color:#A9504A}
