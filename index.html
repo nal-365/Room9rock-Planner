@@ -152,7 +152,7 @@ button.mini:hover{background:#F7F3EA}
 .line-input::placeholder{color:#C3B9A8}
 
 /* ---------- 보드 열 ---------- */
-.board-cols{display:grid;grid-template-columns:.92fr 1.1fr .98fr .98fr .96fr 1.02fr 1fr;flex:1;align-items:stretch;align-content:start}
+.board-cols{display:grid;grid-template-columns:.92fr 1fr .98fr .98fr .96fr 1.02fr 1fr;flex:1;align-items:stretch;align-content:start}
 .col{display:flex;flex-direction:column;min-width:0;padding:8px 9px 10px}
 .col+.col{border-left:1px dashed #EFCBD6}
 .col-head{background:var(--tint);color:var(--inkh);border-radius:4px;text-align:center;padding:4px 6px;font-family:var(--serif);font-size:13px;font-weight:600;letter-spacing:.4px;margin-bottom:7px;flex:none}
@@ -353,8 +353,8 @@ button.mini:hover{background:#F7F3EA}
 .tr-comment .tr-in{flex-wrap:nowrap}
 
 /* ---------- 타임테이블 (10분 블럭 · 24시간 × 6칸, 모트모트형) ---------- */
-.tt{display:flex;gap:6px;padding-top:9px}
-.tt-hours{flex:none;width:22px;position:relative}
+.tt{display:flex;gap:5px;padding-top:8px}
+.tt-hours{flex:none;width:21px;position:relative}
 .tt-hours .hr{height:var(--hour-h);position:relative;display:flex;align-items:center;justify-content:flex-end}
 .tt-hours .hr span{font-size:9.5px;color:#A79C8B;font-variant-numeric:tabular-nums;line-height:1;letter-spacing:-.2px;padding-right:1px}
 .tt-grid{--cell-h:calc(var(--hour-h) / 6);position:relative;flex:1;min-width:0;height:calc(var(--hour-h) * 24 + 2px);background-color:var(--paper2);border-top:1px solid var(--line-strong);border-bottom:1px solid var(--line-strong);border-left:1px solid var(--line-soft);border-right:1px solid var(--line-soft);
@@ -386,6 +386,24 @@ button.mini:hover{background:#F7F3EA}
 .tt.mini .tt-now::before{width:6px;height:6px;left:-4px;top:-1.5px}
 .tt.mini .tt-grid.empty::after{display:none}
 .tt.mini .tt-hours .hr span{font-size:8px;letter-spacing:-.3px}
+/* 일간 타임테이블 — 열 폭에 맞춰 10분 블럭 6칸 × 24줄이 정사각으로 서고,
+   24줄이 열 높이를 똑같이 나눠 다른 6개 열과 같은 결로 앉는다(인쇄·주간 미니는 기존 규격 유지) */
+@media screen{
+  .col-time .tt-grid{height:auto;aspect-ratio:6 / 24;
+    background-image:
+      repeating-linear-gradient(to right, rgba(214,202,182,.62) 0 1px, transparent 1px calc(100% / 6)),
+      repeating-linear-gradient(to bottom, rgba(198,184,162,.8) 0 1px, transparent 1px calc(100% / 24))}
+  .col-time .tt-cells{grid-template-rows:repeat(24,minmax(0,1fr))}
+  .col-time .tt-hours{display:grid;grid-template-rows:repeat(24,minmax(0,1fr))}
+  .col-time .tt-hours .hr{height:auto}
+}
+@media screen and (min-width:1101px){
+  .col-time .tt-grid{max-height:max(calc(100dvh - 380px),600px)}
+}
+@media screen and (max-width:720px){
+  .col-time .tt{justify-content:center}
+  .col-time .tt-grid{max-width:calc(44px * 6 + 2px)}
+}
 
 .chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:10px;min-height:22px}
 .col-time .chips{gap:1px 7px;margin-top:4px;min-height:0}
@@ -2316,8 +2334,8 @@ function renderNowLine(){
     if(line){
       line.hidden=!on;
       if(on){
-        line.style.top="calc("+hour+" * var(--hour-h))";
-        line.style.height="var(--hour-h)";
+        line.style.top=(hour/24*100).toFixed(3)+"%";
+        line.style.height=(100/24).toFixed(3)+"%";
         line.style.left=x;
       }
     }
