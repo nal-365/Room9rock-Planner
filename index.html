@@ -243,7 +243,7 @@ button.mini:hover{background:#F7F3EA}
 .wcard .del{opacity:.45}
 
 /* Money */
-.money-list{display:flex;flex-direction:column;gap:2px;overflow:auto;min-height:50px}
+.money-list{display:flex;flex-direction:column;gap:4px;overflow:auto;min-height:50px}
 .mrow{display:block;border-bottom:1px dashed #E6EEDC;padding:3px 0 4px;font-size:11.5px;cursor:pointer;min-width:0}
 .mrow .mline{display:flex;align-items:baseline;gap:3px;min-width:0}
 .mrow .mtm{color:#7E8F6C;font-weight:800;font-size:9.5px;font-variant-numeric:tabular-nums;flex:none}
@@ -258,8 +258,9 @@ button.mini:hover{background:#F7F3EA}
 .mrow .msub .mt{flex:none;font-size:8.5px;font-weight:800;padding:0 3px;border-radius:3px;background:#DDF3E8;color:#1F7A57;letter-spacing:0}
 .mrow .msub .mt.exp{background:#FBECEA;color:#A9504A}
 .mrow .mdet{margin-top:2px;font-size:10px;line-height:1.5;color:#6E7F60;white-space:pre-wrap;word-break:break-word}
-/* 일간 장부 카드 3줄 구조 — 1줄 시간·수입/지출 배지·카테고리(삭제 ×), 2줄 내역·금액, 3줄 상세 내역 */
-.mrow.mcard{display:flex;flex-direction:column;gap:2px;padding:5px 0 6px}
+/* 일간·주간 장부 카드 — 내역 1건마다 건강 식단 카드처럼 둥근 테두리·연한 초록 톤 배경의 독립 카드 박스
+   3줄 구조: 1줄 시간·수입/지출 배지·카테고리(일간은 삭제 ×), 2줄 내역·금액, 3줄 상세 내역 */
+.mrow.mcard{display:flex;flex-direction:column;gap:2px;padding:5px 7px 6px;border:1px solid #DFEBCF;border-radius:8px;background:#FCFEF6;box-shadow:0 1px 2px -1px rgba(84,120,54,.10);cursor:pointer;transition:background .12s,border-color .12s}
 .mrow.mcard .mc-top{display:flex;align-items:center;gap:4px;min-width:0;line-height:1.3}
 .mrow.mcard .mc-top .mtm{flex:none;font-weight:800;font-size:9.5px;color:#7E8F6C;font-variant-numeric:tabular-nums}
 .mrow.mcard .mc-top .mtm.none{font-weight:700;color:#C6BCAB}
@@ -274,8 +275,12 @@ button.mini:hover{background:#F7F3EA}
 .mrow.mcard .mc-mid .mc-memo{flex:1 1 auto;min-width:0;font-size:11.5px;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;line-height:1.35}
 .mrow.mcard .mc-mid .ma{flex:none;font-weight:800;font-size:11.5px;color:#A9504A;font-variant-numeric:tabular-nums;white-space:nowrap;line-height:1.35}
 .mrow.mcard .mc-mid .ma.inc{color:#2F7F60}
-.mrow.mcard .mdet{margin-top:1px;padding-top:2px;border-top:1px dashed #E6EEDC;font-size:10px;line-height:1.5;color:#6E7F60}
-.mrow.mcard.inc{border-bottom-color:#D7EDE4}
+.mrow.mcard .mdet{margin-top:1px;padding-top:2px;border-top:1px dashed #E3EED7;font-size:10px;line-height:1.5;color:#6E7F60}
+.mrow.mcard:hover{background:#F8FCEE;border-color:#D3E4BE}
+.mrow.mcard.inc{border-color:#D5EBDC;background:#F9FEFB}
+.mrow.mcard.inc:hover{background:#F3FCF7;border-color:#C7E5D5}
+/* 장부 기록 없음 — 카드 자리에 놓는 점선 빈 박스 */
+.mrow.mempty{cursor:default;border:1px dashed #E2EBD6;border-radius:8px;background:#FCFEF8;padding:6px 7px;color:#C6BCAB;font-size:10px;box-shadow:none}
 .money-add{display:grid;grid-template-columns:minmax(0,1fr);gap:3px;margin-top:5px;min-width:0}
 .money-add select,.money-add input,.money-add textarea{border:1px solid #DCE7CF;border-radius:6px;padding:3px 5px;font-size:11px;background:#FCFEF9;outline:none;min-width:0;max-width:100%;color:var(--ink);font-family:inherit}
 .money-add select:focus,.money-add input:focus,.money-add textarea:focus{border-color:#9DBE7A}
@@ -576,9 +581,15 @@ html.wdnd-on,html.wdnd-on body{-webkit-user-select:none;user-select:none;cursor:
 .week-pane .hcard,.week-pane .hweight{background:#FBFDFF}
 .hcol .hsec{flex:0 0 auto}
 /* 장부 모음집 */
-.week-pane .money-list{border:0;border-radius:0;padding:0;background:transparent;min-height:60px;max-height:none;overflow:visible;gap:0}
-.week-pane .money-list .mrow{cursor:pointer;padding:4px 0 5px}
-.week-pane .money-list .mrow:last-child{border-bottom:0}
+.week-pane .money-list{border:0;border-radius:0;padding:0;background:transparent;min-height:60px;max-height:none;overflow:visible;gap:4px}
+.week-pane .money-list .mrow{cursor:pointer}
+.week-pane .money-list .mrow.mcard{padding:4px 6px 5px;border-radius:7px}
+.week-pane .money-list .mrow.mcard .mc-top .mtm{font-size:9px}
+.week-pane .money-list .mrow.mcard .mc-top .mt{font-size:8px;padding:0 3px}
+.week-pane .money-list .mrow.mcard .mc-top .mc-cat{font-size:9px}
+.week-pane .money-list .mrow.mcard .mc-mid .mc-memo{font-size:11px}
+.week-pane .money-list .mrow.mcard .mc-mid .ma{font-size:11px}
+.week-pane .money-list .mrow.mcard .mdet{font-size:9.5px;line-height:1.45;margin-top:.5px;padding-top:2px}
 .week-pane .money-top{margin:0 0 2px;padding:0 0 5px}
 .week-pane .money-top .mf{font-size:9.5px}
 .week-pane .money-top .mf b{font-size:15px;letter-spacing:.2px}
@@ -646,6 +657,9 @@ html.wdnd-on,html.wdnd-on body{-webkit-user-select:none;user-select:none;cursor:
   .hmeal{padding:3px 5px 4px;border-radius:7px}
   .hmeal .hmx{font-size:9.5px;line-height:1.42}
   .mrow.mcard .mc-top .mx{opacity:.55}
+  .mrow.mcard{padding:4px 6px 5px;border-radius:7px}
+  .week-pane .money-list .mrow.mcard{padding:3px 5px 4px}
+  .week-pane .money-list .mrow.mcard .mdet{font-size:9px}
   .wtask{font-size:11.5px;min-height:24px;gap:4px}
   .wtask .wst{width:16px;height:16px;font-size:10px;border-radius:4px}
   .whead b{font-size:11.5px}
@@ -1056,7 +1070,8 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
   body[data-print="daily"] .tr-lab{font-size:5.2pt}
   body[data-print="daily"] .note-one{height:3.6mm}
   body[data-print="daily"] .mrow{font-size:6.2pt;padding:.5mm 0}
-  body[data-print="daily"] .mrow.mcard{padding:.6mm 0 .7mm;gap:0}
+  body[data-print="daily"] .money-list{gap:.7mm}
+  body[data-print="daily"] .mrow.mcard{padding:.5mm .8mm .7mm;gap:0;border:1px solid #DDD;border-radius:1mm;background:#fff;box-shadow:none;transition:none}
   body[data-print="daily"] .mrow.mcard .mc-top .mtm{font-size:5pt}
   body[data-print="daily"] .mrow.mcard .mc-top .mt{font-size:4.6pt;padding:0 .5mm;border-radius:.5mm}
   body[data-print="daily"] .mrow.mcard .mc-top .mc-cat{font-size:5pt}
@@ -1120,6 +1135,16 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
   body[data-print="week"] .hmeal .hmt{font-size:4.6pt}
   body[data-print="week"] .hmeal .hms{font-size:4.2pt;padding:0 .6mm;border-radius:1mm;background:#fff;border-color:#CCC}
   body[data-print="week"] .hmeal .hmx{font-size:4.8pt;line-height:1.3;margin-top:.3mm;padding-top:.3mm}
+  /* 주간 장부 카드 — 인쇄에서는 테두리·여백을 줄이고 흰 바탕으로 */
+  body[data-print="week"] .week-pane .money-list{gap:.6mm}
+  body[data-print="week"] .week-pane .money-list .mrow.mcard{padding:.5mm .7mm .6mm;border-radius:1mm;border-color:#DDD;background:#fff;box-shadow:none;transition:none}
+  body[data-print="week"] .week-pane .money-list .mrow.mcard.inc{border-color:#DDD;background:#fff}
+  body[data-print="week"] .week-pane .money-list .mrow.mcard .mc-top .mtm{font-size:4.6pt}
+  body[data-print="week"] .week-pane .money-list .mrow.mcard .mc-top .mt{font-size:4.2pt;padding:0 .5mm;border-radius:.5mm}
+  body[data-print="week"] .week-pane .money-list .mrow.mcard .mc-top .mc-cat{font-size:4.6pt}
+  body[data-print="week"] .week-pane .money-list .mrow.mcard .mc-mid .mc-memo{font-size:5pt}
+  body[data-print="week"] .week-pane .money-list .mrow.mcard .mc-mid .ma{font-size:5pt}
+  body[data-print="week"] .week-pane .money-list .mrow.mcard .mdet{font-size:4.4pt;line-height:1.3;margin-top:.2mm;padding-top:.2mm}
   .wcol .tt{--hour-h:4.75mm;padding-top:3px}
   .wcol .tt-hours{width:9pt}
   .wcol .tt-hours .hr span{font-size:4.6pt;top:-2px}
@@ -2582,7 +2607,7 @@ function renderMoney(){
       + (det?'<div class="mdet">'+esc(det)+'</div>':"")
       + '</div>';
   });
-  if(!list.length) html='<div class="mrow" style="cursor:default;color:#C6BCAB;font-size:10px"><span class="mm">오늘 수입·지출을 적어 보세요</span></div>';
+  if(!list.length) html='<div class="mrow mempty"><span class="mm">오늘 수입·지출을 적어 보세요</span></div>';
   $("#moneyList").innerHTML=html;
 
   var todayExp=0, todayInc=0, monthExp=0, monthInc=0, mk=curDate.slice(0,7);
@@ -2856,18 +2881,24 @@ function renderWeekMoney(){
       var isInc=(e.type==="income");
       if(isInc) inc+=e.amount; else exp+=e.amount;
       var c=lcat(e.cat)||{name:"기타", color:"#DAD8D2"};
-      rows+='<div class="mrow'+(isInc?" inc":"")+'">'
-        +   '<div class="mline">'
-        +     (e.time?'<span class="mtm">'+esc(e.time)+'</span>':"")
-        +     '<span class="mm">'+esc(e.memo||lcatName(e.cat)||"내역")+'</span>'
-        +     '<span class="ma'+(isInc?" inc":"")+'">'+(isInc?"+":"-")+fmtNum(e.amount)+'</span>'
+      var det=String(e.detail==null?"":e.detail).replace(/\s+$/,"");
+      // 일간 장부와 같은 3줄 카드: 1줄 시간·수입/지출 배지·카테고리 / 2줄 내역·금액 / 3줄 상세 내역
+      rows+='<div class="mrow mcard'+(isInc?" inc":"")+'">'
+        +   '<div class="mc-top">'
+        +     '<span class="mtm'+(e.time?'':' none')+'">'+esc(e.time||"--:--")+'</span>'
+        +     '<span class="mt'+(isInc?' inc':' exp')+'">'+(isInc?'수입':'지출')+'</span>'
+        +     '<span class="mc-cat">'
+        +       ((c.name && !(isInc && c.name==="수입")) ? '<i style="--c:'+c.color+'"></i><span>'+esc(c.name)+'</span>' : '')
+        +     '</span>'
         +   '</div>'
-        +   '<div class="msub"><span class="mt'+(isInc?"":" exp")+'">'+(isInc?"수입":"지출")+'</span>'
-        +     ((isInc && c.name==="수입") ? "" : '<i style="--c:'+c.color+'"></i>'+esc(c.name))+'</div>'
-        +   (e.detail?'<div class="mdet">'+esc(e.detail)+'</div>':"")
-        +   '</div>';
+        +   '<div class="mc-mid">'
+        +     '<span class="mc-memo">'+esc(e.memo||lcatName(e.cat)||"내역")+'</span>'
+        +     '<span class="ma'+(isInc?' inc':'')+'">'+(isInc?'+':'-')+fmtNum(e.amount)+'</span>'
+        +   '</div>'
+        +   (det?'<div class="mdet">'+esc(det)+'</div>':"")
+        + '</div>';
     });
-    if(!rows) rows='<div class="hnone" style="padding:6px 0">기록 없음</div>';
+    if(!rows) rows='<div class="mrow mempty"><span class="mm">기록 없음</span></div>';
     wExp+=exp; wInc+=inc;
     html+='<div class="wcol'+(date===today?" today":"")+'" data-date="'+date+'">'
         +   weekHeadHTML(date)
