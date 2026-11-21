@@ -514,7 +514,7 @@ html.wdnd-on,html.wdnd-on body{-webkit-user-select:none;user-select:none;cursor:
 .week-pane[data-wtab="tasks"]{--ph-bg:#FDF0B8;--ph-ink:#8A6A12}
 .week-pane[data-wtab="health"]{--ph-bg:#CFE4FB;--ph-ink:#3E6A9C}
 .week-pane[data-wtab="time"]{--ph-bg:#DDD6F8;--ph-ink:#5D4CA8}
-.week-pane[data-wtab="money"]{--ph-bg:#FBDFCB;--ph-ink:#A9603A}
+.week-pane[data-wtab="money"]{--ph-bg:#D7F0D0;--ph-ink:#4C6B22}
 .week-pane[data-wtab="leisure"]{--ph-bg:#CFF0EA;--ph-ink:#2F7A6E}
 .hcard{display:flex;flex-direction:column;gap:3px;background:#fff;border:1px solid #E4EBF6;border-radius:8px;padding:6px 7px}
 .hcard .hrow{display:flex;align-items:center;gap:4px;min-width:0;font-size:10.5px}
@@ -561,6 +561,11 @@ html.wdnd-on,html.wdnd-on body{-webkit-user-select:none;user-select:none;cursor:
 .week-pane .money-top .mf{font-size:9.5px}
 .week-pane .money-top .mf b{font-size:15px;letter-spacing:.2px}
 .week-pane .money-top .mf .mval i{font-size:8.5px}
+/* 장부 인덱스 탭 — 일간 장부 열과 같은 초록(#D7F0D0·#4C6B22)으로 프레임·요일 필·점선 구분선 통일 */
+.week-pane[data-wtab="money"] .week-frame{background:linear-gradient(180deg,#E7F6E1,#D7F0D0);box-shadow:0 24px 54px -36px rgba(58,92,36,.55),inset 0 1px 0 rgba(255,255,255,.7)}
+.week-pane[data-wtab="money"] .wcol+.wcol{border-left:1px dashed #DCE7CF}
+.week-pane[data-wtab="money"] .wcol.today{background:linear-gradient(180deg,#F4FBEF 0,#FDFEFA 48%)}
+.week-pane[data-wtab="money"] .wsum .sc.bal b{color:#3F5C2E}
 .mfoot{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:4px;border-top:1px solid #E6EEDC;padding-top:4px;font-size:9.5px;font-weight:800}
 .mfoot .exp{color:#A9504A}
 .mfoot .inc{color:#2F7F60}
@@ -1333,7 +1338,7 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
       <button class="wi" type="button" role="tab" data-wtab="tasks" aria-selected="true" style="--t:#FDF0B8;--ti:#8A6A12"><i></i>할 일</button>
       <button class="wi" type="button" role="tab" data-wtab="health" aria-selected="false" style="--t:#CFE4FB;--ti:#3E6A9C"><i></i>건강</button>
       <button class="wi" type="button" role="tab" data-wtab="time" aria-selected="false" style="--t:#DDD6F8;--ti:#5D4CA8"><i></i>타임테이블</button>
-      <button class="wi" type="button" role="tab" data-wtab="money" aria-selected="false" style="--t:#FBDFCB;--ti:#A9603A"><i></i>장부</button>
+      <button class="wi" type="button" role="tab" data-wtab="money" aria-selected="false" style="--t:#D7F0D0;--ti:#4C6B22"><i></i>장부</button>
       <button class="wi" type="button" role="tab" data-wtab="leisure" aria-selected="false" style="--t:#CFF0EA;--ti:#2F7A6E"><i></i>여가시간</button>
     </div>
 
