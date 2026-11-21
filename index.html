@@ -366,12 +366,6 @@ button.mini:hover{background:#F7F3EA}
 .tt-cell{display:block;min-width:0;min-height:0;margin:1px;border-radius:3px;background:transparent;transition:background .1s}
 .tt-grid:not(.painting) .tt-cell:not(.on):hover{background:rgba(139,123,216,.1)}
 .tt-cell.on{box-shadow:inset 0 0 0 1px rgba(70,56,32,.06)}
-/* 같은 시간 줄에서 같은 색으로 이어 칠한 블록은 하나의 형광펜 띠처럼 붙인다(안쪽 틈·모서리 둥글기·테두리 없이, 양 끝만 둥글게) */
-.tt-cell.on.lnk-r{margin-right:0;border-top-right-radius:0;border-bottom-right-radius:0}
-.tt-cell.on.lnk-l{margin-left:0;border-top-left-radius:0;border-bottom-left-radius:0}
-.tt-cell.on.lnk-r:not(.lnk-l):not(.now){box-shadow:inset 0 1px 0 rgba(70,56,32,.06),inset 0 -1px 0 rgba(70,56,32,.06),inset 1px 0 0 rgba(70,56,32,.06)}
-.tt-cell.on.lnk-l:not(.lnk-r):not(.now){box-shadow:inset 0 1px 0 rgba(70,56,32,.06),inset 0 -1px 0 rgba(70,56,32,.06),inset -1px 0 0 rgba(70,56,32,.06)}
-.tt-cell.on.lnk-l.lnk-r:not(.now){box-shadow:inset 0 1px 0 rgba(70,56,32,.06),inset 0 -1px 0 rgba(70,56,32,.06)}
 .tt-cell.now{box-shadow:inset 0 0 0 1.6px rgba(205,106,90,.9)}
 .tt-cell.on.now{box-shadow:inset 0 0 0 1.6px rgba(205,106,90,.92)}
 .tt-grid.empty::after{content:"10분 블럭을 눌러 칠해 보세요";position:absolute;left:0;right:0;top:44%;text-align:center;font-size:10.5px;color:#CFC5B2;pointer-events:none;letter-spacing:.3px;z-index:2}
@@ -382,6 +376,12 @@ button.mini:hover{background:#F7F3EA}
 .tt.mini .tt-hours{width:15px}
 .tt.mini .tt-grid{border-radius:2px}
 .tt.mini .tt-cell{margin:.5px;border-radius:2px}
+/* 같은 시간 줄에서 같은 색으로 이어 칠한 블록은 하나의 형광펜 띠처럼 붙인다(안쪽 틈·모서리 둥글기·테두리 없이, 양 끝만 둥글게) */
+.tt-cell.on.lnk-r{margin-right:0;border-top-right-radius:0;border-bottom-right-radius:0}
+.tt-cell.on.lnk-l{margin-left:0;border-top-left-radius:0;border-bottom-left-radius:0}
+.tt-cell.on.lnk-r:not(.lnk-l):not(.now){box-shadow:inset 0 1px 0 rgba(70,56,32,.06),inset 0 -1px 0 rgba(70,56,32,.06),inset 1px 0 0 rgba(70,56,32,.06)}
+.tt-cell.on.lnk-l:not(.lnk-r):not(.now){box-shadow:inset 0 1px 0 rgba(70,56,32,.06),inset 0 -1px 0 rgba(70,56,32,.06),inset -1px 0 0 rgba(70,56,32,.06)}
+.tt-cell.on.lnk-l.lnk-r:not(.now){box-shadow:inset 0 1px 0 rgba(70,56,32,.06),inset 0 -1px 0 rgba(70,56,32,.06)}
 .tt.mini .tt-cell.now,.tt.mini .tt-cell.on.now{box-shadow:inset 0 0 0 1px rgba(205,106,90,.9)}
 .tt.mini .tt-now::before{width:6px;height:6px;left:-4px;top:-1.5px}
 .tt.mini .tt-grid.empty::after{display:none}
