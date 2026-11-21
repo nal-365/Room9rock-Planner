@@ -580,13 +580,7 @@ html.wdnd-on,html.wdnd-on body{-webkit-user-select:none;user-select:none;cursor:
 .wsum .sc.inc b{color:#2F7F60}
 .wsum .sc.bal b{color:#5D4CA8}
 
-/* 여가 모음집 */
-.week-pane .lrow .wst{flex:none;width:18px;height:18px;border-radius:5px;border:1.4px dashed #D5C9B4;display:grid;place-items:center;font-size:11.5px;font-weight:700;color:#B9AF9F;background:#fff;line-height:1}
-.week-pane .lrow .wst.s1{border-style:solid;border-color:#A9DCC4;background:#EAF8F1;color:#1F7A57}
-.week-pane .lrow .wst.s2{border-style:solid;border-color:#F0D49A;background:#FDF5E4;color:#A97315}
-.week-pane .lrow .wst.s3{border-style:solid;border-color:#E7B7B3;background:#FBEDEC;color:#AE4A45}
-.week-pane .lrow .wst.s4{border-style:solid;border-color:#BCC8E4;background:#EEF2FA;color:#4E608F}
-.week-pane .lrow.done .wtxt{color:#9C9284}
+/* 여가 모음집 — 실행 여부 표시 없이 제목만 */
 .week-pane .lcount{margin-top:auto;border-top:1px dashed var(--line);padding-top:4px;font-size:9px;font-weight:800;color:#B3A897;text-align:right;letter-spacing:.2px}
 @media (max-width:720px){
   .week-index{gap:3px;padding:0 5px;margin-top:9px}
@@ -1527,7 +1521,7 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
         <li><b>칠하기</b> — 위쪽 형광펜을 고르고 시간표를 위아래로 끌면 10분 단위로 칠해져요. 마우스·손가락·애플펜슬 모두 됩니다.</li>
         <li><b>지우개</b> — <b>지우개</b>를 고르고 문질러 지워요. 잘못 칠했으면 <kbd>Ctrl</kbd>+<kbd>Z</kbd>로 되돌리기.</li>
         <li><b>할 일</b> — 네모를 누를 때마다 <b>□ → ○ 완료 → △ 일부 → × 못함 → → 미룸</b> 순서로 바뀌어요.</li>
-        <li><b>카드</b> — <b>작업·자기개발·여가 시간</b> 열은 카드로 적어요. 위줄에서 상태·분류(플랫폼·카테고리)를 고르고, 제목 아래 <b>상세 내역</b>에 여러 줄로 메모해요. 분류 목록은 카드의 <b>＋ 플랫폼 관리</b>·<b>＋ 카테고리 관리</b>나 카테고리 관리에서 직접 추가·이름 바꾸기·삭제할 수 있어요.</li>
+        <li><b>카드</b> — <b>작업·자기개발·여가 시간</b> 열은 카드로 적어요. <b>작업·자기개발</b> 카드는 위줄에서 상태와 분류(플랫폼·카테고리)를 고르고, <b>여가 시간</b> 카드는 상태 없이 분류만 골라요. 제목 아래 <b>상세 내역</b>에 여러 줄로 메모해요. 분류 목록은 카드의 <b>＋ 플랫폼 관리</b>·<b>＋ 카테고리 관리</b>나 카테고리 관리에서 직접 추가·이름 바꾸기·삭제할 수 있어요.</li>
         <li><b>주간</b> — 일간에서 칠하고 적은 내용이 그대로 모이고, 주간에서 고쳐도 일간에 바로 반영돼요. 주간 화면 위쪽 형광펜도 그대로 쓸 수 있어요.</li>
         <li><b>장부</b> — 날짜·시간·수입/지출·분류·내용·금액을 적고 상세 내역을 여러 줄로 남겨요. 총 지출·총 수입·잔액과 <b>분류별 모아보기</b>가 자동으로 정리되고, 분류를 누르면 그 내역만 필터링됩니다.</li>
         <li><b>일간 열</b> — <b>건강</b>은 위에서부터 몸무게 → 오늘의 한 줄 → 식단(시간·시간대·내용, 여러 줄 가능)을 적고, 아래 트래커 한 칸에 물·약·에너지·장건강(안감·바나나·딱딱함·설사·혈변 중 하나, 누르면 선택·다시 누르면 해제)·기분(5단계)을 모아 둡니다. <b>작업·자기개발·여가 시간</b>은 분류·상세 내역이 붙은 카드로, <b>일정</b>은 체크리스트로 적어요. <b>장부</b>는 맨 위에 오늘 지출·오늘 수입과 이번 달 지출·수입 합계를 두고, 그 아래에서 수입/지출을 골라 시간·분류·내용·금액·상세 내역을 적어요. 기분 이모지는 월간 달력에도 표시됩니다.</li>
@@ -2284,7 +2278,9 @@ function renderTaskList(kind){
     : list.map(taskRowHTML).join("");
   if(!list.length){
     var ph={study:"카드에 읽은 책·공부를 적어 보세요", home:"일정을 적어 보세요", leisure:"카드에 여가 활동을 적어 보세요", work:"작업 카드에 플랫폼·상세를 적어 보세요"}[kind]||"할 일을 적어 보세요";
-    html='<div class="task empty"><span class="st"></span><span class="txt-ph" style="font-size:10.5px;color:#CFC5B4">'
+    // 여가 시간 열은 실행 여부 칸이 없으므로 빈 칸 안내도 상태 네모 없이 글자만 둔다.
+    html='<div class="task empty">'+(kind==="leisure"?"":'<span class="st"></span>')
+       + '<span class="txt-ph" style="font-size:10.5px;color:#CFC5B4">'
        + ph + '</span></div>';
   }
   box.innerHTML=html;
@@ -2310,9 +2306,13 @@ function cardHTML(t, kind){
   kind=CARD_KINDS[kind]?kind:"work";
   var st=t.st||0, meta=kindMeta(kind);
   var cur=(kind==="work" ? t.platform : t.category)||"";
+  // 여가 시간 카드는 실행 여부(□→○→△→×→→) 버튼 없이 분류·제목·상세 내역만 보여 준다.
+  // 저장된 st 값은 지우지 않아 예전 기록과 그대로 호환된다.
+  var stBtn=(kind==="leisure") ? ""
+       : '<button class="st s'+st+'" title="'+ST_LABEL[st]+' · 누르면 상태 변경" aria-label="상태 '+ST_LABEL[st]+'">'+ST_SYM[st]+'</button>';
   return '<div class="task wcard wcard-'+kind+'" data-id="'+t.id+'" data-kind="'+kind+'">'
        +   '<div class="wcard-top">'
-       +     '<button class="st s'+st+'" title="'+ST_LABEL[st]+' · 누르면 상태 변경" aria-label="상태 '+ST_LABEL[st]+'">'+ST_SYM[st]+'</button>'
+       +     stBtn
        +     '<select class="wplat'+(cur?" on":"")+'" aria-label="'+meta.one+'" title="'+meta.one+' 고르기">'+kindOptionsHTML(kind, cur)+'</select>'
        +     '<button class="del" title="삭제" aria-label="삭제">×</button>'
        +   '</div>'
@@ -2796,10 +2796,10 @@ function renderWeekLeisure(){
   dates.forEach(function(date){
     var d=getDay(date);
     var list=(d.tasks||[]).filter(function(t){ return t.list==="leisure"; });
+    // 여가시간 보드는 실행 여부(○△×→) 표시 없이 카드 제목만 모아 보여 준다.
     var rows = list.length
       ? list.map(function(t){
-          return '<div class="wtask lrow'+(t.st===1?" done":"")+'" data-date="'+date+'" data-id="'+t.id+'">'
-               +   '<span class="wst s'+t.st+'" title="'+ST_LABEL[t.st]+'">'+ST_SYM[t.st]+'</span>'
+          return '<div class="wtask lrow" data-date="'+date+'" data-id="'+t.id+'">'
                +   '<span class="wtxt">'+esc(t.text||"여가")+'</span>'
                + '</div>';
         }).join("")
