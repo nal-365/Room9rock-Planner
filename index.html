@@ -31,33 +31,18 @@
 <style>
 /* ============================================================
    방구석 작업실 · 일간+주간 타임트래커
-   단일 HTML · 손글씨 폰트(눈누 다이어리체 · 폴백 깍두기 도면체) + 오프라인 폴백
+   단일 HTML · 손글씨 폰트(눈누 다이어리체) + 시스템 폰트 폴백
    ============================================================ */
 /* ---------- 웹폰트: 눈누 다이어리체 (EarlyFontDiary, 기본) ---------- */
 @font-face{
   font-family:'EarlyFontDiary';
   src:url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_220508@1.0/EarlyFontDiary.woff2') format('woff2'),
       url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_220508@1.0/EarlyFontDiary.woff2') format('woff2');
-  font-weight:normal;
+  /* 단일 파일이라도 100~900 전 구간을 이 폰트로 선언해야 굵은 글씨(<b>, <strong>,
+     font-weight:600~800)에서 다른 폰트가 대신 매칭되지 않는다(WebKit 포함). */
+  font-weight:100 900;
   font-style:normal;
   font-display:swap;
-}
-/* ---------- 웹폰트: 역동감자 깍두기 도면체 (Kkakdugi Drafting, OFL) — 폴벡 ---------- */
-@font-face{
-  font-family:'KkakdugiDrafting';
-  font-style:normal;
-  font-weight:300 500;
-  font-display:swap;
-  src:url("https://dynamic-potato.github.io/kkakdugi-drafting/fonts/KkakdugiDrafting-Regular.woff2") format("woff2"),
-      url("https://raw.githubusercontent.com/fontbee/font/main/DynamicPotato/KkakdugiDrafting-Regular.woff2") format("woff2");
-}
-@font-face{
-  font-family:'KkakdugiDrafting';
-  font-style:normal;
-  font-weight:600 900;
-  font-display:swap;
-  src:url("https://dynamic-potato.github.io/kkakdugi-drafting/fonts/KkakdugiDrafting-Bold.woff2") format("woff2"),
-      url("https://raw.githubusercontent.com/fontbee/font/main/DynamicPotato/KkakdugiDrafting-Bold.woff2") format("woff2");
 }
 *{box-sizing:border-box}
 html,body{margin:0;padding:0}
@@ -79,8 +64,8 @@ html,body{margin:0;padding:0}
   --radius:14px;
   --hour-h:clamp(26px, calc((100dvh - 230px) / 24), 36px);
   --cell-h:calc(var(--hour-h) / 6);
-  --hand:"EarlyFontDiary","KkakdugiDrafting",-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",system-ui,sans-serif;
-  --sans:"EarlyFontDiary","KkakdugiDrafting",-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",system-ui,sans-serif;
+  --hand:"EarlyFontDiary",-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",system-ui,sans-serif;
+  --sans:"EarlyFontDiary",-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",system-ui,sans-serif;
   --serif:var(--hand);
 }
 /* 손글씨 폰트를 폼·버튼 요소까지 그대로 잇는다 */
