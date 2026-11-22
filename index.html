@@ -26,12 +26,23 @@
 <link rel="preconnect" href="https://firestore.googleapis.com" crossorigin>
 <link rel="preconnect" href="https://dynamic-potato.github.io" crossorigin>
 <link rel="preconnect" href="https://raw.githubusercontent.com" crossorigin>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_220508@1.0/EarlyFontDiary.woff2" crossorigin>
 <style>
 /* ============================================================
    방구석 작업실 · 일간+주간 타임트래커
-   단일 HTML · 손글씨 폰트(역동감자 깍두기 도면체) + 오프라인 폴백
+   단일 HTML · 손글씨 폰트(눈누 다이어리체 · 폴백 깍두기 도면체) + 오프라인 폴백
    ============================================================ */
-/* ---------- 웹폰트: 역동감자 깍두기 도면체 (Kkakdugi Drafting, OFL) ---------- */
+/* ---------- 웹폰트: 눈누 다이어리체 (EarlyFontDiary, 기본) ---------- */
+@font-face{
+  font-family:'EarlyFontDiary';
+  src:url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_220508@1.0/EarlyFontDiary.woff2') format('woff2'),
+      url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_220508@1.0/EarlyFontDiary.woff2') format('woff2');
+  font-weight:normal;
+  font-style:normal;
+  font-display:swap;
+}
+/* ---------- 웹폰트: 역동감자 깍두기 도면체 (Kkakdugi Drafting, OFL) — 폴벡 ---------- */
 @font-face{
   font-family:'KkakdugiDrafting';
   font-style:normal;
@@ -68,10 +79,12 @@ html,body{margin:0;padding:0}
   --radius:14px;
   --hour-h:clamp(26px, calc((100dvh - 230px) / 24), 36px);
   --cell-h:calc(var(--hour-h) / 6);
-  --hand:"KkakdugiDrafting",-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",system-ui,sans-serif;
-  --sans:"KkakdugiDrafting",-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",system-ui,sans-serif;
+  --hand:"EarlyFontDiary","KkakdugiDrafting",-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",system-ui,sans-serif;
+  --sans:"EarlyFontDiary","KkakdugiDrafting",-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",system-ui,sans-serif;
   --serif:var(--hand);
 }
+/* 손글씨 폰트를 폼·버튼 요소까지 그대로 잇는다 */
+input,textarea,select,button,optgroup,option,fieldset,legend,table,output{font-family:inherit}
 body{
   font-family:var(--hand);
   color:var(--ink);
@@ -226,10 +239,11 @@ button.mini:hover{background:#F7F3EA}
 .add-task{margin-top:6px;border:1px dashed var(--line-strong);background:transparent;border-radius:7px;padding:4px 7px;font-size:10.5px;font-weight:700;color:var(--ink-mute);cursor:pointer;width:100%;touch-action:manipulation;text-align:left}
 .add-task:hover{background:#FBF7EF;color:var(--ink-soft)}
 
-/* 작업·자기개발·여가 카드 (분류·할 일·상세 내역 · 실행 여부 상태는 작업·자기개발만) */
-#taskList-work,#taskList-study,#taskList-leisure{gap:5px}
+/* 작업·자기개발·일정·여가 카드 (분류·할 일·상세 내역 · 실행 여부 상태는 작업·자기개발·일정만) */
+#taskList-work,#taskList-study,#taskList-home,#taskList-leisure{gap:5px}
 .wcard{--wc-bg:#FFFDF4;--wc-line:#F1E5C4;--wc-sel-bg:#FBF4DA;--wc-sel-bd:#EFE2BC;--wc-sel-ink:#8A6A12;--wc-on-bg:#FBEDBB;--wc-on-bd:#E5CF86;--wc-on-ink:#7A5D0B;--wc-off-bg:#FDFAF0;--wc-off-bd:#F1EBDC;--wc-off-ink:#B3A585;--wc-det:#F1E7CE;display:block;border-bottom:1px solid var(--wc-line);border-radius:7px;padding:3px 4px 4px;background:var(--wc-bg);min-height:0}
 .wcard-study{--wc-bg:#FFF9FB;--wc-line:#F3DCE4;--wc-sel-bg:#FCE9F0;--wc-sel-bd:#F2D2DD;--wc-sel-ink:#9C3F58;--wc-on-bg:#FADCE8;--wc-on-bd:#EDBDCF;--wc-on-ink:#8A3149;--wc-off-bg:#FFFAFC;--wc-off-bd:#F6E6EC;--wc-off-ink:#C4A0AC;--wc-det:#F3DDE4}
+.wcard-home{--wc-bg:#FFFCF7;--wc-line:#F3E3D1;--wc-sel-bg:#FCEEDF;--wc-sel-bd:#F2D8BC;--wc-sel-ink:#9A5622;--wc-on-bg:#FBE3CB;--wc-on-bd:#EFC9A5;--wc-on-ink:#8A4A17;--wc-off-bg:#FFFBF6;--wc-off-bd:#F6E8D9;--wc-off-ink:#BFA083;--wc-det:#F3E3D1}
 .wcard-leisure{--wc-bg:#F7FEFC;--wc-line:#DCEEE9;--wc-sel-bg:#E7F6F2;--wc-sel-bd:#D2EAE4;--wc-sel-ink:#2E7D6B;--wc-on-bg:#D9F2EB;--wc-on-bd:#B7E0D6;--wc-on-ink:#256A5B;--wc-off-bg:#FAFFFE;--wc-off-bd:#E4F0ED;--wc-off-ink:#8FB3AA;--wc-det:#DCEEE9}
 .wcard-top{display:flex;align-items:center;gap:3px;min-width:0}
 .wcard .st{width:18px;height:18px;font-size:11px}
@@ -309,7 +323,7 @@ button.mini:hover{background:#F7F3EA}
 .mf b{flex:none;font-size:13px;font-weight:800;color:#3F5C2E;font-variant-numeric:tabular-nums;white-space:nowrap}
 .money-top .mf b{font-size:17px;letter-spacing:.5px;line-height:1.2}
 .money-top .mval{flex:none;display:inline-flex;align-items:baseline;gap:4px;white-space:nowrap}
-.money-top .mval i{font-style:normal;font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",system-ui,sans-serif;font-size:10px;font-weight:800;color:#7E8F6C;letter-spacing:0}
+.money-top .mval i{font-style:normal;font-family:var(--sans);font-size:10px;font-weight:800;color:#7E8F6C;letter-spacing:0}
 .money-top .mf.acc{color:#93A383}
 .money-top .mf.acc b{font-size:13px;letter-spacing:.3px}
 .money-top .mf.acc .mval i{font-size:8.5px}
@@ -1088,7 +1102,7 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
   body[data-print="daily"] .task{min-height:4.1mm}
   body[data-print="daily"] .task .txt{font-size:6.5pt}
   body[data-print="daily"] .task .st{width:7pt;height:7pt;font-size:4.6pt;border-radius:1px}
-  body[data-print="daily"] #taskList-work,body[data-print="daily"] #taskList-study,body[data-print="daily"] #taskList-leisure{gap:.8mm}
+  body[data-print="daily"] #taskList-work,body[data-print="daily"] #taskList-study,body[data-print="daily"] #taskList-home,body[data-print="daily"] #taskList-leisure{gap:.8mm}
   body[data-print="daily"] .wcard{padding:.4mm .5mm .5mm;border-radius:1.5mm;background:#fff}
   body[data-print="daily"] .wcard-top{gap:.6mm}
   body[data-print="daily"] .wcard .wplat{font-size:4.8pt;padding:0 .4mm;border-radius:1px;-webkit-appearance:none;appearance:none;text-indent:0}
@@ -1404,7 +1418,7 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
             <div class="col-head" style="--tint:#FDE0C6;--inkh:#9A5622">일정</div>
             <div class="col-body">
               <div class="tasks-body" id="taskList-home"></div>
-              <button class="add-task" data-add="home">＋ 일정 추가</button>
+              <button class="add-task" data-add="home">＋ 일정 카드 추가</button>
             </div>
             <div class="col-feedback" style="--fb-line:#F2DFCB;--fb-ink:#AB7444;--fb-bg:#FFFBF6">
               <span class="fb-lab">피드백</span>
@@ -1674,13 +1688,13 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
         <li><b>칠하기</b> — 위쪽 형광펜을 고르고 타임테이블의 10분 블럭을 누르거나 끌면 칠해져요. 한 시간이 6칸(10분)으로 나뉘어 있어 세로로 한 칸씩, 가로로 10분씩 이어서 칠할 수 있습니다. 마우스·손가락·애플펜슬 모두 됩니다.</li>
         <li><b>지우개</b> — <b>지우개</b>를 고르고 문질러 지워요. 잘못 칠했으면 <kbd>Ctrl</kbd>+<kbd>Z</kbd>로 되돌리기.</li>
         <li><b>할 일</b> — 네모를 누를 때마다 <b>□ → ○ 완료 → △ 일부 → × 못함 → → 미룸</b> 순서로 바뀌어요.</li>
-        <li><b>카드</b> — <b>작업·자기개발·여가 시간</b> 열은 카드로 적어요. <b>작업·자기개발</b> 카드는 위줄에서 상태와 분류(플랫폼·카테고리)를 고르고, <b>여가 시간</b> 카드는 상태 없이 분류만 골라요. 제목 아래 <b>상세 내역</b>에 여러 줄로 메모해요. 분류 목록은 카드의 <b>＋ 플랫폼 관리</b>·<b>＋ 카테고리 관리</b>나 카테고리 관리에서 직접 추가·이름 바꾸기·삭제할 수 있어요.</li>
+        <li><b>카드</b> — <b>작업·자기개발·일정·여가 시간</b> 열은 카드로 적어요. <b>작업·자기개발·일정</b> 카드는 위줄에서 상태와 분류(플랫폼·카테고리·일정 분류)를 고르고, <b>여가 시간</b> 카드는 상태 없이 분류만 골라요. 제목 아래 <b>상세 내역</b>에 여러 줄로 메모해요. 분류 목록은 카드의 <b>＋ 플랫폼/카테고리/분류 관리</b>나 카테고리 관리에서 직접 추가·이름 바꾸기·삭제할 수 있어요.</li>
         <li><b>주간</b> — 일간에서 칠하고 적은 내용이 그대로 모이고, 주간에서 고쳐도 일간에 바로 반영돼요. 주간 화면 위쪽 형광펜도 그대로 쓸 수 있어요. 주간 위쪽 <b>할 일</b> 탭은 상태·분류 태그·제목·상세 내역이 붙은 카드로(끌어서 날짜 이동, 맨 아래 <b>작/일/자</b>로 분류 골라 빠른 추가), <b>건강</b> 탭은 식단을 시간·시간대와 내용 카드로, <b>여가시간</b> 탭은 카테고리 배지·제목·상세 내역 카드로 모아 보여 줘요.</li>
         <li><b>장부</b> — 날짜·시간·수입/지출·분류·내용·금액을 적고 상세 내역을 여러 줄로 남겨요. 총 지출·총 수입·잔액과 <b>분류별 모아보기</b>가 자동으로 정리되고, 분류를 누르면 그 내역만 필터링됩니다.</li>
-        <li><b>일간 열</b> — <b>건강</b>은 위에서부터 몸무게 → 오늘의 한 줄 → 식단(시간·시간대·내용, 여러 줄 가능)을 적고, 아래 트래커 한 칸에 물·약·에너지·장건강(안감·바나나·딱딱함·설사·혈변 중 하나, 누르면 선택·다시 누르면 해제)·기분(5단계)을 모아 둡니다. <b>작업·자기개발·여가 시간</b>은 분류·상세 내역이 붙은 카드로, <b>일정</b>은 체크리스트로 적어요. <b>장부</b>는 맨 위에 오늘 지출·오늘 수입과 이번 달 지출·수입 합계를 두고, 그 아래에서 수입/지출을 골라 시간·분류·내용·금액·상세 내역을 적어요. 기분 이모지는 월간 달력에도 표시됩니다.</li>
+        <li><b>일간 열</b> — <b>건강</b>은 위에서부터 몸무게 → 오늘의 한 줄 → 식단(시간·시간대·내용, 여러 줄 가능)을 적고, 아래 트래커 한 칸에 물·약·에너지·장건강(안감·바나나·딱딱함·설사·혈변 중 하나, 누르면 선택·다시 누르면 해제)·기분(5단계)을 모아 둡니다. <b>작업·자기개발·일정·여가 시간</b>은 분류·상세 내역이 붙은 카드로 적어요(작업·자기개발·일정은 앞의 실행 여부 버튼으로 완료 상태도 남겨요). <b>장부</b>는 맨 위에 오늘 지출·오늘 수입과 이번 달 지출·수입 합계를 두고, 그 아래에서 수입/지출을 골라 시간·분류·내용·금액·상세 내역을 적어요. 기분 이모지는 월간 달력에도 표시됩니다.</li>
         <li><b>피드백</b> — <b>작업·자기개발·일정·장부·여가 시간</b> 열 맨 아래 칸에 그날의 회고를 적어요. 날짜마다 따로 저장되고, 화면을 넓게 보면 건강 열과 같은 높이까지 채워집니다.</li>
         <li><b>월간</b> — 한 달을 달력 한 장으로 모아 봐요. 날짜를 누르면 그날 일간으로 바로 넘어가고, <b>이달의 목표</b>·<b>한 줄 리뷰</b>는 아래 통계와 함께 자동 저장돼요.</li>
-        <li><b>카테고리 관리</b> — 위쪽 <b>카테고리</b> 버튼에서 형광펜·장부 분류·<b>작업 플랫폼</b>·<b>자기개발 카테고리</b>·<b>여가 카테고리</b>·<b>식단 시간대</b>·약 종류를 직접 추가하거나 지울 수 있어요.</li>
+        <li><b>카테고리 관리</b> — 위쪽 <b>카테고리</b> 버튼에서 형광펜·장부 분류·<b>작업 플랫폼</b>·<b>일정 분류</b>·<b>자기개발 카테고리</b>·<b>여가 카테고리</b>·<b>식단 시간대</b>·약 종류를 직접 추가하거나 지울 수 있어요.</li>
         <li><b>저장</b> — 모든 변경은 이 브라우저에 자동 저장돼요. <b>Google 로그인</b>하면 다른 기기와 자동으로 이어지고, 로그아웃해도 이 기기의 기록은 그대로 남아요.</li>
       </ul>
       <h4>형광펜 이름 (직접 바꾸기)</h4>
@@ -1742,6 +1756,7 @@ var DEF_MEDS = [{id:"m", name:"아침약"}, {id:"e", name:"저녁약"}];
 var DEF_PLATFORMS = ["카카오","OGQ","스마트스토어","LINE","크라우드픽","SNS","기타"];
 var DEF_STUDY_CATS = ["독서","공부","강의","자격증","기타"];
 var DEF_LEISURE_CATS = ["운동","영상·콘텐츠","게임","휴식","취미","기타"];
+var DEF_EVENT_CATS = ["약속","모임","병원","행사","은행·관공서","기타"];
 var MEAL_SLOTS = ["아침","점심","저녁","운동","간식","야식"];
 var FB_KEYS = ["work","study","home","money","leisure"];   /* 일간 열 하단 피드백 칸 */
 var CAT_PALETTE = ["#B9E3CE","#FBE49B","#FAC9D6","#FBC79C","#CFE8A6","#B8DDF2","#CBB9EF","#DAD8D2","#C7DDF7","#F3B9A8","#E3C7F2","#CBD8CA"];
@@ -1836,6 +1851,7 @@ function blankState(){
     workPlatforms: DEF_PLATFORMS.map(function(n,i){ return {id:"w"+(i+1), name:n}; }),
     studyCats: DEF_STUDY_CATS.map(function(n,i){ return {id:"s"+(i+1), name:n}; }),
     leisureCats: DEF_LEISURE_CATS.map(function(n,i){ return {id:"g"+(i+1), name:n}; }),
+    eventCats: DEF_EVENT_CATS.map(function(n,i){ return {id:"e"+(i+1), name:n}; }),
     mealSlots: MEAL_SLOTS.slice(),
     settings:{ names:{}, mode:"all", dday:{label:"",date:""}, helpSeen:false },
     ledger:{entries:[]},
@@ -1966,8 +1982,10 @@ function normalize(o){
   }
   s.studyCats=buildNameList(o.studyCats, DEF_STUDY_CATS, "s");
   s.leisureCats=buildNameList(o.leisureCats, DEF_LEISURE_CATS, "g");
+  s.eventCats=buildNameList(o.eventCats, DEF_EVENT_CATS, "e");
   var studyCatIdx={}; s.studyCats.forEach(function(c){ studyCatIdx[c.id]=1; });
   var leisureCatIdx={}; s.leisureCats.forEach(function(c){ leisureCatIdx[c.id]=1; });
+  var eventCatIdx={}; s.eventCats.forEach(function(c){ eventCatIdx[c.id]=1; });
 
   /* ---- 식단 시간대 ---- */
   var builtSlots=[], seenSlot={};
@@ -2003,7 +2021,7 @@ function normalize(o){
         var plat=String(t.platform==null?"":t.platform).slice(0,24);
         if(plat && !seenPlat[plat]) plat="";
         var tcat=String(t.category==null?"":t.category).slice(0,24);
-        if(tcat && !((lk==="study"&&studyCatIdx[tcat])||(lk==="leisure"&&leisureCatIdx[tcat]))) tcat="";
+        if(tcat && !((lk==="study"&&studyCatIdx[tcat])||(lk==="leisure"&&leisureCatIdx[tcat])||(lk==="home"&&eventCatIdx[tcat]))) tcat="";
         tasks.push({id:t.id||uid(), text:t.text.slice(0,200), st:st, list:lk, platform:plat, category:tcat, detail:String(t.detail==null?"":t.detail).slice(0,2000)});
       });
     }
@@ -2438,14 +2456,15 @@ function tasksOf(date, kind){
   return getDay(date).tasks.filter(function(t){ return (t.list||"work")===kind; });
 }
 
-/* ---------- 일간 카드 분류 정의 (작업·자기개발·여가) ---------- */
-var CARD_KINDS = {work:1, study:1, leisure:1};
-var KIND_LIST  = {work:"workPlatforms", study:"studyCats", leisure:"leisureCats"};
-var KIND_DEF   = {work:DEF_PLATFORMS, study:DEF_STUDY_CATS, leisure:DEF_LEISURE_CATS};
-var KIND_FIELD = {work:"platform", study:"category", leisure:"category"};
-var KIND_PREFIX= {work:"w", study:"s", leisure:"g"};
+/* ---------- 일간 카드 분류 정의 (작업·자기개발·일정·여가) ---------- */
+var CARD_KINDS = {work:1, study:1, home:1, leisure:1};
+var KIND_LIST  = {work:"workPlatforms", study:"studyCats", home:"eventCats", leisure:"leisureCats"};
+var KIND_DEF   = {work:DEF_PLATFORMS, study:DEF_STUDY_CATS, home:DEF_EVENT_CATS, leisure:DEF_LEISURE_CATS};
+var KIND_FIELD = {work:"platform", study:"category", home:"category", leisure:"category"};
+var KIND_PREFIX= {work:"w", study:"s", home:"e", leisure:"g"};
 var KIND_META  = {
   work:    {one:"플랫폼",   acc:"플랫폼을",   sub:"플랫폼은",   nom:"플랫폼이",   title:"작업 플랫폼",     manage:"＋ 플랫폼 관리",     focus:"plat",    ph:"할 일",       input:"새 플랫폼 이름 (예: 유튜브)"},
+  home:    {one:"분류",     acc:"분류를",     sub:"분류는",     nom:"분류가",     title:"일정 분류",       manage:"＋ 분류 관리",       focus:"home",    ph:"일정 제목",   input:"새 분류 이름 (예: 병원)"},
   study:   {one:"카테고리", acc:"카테고리를", sub:"카테고리는", nom:"카테고리가", title:"자기개발 카테고리", manage:"＋ 카테고리 관리", focus:"study",   ph:"읽은 책·공부", input:"새 카테고리 이름 (예: 자격증)"},
   leisure: {one:"카테고리", acc:"카테고리를", sub:"카테고리는", nom:"카테고리가", title:"여가 카테고리",   manage:"＋ 카테고리 관리", focus:"leisure", ph:"여가 활동",   input:"새 카테고리 이름 (예: 산책)"}
 };
@@ -2470,7 +2489,7 @@ function renderTaskList(kind){
     ? list.map(function(t){ return cardHTML(t,kind); }).join("")
     : list.map(taskRowHTML).join("");
   if(!list.length){
-    var ph={study:"카드에 읽은 책·공부를 적어 보세요", home:"일정을 적어 보세요", leisure:"카드에 여가 활동을 적어 보세요", work:"작업 카드에 플랫폼·상세를 적어 보세요"}[kind]||"할 일을 적어 보세요";
+    var ph={study:"카드에 읽은 책·공부를 적어 보세요", home:"일정 카드에 분류·상세를 적어 보세요", leisure:"카드에 여가 활동을 적어 보세요", work:"작업 카드에 플랫폼·상세를 적어 보세요"}[kind]||"할 일을 적어 보세요";
     // 여가 시간 열은 실행 여부 칸이 없으므로 빈 칸 안내도 상태 네모 없이 글자만 둔다.
     html='<div class="task empty">'+(kind==="leisure"?"":'<span class="st"></span>')
        + '<span class="txt-ph" style="font-size:10.5px;color:#CFC5B4">'
@@ -2899,7 +2918,7 @@ function renderWeekTasks(){
       // 일간 카드와 같은 결: 상태 버튼 · 분류(일정/플랫폼/카테고리) 태그 · 제목 · 상세 내역
       var lst=(t.list==="home")?"home":(t.list==="study"?"study":"work");
       var st=t.st||0;
-      var tag=(lst==="home")?"일정":(lst==="study"?(kindName("study",t.category)||"자기개발"):(platName(t.platform)||"작업"));
+      var tag=(lst==="home")?(kindName("home",t.category)||"일정"):(lst==="study"?(kindName("study",t.category)||"자기개발"):(platName(t.platform)||"작업"));
       var det=String(t.detail==null?"":t.detail).replace(/\s+$/,"");
       tasks+='<div class="wtask tcard t-'+lst+(st===1?" done":"")+'" data-date="'+date+'" data-id="'+t.id+'">'
            +   '<div class="tcard-top">'
@@ -3488,7 +3507,7 @@ function syncCatViews(o){
   if(view==="week") renderWeek();
   if(o.ledger) renderLedger();
   if(o.health) renderHealth();
-  renderTaskList("work"); renderTaskList("study"); renderTaskList("leisure");
+  renderTaskList("work"); renderTaskList("study"); renderTaskList("home"); renderTaskList("leisure");
   scheduleSave();
 }
 
@@ -3508,8 +3527,8 @@ function openCatDlg(focus){
       if(el){ try{ el.scrollIntoView({block:"center"}); }catch(e){} el.focus(); }
     },40);
   }
-  if(focus==="study" || focus==="leisure" || focus==="meal"){
-    var fid=(focus==="study")?"stcName":((focus==="leisure")?"lzcName":"msName");
+  if(focus==="study" || focus==="leisure" || focus==="meal" || focus==="home"){
+    var fid=(focus==="study")?"stcName":((focus==="leisure")?"lzcName":(focus==="home"?"evcName":"msName"));
     setTimeout(function(){
       var el=$("#"+fid);
       if(el){ try{ el.scrollIntoView({block:"center"}); }catch(e){} el.focus(); }
@@ -3588,6 +3607,16 @@ function renderCatDlg(){
       + '</div>';
   });
 
+  var evs="";
+  kindList("home").forEach(function(c){
+    var used=countTaskCatUse("home", c.id);
+    evs+='<div class="crow mdcrow" data-tcrow="home:'+c.id+'">'
+      + '<input class="cname" data-tcname="home:'+c.id+'" maxlength="12" value="'+esc(c.name)+'" aria-label="일정 분류 이름">'
+      + '<span class="cuse">'+(used?used+"개":"")+'</span>'
+      + '<button class="cdel" data-tcdel="home:'+c.id+'" aria-label="'+esc(c.name)+' 삭제" title="삭제">×</button>'
+      + '</div>';
+  });
+
   var mss="";
   mealSlots().forEach(function(slotName, si){
     var used=countMealSlotUse(slotName);
@@ -3627,6 +3656,15 @@ function renderCatDlg(){
     +   '<div class="cadd mdcadd">'
     +     '<input type="text" id="plName" maxlength="12" placeholder="새 플랫폼 이름 (예: 유튜브)" aria-label="새 플랫폼 이름">'
     +     '<button class="btn primary" id="plAdd">추가</button>'
+    +   '</div>'
+    + '</div>'
+    + '<div class="csec">'
+    +   '<div class="hd"><b>일정 분류</b><span>'+kindList("home").length+'개</span></div>'
+    +   '<p class="hint">일간 ‘일정’ 카드에서 고르는 분류예요. 이름을 고쳐도 그동안 적은 일정에 그대로 따라가고, 지울 때는 일정을 다른 분류로 옮기거나 표시만 지울 수 있어요.</p>'
+    +   evs
+    +   '<div class="cadd mdcadd">'
+    +     '<input type="text" id="evcName" maxlength="12" placeholder="새 분류 이름 (예: 병원)" aria-label="새 일정 분류">'
+    +     '<button class="btn primary" id="evcAdd">추가</button>'
     +   '</div>'
     + '</div>'
     + '<div class="csec">'
@@ -3782,7 +3820,7 @@ function delMed(id){
 }
 
 /* ---------- 일간 카드 분류 관리 (작업 플랫폼 · 자기개발 · 여가) ---------- */
-var CAT_FOCUS_INPUT = {work:"plName", study:"stcName", leisure:"lzcName"};
+var CAT_FOCUS_INPUT = {work:"plName", study:"stcName", home:"evcName", leisure:"lzcName"};
 function countTaskCatUse(kind, id){
   var f=kindField(kind), n=0;
   Object.keys(S.days).forEach(function(k){
@@ -4693,6 +4731,7 @@ function bindEvents(){
     if(t.id==="mdAdd"){ addMed(($("#mdName").value||"").trim()); return; }
     if(t.id==="plAdd"){ addPlatform(($("#plName").value||"").trim()); return; }
     if(t.id==="stcAdd"){ addTaskCat("study", ($("#stcName").value||"").trim()); return; }
+    if(t.id==="evcAdd"){ addTaskCat("home", ($("#evcName").value||"").trim()); return; }
     if(t.id==="lzcAdd"){ addTaskCat("leisure", ($("#lzcName").value||"").trim()); return; }
     if(t.id==="msAdd"){ addMealSlot(($("#msName").value||"").trim()); return; }
     if(t.dataset.tcdel){ var tdp=String(t.dataset.tcdel).split(":"); delTaskCat(tdp[0], tdp[1]); return; }
@@ -4709,6 +4748,7 @@ function bindEvents(){
     else if(e.target.id==="mdName"){ e.preventDefault(); addMed(e.target.value.trim()); }
     else if(e.target.id==="plName"){ e.preventDefault(); addPlatform(e.target.value.trim()); }
     else if(e.target.id==="stcName"){ e.preventDefault(); addTaskCat("study", e.target.value.trim()); }
+    else if(e.target.id==="evcName"){ e.preventDefault(); addTaskCat("home", e.target.value.trim()); }
     else if(e.target.id==="lzcName"){ e.preventDefault(); addTaskCat("leisure", e.target.value.trim()); }
     else if(e.target.id==="msName"){ e.preventDefault(); addMealSlot(e.target.value.trim()); }
   });
