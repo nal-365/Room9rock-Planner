@@ -44,7 +44,10 @@
   font-style:normal;
   font-display:swap;
 }
-*{box-sizing:border-box}
+/* ---------- 가짜 볼드 금지 ----------
+   다이어리체는 굵기 한 가지 파일이라, 굵은 글씨에 브라우저가 가짜 볼드(획을 겹쳐 그리는 합성)를
+   만들면 획이 겹치는 자리에 흰 테두리·구멍이 생긴다. 합성을 끄고 글꼴 획 그대로 쓴다. */
+*{box-sizing:border-box;font-synthesis:none;font-synthesis-weight:none;-webkit-font-synthesis:none}
 html,body{margin:0;padding:0}
 :root{
   --bg:#F1ECE3;
