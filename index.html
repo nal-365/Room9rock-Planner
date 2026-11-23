@@ -356,7 +356,7 @@ button.mini:hover{background:#F7F3EA}
 .bm{height:17px;display:inline-flex;align-items:center;justify-content:center;border:1px solid #E1E9F3;background:#FCFDFF;border-radius:999px;padding:0 4px;font-size:9.5px;letter-spacing:-.1px;color:#A3B2C4;cursor:pointer;font-weight:800;touch-action:manipulation;line-height:1.2;min-width:0;overflow:hidden;white-space:nowrap;transition:background .12s,border-color .12s,color .12s}
 .bm:hover{border-color:#C9D8EA;color:#7E93AC}
 .bm[data-bm-state="soft"].on{background:#EDF0F4;border-color:#C6CFDA;color:#586372}
-.bm[data-bm-state="banana"].on{background:#D9F1E5;border-color:#9FD6BC;color:#2F6B52}
+.bm[data-bm-state="normal"].on,.bm[data-bm-state="banana"].on{background:#D9F1E5;border-color:#9FD6BC;color:#2F6B52}
 .bm[data-bm-state="hard"].on{background:#FBF1D4;border-color:#E3CC92;color:#8A6A20}
 .bm[data-bm-state="loose"].on{background:#FFE4CF;border-color:#EFBB92;color:#A2551F}
 .bm[data-bm-state="blood"].on{background:#FBDDDD;border-color:#E9AFAF;color:#A63B3B}
@@ -1702,7 +1702,7 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
         <li><b>카드</b> — <b>작업·자기개발·일정·여가 시간</b> 열은 카드로 적어요. <b>작업·자기개발·일정</b> 카드는 위줄에서 상태와 분류(플랫폼·카테고리·일정 분류)를 고르고, <b>여가 시간</b> 카드는 상태 없이 분류만 골라요. 제목 아래 <b>상세 내역</b>에 여러 줄로 메모해요. 분류 목록은 카드의 <b>＋ 플랫폼/카테고리/분류 관리</b>나 카테고리 관리에서 직접 추가·이름 바꾸기·삭제할 수 있어요.</li>
         <li><b>주간</b> — 일간에서 칠하고 적은 내용이 그대로 모이고, 주간에서 고쳐도 일간에 바로 반영돼요. 주간 화면 위쪽 형광펜도 그대로 쓸 수 있어요. 주간 위쪽 <b>할 일</b> 탭은 상태·분류 태그·제목·상세 내역이 붙은 카드로(끌어서 날짜 이동, 맨 아래 <b>작/일/자</b>로 분류 골라 빠른 추가), <b>건강</b> 탭은 식단을 시간·시간대와 내용 카드로, <b>여가시간</b> 탭은 카테고리 배지·제목·상세 내역 카드로 모아 보여 줘요.</li>
         <li><b>장부</b> — 날짜·분류·시간·내용·금액·수입/지출을 적고 상세 내역을 여러 줄로 남겨요. 총 지출·총 수입·잔액과 <b>분류별 모아보기</b>가 자동으로 정리되고, 분류를 누르면 그 내역만 필터링됩니다. 일간 장부 열과 주간 장부 탭은 한 건을 <b>1줄 분류·수입/지출 · 2줄 시간·내역·금액 · 3줄 상세 내역</b> 카드로 보여 줘요.</li>
-        <li><b>일간 열</b> — <b>건강</b>은 위에서부터 몸무게 → 오늘의 한 줄 → 식단(시간·시간대·내용, 여러 줄 가능)을 적고, 아래 트래커 한 칸에 물·약·에너지·장건강(안감·바나나·딱딱함·설사·혈변 중 하나, 누르면 선택·다시 누르면 해제)·기분(5단계)을 모아 둡니다. <b>작업·자기개발·일정·여가 시간</b>은 분류·상세 내역이 붙은 카드로 적어요(작업·자기개발·일정은 앞의 실행 여부 버튼으로 완료 상태도 남겨요). <b>장부</b>는 맨 위에 오늘 지출·오늘 수입과 이번 달 지출·수입 합계를 두고, 그 아래에서 수입/지출을 골라 시간·분류·내용·금액·상세 내역을 적어요. 기분 이모지는 월간 달력에도 표시됩니다.</li>
+        <li><b>일간 열</b> — <b>건강</b>은 위에서부터 몸무게 → 오늘의 한 줄 → 식단(시간·시간대·내용, 여러 줄 가능)을 적고, 아래 트래커 한 칸에 물·약·에너지·장건강(안감·정상·딱딱함·설사·혈변 중 하나, 누르면 선택·다시 누르면 해제)·기분(5단계)을 모아 둡니다. <b>작업·자기개발·일정·여가 시간</b>은 분류·상세 내역이 붙은 카드로 적어요(작업·자기개발·일정은 앞의 실행 여부 버튼으로 완료 상태도 남겨요). <b>장부</b>는 맨 위에 오늘 지출·오늘 수입과 이번 달 지출·수입 합계를 두고, 그 아래에서 수입/지출을 골라 시간·분류·내용·금액·상세 내역을 적어요. 기분 이모지는 월간 달력에도 표시됩니다.</li>
         <li><b>피드백</b> — <b>작업·자기개발·일정·장부·여가 시간</b> 열 맨 아래 칸에 그날의 회고를 적어요. 날짜마다 따로 저장되고, 화면을 넓게 보면 건강 열과 같은 높이까지 채워집니다.</li>
         <li><b>월간</b> — 한 달을 달력 한 장으로 모아 봐요. 날짜를 누르면 그날 일간으로 바로 넘어가고, <b>이달의 목표</b>·<b>한 줄 리뷰</b>는 아래 통계와 함께 자동 저장돼요.</li>
         <li><b>카테고리 관리</b> — 위쪽 <b>카테고리</b> 버튼에서 형광펜·장부 분류·<b>작업 플랫폼</b>·<b>일정 분류</b>·<b>자기개발 카테고리</b>·<b>여가 카테고리</b>·<b>식단 시간대</b>·약 종류를 직접 추가하거나 지울 수 있어요. 각 줄 왼쪽 <b>⋮⋮</b>를 위아래로 끌면 순서가 바뀌고(마우스·터치·애플펜슬 모두), 바뀐 순서는 카드의 분류 선택 목록에도 그대로 나와요.</li>
@@ -2080,7 +2080,7 @@ function normalize(o){
       tasks:tasks,
       slots:slots,
       bm:ci(v.bm,0,3),
-      bmState:(function(x){ x=String(x==null?"":x); return (x==="soft"||x==="banana"||x==="hard"||x==="loose"||x==="blood")?x:""; })(v.bmState),
+      bmState:(function(x){ x=String(x==null?"":x); if(x==="banana") x="normal"; return (x==="soft"||x==="normal"||x==="hard"||x==="loose"||x==="blood")?x:""; })(v.bmState),
       health:health,
       emotion:{mood:ci(esrc.mood,0,5)},
       feedback:feedback
@@ -2629,6 +2629,7 @@ var BM_STATES=[
 ];
 function bmStateOf(date){
   var d=getDay(date), x=String(d.bmState||"");
+  if(x==="banana") x="normal"; /* 예전 '바나나' 기록은 '정상'으로 이어 받음 */
   for(var i=0;i<BM_STATES.length;i++) if(BM_STATES[i].k===x) return x;
   return "";
 }
