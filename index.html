@@ -778,7 +778,7 @@ html.wdnd-on,html.wdnd-on body{-webkit-user-select:none;user-select:none;cursor:
 .mcell .mtasks .cnt{flex:none;min-width:20px;font-family:var(--sans);font-size:9.5px;font-weight:800;color:var(--tc,#8A97A8);letter-spacing:0}
 .mcell .mtasks .one{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
 .mcell .mtasks.second{color:var(--ink-soft);padding-left:0}
-.mcell .mone{align-self:flex-start;margin-top:auto;background:#EAF5DC;color:#41631F;border-radius:999px;padding:1px 6px;font-family:var(--sans);font-size:9px;font-weight:800;letter-spacing:0;white-space:nowrap}
+.mcell .mone{align-self:flex-start;margin-top:auto;background:#EAF5DC;color:#41631F;border-radius:999px;padding:1px 6px;font-family:var(--sans);font-size:9px;font-weight:800;letter-spacing:0;white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis}
 .mstats{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:12px}
 .sc-wide b{font-size:14px;padding-top:4px}
 
@@ -987,7 +987,9 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
   .mcell .mtasks .cnt{font-size:8.5px;min-width:0}
   .mcell .mtasks .tdot{width:5px;height:5px}
   .mcell .mtasks .one{display:none}
-  .mcell .mone{font-size:8px;padding:0 4px}
+  .mcell .mone{font-size:8px;padding:0 3px;letter-spacing:-.1px}
+  .mcell .mone.tight{font-size:7.2px;padding:0 2px}
+  .mcell .mone.tighter{font-size:6.4px;padding:0 1px;letter-spacing:-.2px}
   .mstats{grid-template-columns:1fr}
   .stat-cards{grid-template-columns:repeat(2,minmax(0,1fr))}
   .dlg{padding:10px}
@@ -3230,7 +3232,12 @@ function renderMonth(){
       if(rest) cell+='<i style="flex:'+rest+';--c:#DFD8CA"></i>';
       cell+='</span>';
     }
-    if(sm.spend>0) cell+='<span class="mone" title="지출 '+fmtWon(sm.spend)+'">'+shortWon(sm.spend)+'</span>';
+    if(sm.spend>0){
+      var wtxt=fmtWon(sm.spend);
+      /* 좁은 화면에서도 전체 금액이 잘리지 않도록 글자 수에 따라 조금씩 줄여 표시한다 */
+      var wcls=(wtxt.length>=10)?" tighter":((wtxt.length>=8)?" tight":"");
+      cell+='<span class="mone'+wcls+'" title="지출 '+wtxt+'" aria-label="지출 '+wtxt+'">'+wtxt+'</span>';
+    }
     cell+='</div>';
     html+=cell;
   }
