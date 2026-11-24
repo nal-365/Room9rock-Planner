@@ -842,8 +842,7 @@ html.wdnd-on,html.wdnd-on body{-webkit-user-select:none;user-select:none;cursor:
 .lcal-frame{padding:9px}
 .lcal-cells{grid-auto-rows:minmax(92px,auto)}
 .lcell{padding:5px 6px 6px;gap:3px}
-.lcell .mcell-head{justify-content:flex-start;gap:5px;min-height:18px}
-.lcell .lcount{margin-left:auto;font-family:var(--sans);font-size:9px;font-weight:800;color:var(--ink-mute);white-space:nowrap}
+.lcell .mcell-head{justify-content:flex-start;gap:3px 5px;min-height:18px;flex-wrap:wrap}
 .lcell .lwd{display:none}
 /* 날짜 칸의 개별 내역 — 분류 · 내역 · 금액 (수입은 +초록, 지출은 -붉은색) */
 .litems{display:flex;flex-direction:column;gap:1px;min-width:0}
@@ -854,8 +853,8 @@ html.wdnd-on,html.wdnd-on body{-webkit-user-select:none;user-select:none;cursor:
 .lli .lc-memo.none{color:#C8BFB0}
 .lli .lc-amt{font-weight:800;color:#A9504A;white-space:nowrap;text-align:right}
 .lli.in .lc-amt{color:#2F7F60}
-/* 그날 하루 총 금액 */
-.lsum{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:3px;margin-top:2px;padding-top:3px;border-top:1px dashed var(--line-soft)}
+/* 그날 하루 총 금액 — 날짜 숫자 오른쪽 위(예전 건수 자리)에 알약으로 */
+.lsum{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:2px;margin-left:auto;min-width:0}
 .lsum span{font-family:var(--sans);font-size:9px;font-weight:800;letter-spacing:0;border-radius:999px;padding:0 5px;white-space:nowrap;font-variant-numeric:tabular-nums}
 .lsum .out{background:#FBEDEC;color:#A9504A}
 .lsum .in{background:#EAF5DC;color:#41631F}
@@ -877,10 +876,8 @@ html.wdnd-on,html.wdnd-on body{-webkit-user-select:none;user-select:none;cursor:
   .lcell .lwd{display:inline;font-style:normal;font-family:var(--sans);font-size:9.5px;font-weight:800;color:var(--ink-mute)}
   .lcal .lcell.sun .lwd{color:#C8685E}
   .lcal .lcell.sat .lwd{color:#5A82B8}
-  .lcell .lcount{font-size:9.5px}
   .lli{font-size:11px;grid-template-columns:auto minmax(0,1fr) auto;gap:6px;line-height:1.5}
   .lli .lc-cat i{width:6px;height:6px}
-  .lsum{margin-top:2px;padding-top:4px;border-top:1px dashed var(--line)}
   .lsum span{font-size:10px;padding:1px 7px}
 }
 .ledger-table-card{--lt-cols:74px minmax(0,.55fr) 50px minmax(0,1.45fr) 100px 74px;background:var(--paper2);border:1px solid var(--line);border-radius:12px;padding:12px 14px;min-width:0}
@@ -2010,7 +2007,7 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
       </div>
 
       <div class="lcal" id="lCalBox" hidden>
-        <p class="lcal-tip">날짜 칸에 그날 쓴·번 내역이 <b>분류 · 내역 · 금액</b>으로 모두 나오고, 칸 아래에 하루 총액을 모아 보여 줘요(지출 <b class="out">-금액</b>, 수입 <b class="in">+금액</b>). 칸을 누르면 그날 일간으로 넘어가요.</p>
+        <p class="lcal-tip">날짜 숫자 오른쪽 위에 하루 총액이 알약으로 붙어요(지출 <b class="out">-금액</b>, 수입 <b class="in">+금액</b>). 칸에는 그날 쓴·번 내역이 <b>분류 · 내역 · 금액</b>으로 모두 나오고, 칸을 누르면 그날 일간으로 넘어가요.</p>
         <div class="mgrid-frame lcal-frame">
           <div class="mgrid">
             <div class="mdow" aria-hidden="true">
@@ -2145,7 +2142,7 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
         <li><b>할 일</b> — 네모를 누를 때마다 <b>□ → ○ 완료 → △ 일부 → × 못함 → → 미룸</b> 순서로 바뀌어요.</li>
         <li><b>카드</b> — <b>작업·자기개발·일정·여가 시간</b> 열은 카드로 적어요. <b>작업·자기개발·일정</b> 카드는 위줄에서 상태와 분류(플랫폼·카테고리·일정 분류)를 고르고, <b>여가 시간</b> 카드는 상태 없이 분류만 골라요. 제목 아래 <b>상세 내역</b>에 여러 줄로 메모해요. 분류 목록은 카드의 <b>＋ 플랫폼/카테고리/분류 관리</b>나 카테고리 관리에서 직접 추가·이름 바꾸기·삭제할 수 있어요.</li>
         <li><b>주간</b> — 일간에서 칠하고 적은 내용이 그대로 모이고, 주간에서 고쳐도 일간에 바로 반영돼요. 주간 화면 위쪽 형광펜도 그대로 쓸 수 있어요. 주간 위쪽 <b>할 일</b> 탭은 상태·분류 태그·제목·상세 내역이 붙은 카드로(끌어서 날짜 이동, 맨 아래 <b>작/일/자</b>로 분류 골라 빠른 추가), <b>건강</b> 탭은 식단을 시간·시간대와 내용 카드로, <b>여가시간</b> 탭은 카테고리 배지·제목·상세 내역 카드로 모아 보여 줘요.</li>
-        <li><b>장부</b> — 날짜·분류·시간·내용·금액·수입/지출을 적고 상세 내역을 여러 줄로 남겨요. 총 지출·총 수입·잔액과 <b>분류별 모아보기</b>가 자동으로 정리되고, 분류를 누르면 그 내역만 필터링됩니다. 일간 장부 열과 주간 장부 탭은 한 건을 <b>1줄 분류·수입/지출 · 2줄 시간·내역·금액 · 3줄 상세 내역</b> 카드로 보여 줘요. 위의 <b>표 | 달력</b>으로 보기를 바꾸면 한 달 지출(−)과 수입(+)을 달력 한 장으로 모아 보고, 날짜 칸에 그날 내역이 <b>분류 · 내역 · 금액</b>으로 전부 나오며 칸 아래에 그날 하루 총액(−지출, +수입)이 붙어요(내역이 많으면 칸이 자동으로 높아짐). 날짜 칸을 누르면 그날 일간으로 넘어가요.</li>
+        <li><b>장부</b> — 날짜·분류·시간·내용·금액·수입/지출을 적고 상세 내역을 여러 줄로 남겨요. 총 지출·총 수입·잔액과 <b>분류별 모아보기</b>가 자동으로 정리되고, 분류를 누르면 그 내역만 필터링됩니다. 일간 장부 열과 주간 장부 탭은 한 건을 <b>1줄 분류·수입/지출 · 2줄 시간·내역·금액 · 3줄 상세 내역</b> 카드로 보여 줘요. 위의 <b>표 | 달력</b>으로 보기를 바꾸면 한 달 지출(−)과 수입(+)을 달력 한 장으로 모아 보고, 날짜 숫자 오른쪽 위에 그날 하루 총액(−지출, +수입)이 알약으로 붙고, 칸 안에 그날 내역이 <b>분류 · 내역 · 금액</b>으로 전부 나와요(내역이 많으면 칸이 자동으로 높아짐). 날짜 칸을 누르면 그날 일간으로 넘어가요.</li>
         <li><b>콘텐츠</b> — 이모티콘·스티커·속지처럼 만든 것마다 플랫폼과 진행 상태를 붙여 카드로 모아요. 등록할 때 <b>제출일</b>과 <b>출시일</b>을 따로 적고(둘 중 하나만 적어도 저장돼요), 카드에는 <b>제출 2026.11.19 · 출시 —</b>처럼 각각 나와요. 위의 <b>카드 | 목록 | 달력</b>으로 보기를 바꿔요(마지막에 고른 보기는 이 기기에 기억돼요). <b>목록</b>은 플랫폼·상태 배지와 이름·메모, 제출일·출시일, 단가·판매 건수, 누적 수익(이번 달)을 한 줄씩 표로 모아 여러 개를 한눈에 훑기 좋고, 줄 끝의 <b>＋</b>(수익 기록)·<b>▾</b>(수익 내역 펼치기)·<b>✎</b>·<b>✕</b>로 카드에서 하던 일을 그대로 해요(좁은 화면은 두 줄로 접혀요). <b>달력</b>에서는 월 달력에서 제출일은 <b>제출</b>, 출시일은 <b>출시</b> 배지로 날짜 칸에 따로 모이고, 날짜 칸의 콘텐츠 배지를 누르면 수정, 초록 +금액을 누르면 그 수익 내역이 열려요. 카드의 <b>＋ 수익 기록</b>으로 판매·정산 내역(날짜·건수·금액·메모)을 여러 건 쌓으면 <b>누적 수익</b>과 <b>총 판매 건수</b>가 바로 다시 계산되고, 위의 <b>총 누적 수익·이번 달 수익</b>과 플랫폼별 수익도 함께 따라가는데, <b>플랫폼별 수익</b>은 판매·출시 중인 콘텐츠만 세요(기획·제작중·심사중·보류는 개수에서 뺌). 수익 줄을 누르면 수정, ✕로 삭제됩니다. 플랫폼과 상태 목록은 옆의 <b>🏷️ 분류 관리</b>에서 직접 추가·삭제하고 ⋮⋮로 순서를 바꿔요.</li>
         <li><b>일간 열</b> — <b>건강</b>은 위에서부터 몸무게 → 오늘의 한 줄 → 식단(시간·시간대·내용, 여러 줄 가능)을 적고, 아래 트래커 한 칸에 물·약·에너지·장건강(안감·정상·딱딱함·설사·혈변 중 하나, 누르면 선택·다시 누르면 해제)·기분(5단계)을 모아 둡니다. <b>작업·자기개발·일정·여가 시간</b>은 분류·상세 내역이 붙은 카드로 적어요(작업·자기개발·일정은 앞의 실행 여부 버튼으로 완료 상태도 남겨요). <b>장부</b>는 맨 위에 오늘 지출·오늘 수입과 이번 달 지출·수입 합계를 두고, 그 아래에서 수입/지출을 골라 시간·분류·내용·금액·상세 내역을 적어요. 기분 이모지는 월간 달력에도 표시됩니다.</li>
         <li><b>피드백</b> — <b>작업·자기개발·일정·장부·여가 시간</b> 열 맨 아래 칸에 그날의 회고를 적어요. 날짜마다 따로 저장되고, 화면을 넓게 보면 건강 열과 같은 높이까지 채워집니다.</li>
@@ -4031,7 +4028,7 @@ function renderLedger(){
 
 /* ---------- 장부 월 달력 ----------
    날짜 칸에 그날의 지출·수입 내역을 분류 · 내역 · 금액으로 하나도 빠짐없이 나열하고,
-   칸 아래에 그날 하루 총액(지출 -금액, 수입 +금액)을 모아 보여 준다.
+   날짜 숫자 오른쪽 위에 그날 하루 총액(지출 -금액, 수입 +금액)을 알약으로 붙인다.
    칸은 높이가 내용만큼 늘어나서(자동) 내역이 많아도 잘리지 않고, 칸을 누르면 그날 일간으로 넘어간다. */
 function renderLedgerCalendar(){
   var box=$("#lCalCells");
@@ -4055,12 +4052,18 @@ function renderLedgerCalendar(){
     var cls="mcell lcell"+(wd===0?" sun":wd===6?" sat":"")+(date===today?" today":"")+(has?"":" empty");
     var tip=y+"년 "+m+"월 "+d+"일("+DOW_KO[wd]+")";
     if(has){
-      tip+=" · "+rec.n+"건";
       if(rec.exp>0) tip+=" · 지출 "+fmtWon(rec.exp);
       if(rec.inc>0) tip+=" · 수입 "+fmtWon(rec.inc);
     }
     var cell='<div class="'+cls+'" data-lday="'+date+'" role="gridcell" tabindex="0" aria-label="'+esc(tip)+" — 일간 열기"+'" title="'+esc(tip+' — 눌러서 일간 보기')+'">';
-    cell+='<div class="mcell-head"><span class="dn">'+d+'</span><i class="lwd">'+DOW_KO[wd]+'</i>'+(has?'<span class="lcount">'+rec.n+'건</span>':'')+'</div>';
+    cell+='<div class="mcell-head"><span class="dn">'+d+'</span><i class="lwd">'+DOW_KO[wd]+'</i>';
+    if(has){
+      cell+='<span class="lsum">';
+      if(rec.exp>0) cell+='<span class="out" title="이날 지출 합계">-'+fmtWon(rec.exp)+'</span>';
+      if(rec.inc>0) cell+='<span class="in" title="이날 수입 합계">+'+fmtWon(rec.inc)+'</span>';
+      cell+='</span>';
+    }
+    cell+='</div>';
     if(has){
       var items=rec.items.slice().sort(function(a,b){
         var at=String(a.time||""), bt=String(b.time||"");
@@ -4080,10 +4083,6 @@ function renderLedgerCalendar(){
           +   '<span class="lc-amt">'+(inc?"+":"-")+fmtWon(e.amount)+'</span>'
           + '</div>';
       });
-      cell+='</div>';
-      cell+='<div class="lsum">';
-      if(rec.exp>0) cell+='<span class="out" title="이날 지출 합계">-'+fmtWon(rec.exp)+'</span>';
-      if(rec.inc>0) cell+='<span class="in" title="이날 수입 합계">+'+fmtWon(rec.inc)+'</span>';
       cell+='</div>';
     }
     cell+='</div>';
