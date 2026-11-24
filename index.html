@@ -1421,25 +1421,33 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
 .ccal-tip{margin:0;font-size:10.5px;line-height:1.55;color:var(--ink-mute)}
 .ccal-tip b{color:var(--ink-soft);font-weight:800}
 .ccal-frame{padding:9px}
-.ccal-cells{grid-auto-rows:minmax(84px,auto)}
-.ccell{padding:5px 5px 6px;gap:3px}
+.ccal-cells{grid-auto-rows:minmax(120px,auto)}
+.ccell{padding:5px 6px 7px;gap:3px}
 .ccell .mcell-head .cc-dot{width:7px;height:7px;border-radius:50%;background:#A9DCC4;box-shadow:inset 0 0 0 1px rgba(0,0,0,.06)}
 .ccell .cc-chips{display:flex;flex-direction:column;gap:2px;min-width:0}
-.cchip{display:flex;align-items:center;gap:3px;max-width:100%;border:0;border-radius:5px;padding:1px 5px;background:var(--c);color:#4A4438;font-size:10px;font-weight:800;line-height:1.4;text-align:left;white-space:nowrap;overflow:hidden;cursor:pointer;box-shadow:inset 0 0 0 1px rgba(0,0,0,.04);touch-action:manipulation;font-family:var(--sans)}
+.cchip{display:flex;align-items:flex-start;gap:3px;max-width:100%;border:0;border-radius:5px;padding:2px 5px;background:var(--c);color:#4A4438;font-size:10px;font-weight:800;line-height:1.4;text-align:left;white-space:normal;overflow-wrap:anywhere;cursor:pointer;box-shadow:inset 0 0 0 1px rgba(0,0,0,.04);touch-action:manipulation;font-family:var(--sans)}
 /* 제출일 배지는 플랫폼 색을 흠뻑 묽힌 면, 출시일 배지는 플랫폼 색을 꽉 채운다 */
 .cchip.sub{background:linear-gradient(rgba(255,255,255,.55),rgba(255,255,255,.55)),var(--c);box-shadow:inset 0 0 0 1px rgba(0,0,0,.05)}
 .cchip.rel{background:var(--c)}
-.cchip .ck{flex:none;border-radius:3px;padding:0 3px;font-size:8.5px;line-height:1.5;letter-spacing:0;font-weight:800;background:rgba(255,255,255,.66);color:#6B6353}
+.cchip .ck{flex:none;border-radius:3px;padding:0 3px;margin-top:1px;font-size:8.5px;line-height:1.5;letter-spacing:0;font-weight:800;background:rgba(255,255,255,.66);color:#6B6353}
 .cchip.sub .ck{background:var(--c);color:#4A4438}
-.cchip .nm{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cchip .nm{flex:1 1 auto;min-width:0;white-space:normal;word-break:keep-all;overflow-wrap:anywhere}
 .cchip:hover{box-shadow:inset 0 0 0 1px rgba(0,0,0,.16)}
 .ccell .cc-revs{display:flex;flex-direction:column;gap:1px;min-width:0}
-.crev{display:flex;align-items:baseline;gap:3px;min-width:0;border:0;background:transparent;padding:0;font-size:10px;line-height:1.4;color:#2F7F60;text-align:left;cursor:pointer;touch-action:manipulation}
-.crev .nm{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink-soft);font-weight:700}
-.crev b{flex:none;font-weight:800;font-variant-numeric:tabular-nums}
+.crev{display:flex;align-items:flex-start;gap:3px;min-width:0;border:0;background:transparent;padding:0;font-size:10px;line-height:1.4;color:#2F7F60;text-align:left;cursor:pointer;touch-action:manipulation}
+.crev .nm{flex:1 1 auto;min-width:0;white-space:normal;word-break:keep-all;overflow-wrap:anywhere;color:var(--ink-soft);font-weight:700}
+.crev b{flex:none;font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap}
 .crev:hover .nm{color:var(--ink-soft);text-decoration:underline}
-.ccell .cc-more{align-self:flex-start;font-size:9px;font-weight:800;color:var(--ink-mute);padding-left:2px}
 .ccell .cc-sum{align-self:flex-end;margin-top:auto;background:#EAF5DC;color:#41631F;border-radius:999px;padding:1px 6px;font-size:9px;font-weight:800;letter-spacing:0;white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis;font-variant-numeric:tabular-nums}
+
+/* 태블릿 폭(아이패드 세로 등): 칸이 좁아 이름이 한두 글자씩 쪼개지므로
+   수익 내역은 이름을 한 줄 가득 쓰고 금액을 아래 줄로 내린다 */
+@media (min-width:721px) and (max-width:1120px){
+  .ccal-cells{grid-auto-rows:minmax(128px,auto)}
+  .ccell .crev{flex-wrap:wrap;gap:0 4px}
+  .ccell .crev .nm{flex:1 1 100%}
+  .ccell .crev b{margin-left:auto}
+}
 
 @media (max-width:720px){
   .cont-sums{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -1458,14 +1466,13 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
   .cont-tools{gap:5px}
   .ccal-tip{display:none}
   .ccal-frame{padding:6px}
-  .ccal-cells{grid-auto-rows:minmax(80px,auto)}
-  .ccell{padding:3px 2px 4px;gap:2px}
-  .cchip{flex-direction:column;align-items:stretch;gap:0;font-size:8px;padding:1px 3px;border-radius:4px;line-height:1.35}
-  .cchip .ck{font-size:7px;padding:0 2px;border-radius:2px;align-self:flex-start}
-  .ccell .crev{display:flex;font-size:8px}
-  .ccell .crev .nm{display:none}
+  .ccal-cells{grid-auto-rows:minmax(108px,auto)}
+  .ccell{padding:3px 3px 5px;gap:2px}
+  .cchip{flex-direction:column;align-items:stretch;gap:1px;font-size:8px;padding:2px 3px;border-radius:4px;line-height:1.35}
+  .cchip .ck{font-size:7px;padding:0 2px;border-radius:2px;align-self:flex-start;margin-top:0}
+  .ccell .crev{display:flex;flex-wrap:wrap;gap:0 3px;font-size:8px}
+  .ccell .crev .nm{flex:1 1 100%;display:block}
   .ccell .cc-sum{font-size:8px;padding:0 4px;border-radius:8px}
-  .ccell .cc-more{font-size:8px}
 }
 @media print{
   .cont-head .btn,.cc-acts,.cc-foot,.cplat,.cont-filt,.ccal-top,.cseg-view,#cCatBtn{display:none !important}
@@ -4332,21 +4339,19 @@ function renderContentsCalendar(){
         + '</div>';
     if(cs.length){
       cell+='<div class="cc-chips">';
-      cs.slice(0,2).forEach(function(it){
+      cs.forEach(function(it){
         var c=it.c, isRel=(it.kind==="release");
         cell+='<button class="cchip '+(isRel?"rel":"sub")+'" type="button" data-cedit="'+esc(c.id)+'" style="--c:'+cPlatColor(c.platform)+'" title="'+esc((isRel?"출시":"제출")+" · "+(c.platform||"플랫폼 없음")+" · "+c.name)+'">'
           +   '<span class="ck">'+(isRel?"출시":"제출")+'</span><span class="nm">'+esc(c.name)+'</span></button>';
       });
-      if(cs.length>2) cell+='<span class="cc-more">+'+(cs.length-2)+'</span>';
       cell+='</div>';
     }
     if(ss.length){
       cell+='<div class="cc-revs">';
-      ss.slice(0,2).forEach(function(x){
+      ss.forEach(function(x){
         cell+='<button class="crev" type="button" data-ccrev="'+esc(x.c.id)+'|'+esc(x.s.id)+'" title="'+esc(x.c.name+" · "+(x.s.memo||x.s.date))+'">'
           +   '<span class="nm">'+esc(x.c.name)+'</span><b>+'+fmtWon(x.s.amount)+'</b></button>';
       });
-      if(ss.length>2) cell+='<span class="cc-more">+'+(ss.length-2)+'</span>';
       cell+='</div>';
     }
     if(dayRev[date]>0 && ss.length>1) cell+='<span class="cc-sum" title="이날 수익 '+dayQty[date]+'건 합계 '+fmtWon(dayRev[date])+'">+'+fmtWon(dayRev[date])+'</span>';
