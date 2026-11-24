@@ -940,6 +940,7 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
 .entry-form input:focus,.entry-form select:focus,.entry-form textarea:focus{border-color:var(--accent-ring)}
 .entry-form .row{display:flex;gap:7px;margin-top:4px}
 .entry-form .row .btn{flex:1;justify-content:center;padding:8px}
+.entry-form .cfine{margin:-2px 0 2px;padding-left:70px;font-size:10.5px;line-height:1.5;color:var(--ink-mute)}
 .fine{font-size:10.5px;color:var(--ink-mute);line-height:1.5;margin:9px 0 0}
 #resetNames{margin-top:9px;font-size:11px;padding:5px 9px}
 
@@ -1375,6 +1376,8 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
 .cc-meta{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 10px;font-size:11.5px;color:var(--ink-soft);font-variant-numeric:tabular-nums}
 .cc-meta .mt{display:inline-flex;align-items:baseline;gap:4px;white-space:nowrap}
 .cc-meta .mt i{font-style:normal;font-size:9.5px;font-weight:800;color:var(--ink-mute);letter-spacing:.3px}
+.cc-meta .mt.none{color:#BFB5A4}
+.cc-meta .mt.none i{color:#CFC6B8}
 .cc-money{display:flex;align-items:baseline;gap:6px;min-width:0}
 .cc-money i{font-style:normal;font-size:9.5px;font-weight:800;color:var(--ink-mute);letter-spacing:.3px;flex:none}
 .cc-money b{font-size:15px;font-weight:800;letter-spacing:-.2px;color:#2F7F60;font-variant-numeric:tabular-nums;white-space:nowrap}
@@ -1422,7 +1425,13 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
 .ccell{padding:5px 5px 6px;gap:3px}
 .ccell .mcell-head .cc-dot{width:7px;height:7px;border-radius:50%;background:#A9DCC4;box-shadow:inset 0 0 0 1px rgba(0,0,0,.06)}
 .ccell .cc-chips{display:flex;flex-direction:column;gap:2px;min-width:0}
-.cchip{display:block;max-width:100%;border:0;border-radius:5px;padding:1px 5px;background:var(--c);color:#4A4438;font-size:10px;font-weight:800;line-height:1.4;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;box-shadow:inset 0 0 0 1px rgba(0,0,0,.04);touch-action:manipulation;font-family:var(--sans)}
+.cchip{display:flex;align-items:center;gap:3px;max-width:100%;border:0;border-radius:5px;padding:1px 5px;background:var(--c);color:#4A4438;font-size:10px;font-weight:800;line-height:1.4;text-align:left;white-space:nowrap;overflow:hidden;cursor:pointer;box-shadow:inset 0 0 0 1px rgba(0,0,0,.04);touch-action:manipulation;font-family:var(--sans)}
+/* 제출일 배지는 플랫폼 색을 흠뻑 묽힌 면, 출시일 배지는 플랫폼 색을 꽉 채운다 */
+.cchip.sub{background:linear-gradient(rgba(255,255,255,.55),rgba(255,255,255,.55)),var(--c);box-shadow:inset 0 0 0 1px rgba(0,0,0,.05)}
+.cchip.rel{background:var(--c)}
+.cchip .ck{flex:none;border-radius:3px;padding:0 3px;font-size:8.5px;line-height:1.5;letter-spacing:0;font-weight:800;background:rgba(255,255,255,.66);color:#6B6353}
+.cchip.sub .ck{background:var(--c);color:#4A4438}
+.cchip .nm{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .cchip:hover{box-shadow:inset 0 0 0 1px rgba(0,0,0,.16)}
 .ccell .cc-revs{display:flex;flex-direction:column;gap:1px;min-width:0}
 .crev{display:flex;align-items:baseline;gap:3px;min-width:0;border:0;background:transparent;padding:0;font-size:10px;line-height:1.4;color:#2F7F60;text-align:left;cursor:pointer;touch-action:manipulation}
@@ -1451,7 +1460,8 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
   .ccal-frame{padding:6px}
   .ccal-cells{grid-auto-rows:minmax(80px,auto)}
   .ccell{padding:3px 2px 4px;gap:2px}
-  .cchip{font-size:8px;padding:1px 3px;border-radius:4px;line-height:1.35}
+  .cchip{flex-direction:column;align-items:stretch;gap:0;font-size:8px;padding:1px 3px;border-radius:4px;line-height:1.35}
+  .cchip .ck{font-size:7px;padding:0 2px;border-radius:2px;align-self:flex-start}
   .ccell .crev{display:flex;font-size:8px}
   .ccell .crev .nm{display:none}
   .ccell .cc-sum{font-size:8px;padding:0 4px;border-radius:8px}
@@ -1941,7 +1951,7 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
             <button class="nav" id="ccNext" aria-label="다음 달">→</button>
             <button class="mini" id="ccToday" title="이번 달로 이동">오늘</button>
           </div>
-          <p class="ccal-tip">날짜 칸의 <b>콘텐츠 배지</b>를 누르면 수정, 초록 <b>+금액</b>을 누르면 그 수익 내역이 열려요.</p>
+          <p class="ccal-tip">날짜 칸의 <b>제출·출시 배지</b>를 누르면 수정, 초록 <b>+금액</b>을 누르면 그 수익 내역이 열려요.</p>
         </div>
         <div class="mgrid-frame ccal-frame">
           <div class="mgrid">
@@ -1987,7 +1997,7 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
         <li><b>카드</b> — <b>작업·자기개발·일정·여가 시간</b> 열은 카드로 적어요. <b>작업·자기개발·일정</b> 카드는 위줄에서 상태와 분류(플랫폼·카테고리·일정 분류)를 고르고, <b>여가 시간</b> 카드는 상태 없이 분류만 골라요. 제목 아래 <b>상세 내역</b>에 여러 줄로 메모해요. 분류 목록은 카드의 <b>＋ 플랫폼/카테고리/분류 관리</b>나 카테고리 관리에서 직접 추가·이름 바꾸기·삭제할 수 있어요.</li>
         <li><b>주간</b> — 일간에서 칠하고 적은 내용이 그대로 모이고, 주간에서 고쳐도 일간에 바로 반영돼요. 주간 화면 위쪽 형광펜도 그대로 쓸 수 있어요. 주간 위쪽 <b>할 일</b> 탭은 상태·분류 태그·제목·상세 내역이 붙은 카드로(끌어서 날짜 이동, 맨 아래 <b>작/일/자</b>로 분류 골라 빠른 추가), <b>건강</b> 탭은 식단을 시간·시간대와 내용 카드로, <b>여가시간</b> 탭은 카테고리 배지·제목·상세 내역 카드로 모아 보여 줘요.</li>
         <li><b>장부</b> — 날짜·분류·시간·내용·금액·수입/지출을 적고 상세 내역을 여러 줄로 남겨요. 총 지출·총 수입·잔액과 <b>분류별 모아보기</b>가 자동으로 정리되고, 분류를 누르면 그 내역만 필터링됩니다. 일간 장부 열과 주간 장부 탭은 한 건을 <b>1줄 분류·수입/지출 · 2줄 시간·내역·금액 · 3줄 상세 내역</b> 카드로 보여 줘요. 위의 <b>표 | 달력</b>으로 보기를 바꾸면 한 달 지출(−)과 수입(+)을 달력 한 장으로 모아 보고, 날짜 칸을 누르면 그날 일간으로 넘어가요.</li>
-        <li><b>콘텐츠</b> — 이모티콘·스티커·속지처럼 만든 것마다 플랫폼과 진행 상태를 붙여 카드로 모아요. 위의 <b>카드 | 달력</b>으로 보기를 바꾸면 출시·제출일과 수익을 월 달력으로 볼 수 있고, 날짜 칸의 콘텐츠 배지를 누르면 수정, 초록 +금액을 누르면 그 수익 내역이 열려요. 카드의 <b>＋ 수익 기록</b>으로 판매·정산 내역(날짜·건수·금액·메모)을 여러 건 쌓으면 <b>누적 수익</b>과 <b>총 판매 건수</b>가 바로 다시 계산되고, 위의 <b>총 누적 수익·이번 달 수익</b>과 플랫폼별 수익도 함께 따라가요. 수익 줄을 누르면 수정, ✕로 삭제됩니다. 플랫폼과 상태 목록은 옆의 <b>🏷️ 분류 관리</b>에서 직접 추가·삭제하고 ⋮⋮로 순서를 바꿔요.</li>
+        <li><b>콘텐츠</b> — 이모티콘·스티커·속지처럼 만든 것마다 플랫폼과 진행 상태를 붙여 카드로 모아요. 등록할 때 <b>제출일</b>과 <b>출시일</b>을 따로 적고(둘 중 하나만 적어도 저장돼요), 카드에는 <b>제출 2026.11.19 · 출시 —</b>처럼 각각 나와요. 위의 <b>카드 | 달력</b>으로 보기를 바꾸면 월 달력에서 제출일은 <b>제출</b>, 출시일은 <b>출시</b> 배지로 날짜 칸에 따로 모이고, 날짜 칸의 콘텐츠 배지를 누르면 수정, 초록 +금액을 누르면 그 수익 내역이 열려요. 카드의 <b>＋ 수익 기록</b>으로 판매·정산 내역(날짜·건수·금액·메모)을 여러 건 쌓으면 <b>누적 수익</b>과 <b>총 판매 건수</b>가 바로 다시 계산되고, 위의 <b>총 누적 수익·이번 달 수익</b>과 플랫폼별 수익도 함께 따라가요. 수익 줄을 누르면 수정, ✕로 삭제됩니다. 플랫폼과 상태 목록은 옆의 <b>🏷️ 분류 관리</b>에서 직접 추가·삭제하고 ⋮⋮로 순서를 바꿔요.</li>
         <li><b>일간 열</b> — <b>건강</b>은 위에서부터 몸무게 → 오늘의 한 줄 → 식단(시간·시간대·내용, 여러 줄 가능)을 적고, 아래 트래커 한 칸에 물·약·에너지·장건강(안감·정상·딱딱함·설사·혈변 중 하나, 누르면 선택·다시 누르면 해제)·기분(5단계)을 모아 둡니다. <b>작업·자기개발·일정·여가 시간</b>은 분류·상세 내역이 붙은 카드로 적어요(작업·자기개발·일정은 앞의 실행 여부 버튼으로 완료 상태도 남겨요). <b>장부</b>는 맨 위에 오늘 지출·오늘 수입과 이번 달 지출·수입 합계를 두고, 그 아래에서 수입/지출을 골라 시간·분류·내용·금액·상세 내역을 적어요. 기분 이모지는 월간 달력에도 표시됩니다.</li>
         <li><b>피드백</b> — <b>작업·자기개발·일정·장부·여가 시간</b> 열 맨 아래 칸에 그날의 회고를 적어요. 날짜마다 따로 저장되고, 화면을 넓게 보면 건강 열과 같은 높이까지 채워집니다.</li>
         <li><b>월간</b> — 한 달을 달력 한 장으로 모아 봐요. 날짜를 누르면 그날 일간으로 바로 넘어가고, <b>이달의 목표</b>·<b>한 줄 리뷰</b>는 아래 통계와 함께 자동 저장돼요.</li>
@@ -2030,7 +2040,9 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
       <label class="f"><span>플랫폼</span><select id="cPlatform" aria-label="플랫폼"></select></label>
       <label class="f"><span>콘텐츠명</span><input id="cName" maxlength="60" placeholder="예: 파랑햄스터 하다 세트" aria-label="콘텐츠명"></label>
       <label class="f"><span>진행 상태</span><select id="cStatus" aria-label="진행 상태"></select></label>
-      <label class="f"><span>출시/제출일</span><input type="date" id="cDate" aria-label="출시일 또는 제출일"></label>
+      <label class="f"><span>제출일</span><input type="date" id="cSubmit" aria-label="제출일"></label>
+      <label class="f"><span>출시일</span><input type="date" id="cRelease" aria-label="출시일"></label>
+      <p class="cfine">제출일과 출시일은 따로 적어요. 둘 중 하나만 적어도 저장돼요.</p>
       <label class="f"><span>단가 (원)</span><input id="cPrice" inputmode="numeric" placeholder="0" aria-label="단가"></label>
       <label class="f"><span>링크</span><input id="cUrl" inputmode="url" maxlength="300" placeholder="https:// (선택)" aria-label="링크 URL"></label>
       <label class="f" style="align-items:start"><span style="padding-top:7px">메모</span><textarea id="cMemo" rows="3" maxlength="500" placeholder="메모 (선택)" aria-label="메모"></textarea></label>
@@ -2511,6 +2523,14 @@ function normalize(o){
       var plat=String(c.platform||"").replace(/\s+/g," ").trim().slice(0,14);
       var stat=String(c.status||"").replace(/\s+/g," ").trim().slice(0,10);
       var cdate=/^\d{4}-\d{2}-\d{2}$/.test(String(c.date||"")) ? String(c.date) : "";
+      /* 제출일 · 출시일 — 예전 문서에는 둘을 합친 date 하나뿐이므로,
+         새 값이 없고 date만 있으면 상태를 보고 나눠 받는다.
+         (판매중·출시 같은 상태면 출시일, 그 밖에는 제출일) */
+      var csub=/^\d{4}-\d{2}-\d{2}$/.test(String(c.submitDate||"")) ? String(c.submitDate) : "";
+      var crel=/^\d{4}-\d{2}-\d{2}$/.test(String(c.releaseDate||"")) ? String(c.releaseDate) : "";
+      if(!csub && !crel && cdate){
+        if(/판매|출시/.test(stat)) crel=cdate; else csub=cdate;
+      }
       var price=Math.round(Number(c.price));
       if(!isFinite(price) || price<0) price=0;
       var url=String(c.url||"").trim().slice(0,300);
@@ -2537,7 +2557,8 @@ function normalize(o){
         });
       }
       s.contents.push({
-        id:cid, platform:plat, name:cname, status:stat, date:cdate,
+        id:cid, platform:plat, name:cname, status:stat,
+        submitDate:csub, releaseDate:crel, date:csub||crel,
         price:price, url:url, memo:String(c.memo||"").slice(0,500),
         ts:Number(c.ts)||Date.now(), sales:sales
       });
@@ -4259,8 +4280,8 @@ function renderContents(){
 }
 
 /* ---------- 콘텐츠 월 달력 ----------
-   카드 보기와 같은 데이터·필터를 쓴다. 날짜 칸에는 그날 출시·제출한 콘텐츠(플랫폼 색 배지)와
-   그날 수익 내역(+금액원, 초록)이 모이고, 여러 건이면 아래에 날짜 합계가 붙는다. */
+   카드 보기와 같은 데이터·필터를 쓴다. 날짜 칸에는 그날 제출한 콘텐츠(제출 배지)와
+   출시한 콘텐츠(출시 배지)가 따로 모이고, 그날 수익 내역(+금액원, 초록)도 함께 붙는다. */
 function renderContentsCalendar(){
   var box=$("#ccCells");
   if(!box) return;
@@ -4268,17 +4289,22 @@ function renderContentsCalendar(){
   var lb=$("#ccLabel"); if(lb) lb.textContent=y+"년 "+m+"월";
   if(!contentsArr().length){
     var sub0=$("#ccSub"); if(sub0) sub0.textContent="콘텐츠 0개";
-    box.innerHTML='<div class="cont-empty"><b>아직 콘텐츠가 없어요.</b>카드 보기에서 콘텐츠를 등록하면 출시·제출일과 수익이 날짜별로 모여요.<br><button class="btn primary" type="button" data-cadd="1">＋ 첫 콘텐츠 등록</button></div>';
+    box.innerHTML='<div class="cont-empty"><b>아직 콘텐츠가 없어요.</b>카드 보기에서 콘텐츠를 등록하고 제출일·출시일을 적으면 날짜별로 모여요.<br><button class="btn primary" type="button" data-cadd="1">＋ 첫 콘텐츠 등록</button></div>';
     return;
   }
   var dim=new Date(y,m,0,12).getDate();
   var lead=(new Date(y,m-1,1,12).getDay()+6)%7;
   var today=todayISO();
   var rows=contentRows();
-  var byC={}, byS={}, dayRev={}, dayQty={}, dateN=0, revM=0;
+  var byC={}, byS={}, dayRev={}, dayQty={}, seenN={}, dateN=0, revM=0;
   rows.forEach(function(c){
-    var d=String(c.date||"");
-    if(d.slice(0,7)===curCalMon){ (byC[d]||(byC[d]=[])).push(c); dateN++; }
+    /* 날짜 칸에는 제출일과 출시일을 따로 담는다 — 같은 날 둘 다면 배지도 둘 */
+    [["submit",c.submitDate],["release",c.releaseDate]].forEach(function(pr){
+      var d=String(pr[1]||"");
+      if(!/^\d{4}-\d{2}-\d{2}$/.test(d) || d.slice(0,7)!==curCalMon) return;
+      (byC[d]||(byC[d]=[])).push({c:c, kind:pr[0]});
+      if(!seenN[c.id]){ seenN[c.id]=1; dateN++; }
+    });
     ((c && c.sales)||[]).forEach(function(s){
       if(String(s.date||"").slice(0,7)!==curCalMon) return;
       (byS[s.date]||(byS[s.date]=[])).push({c:c, s:s});
@@ -4298,7 +4324,7 @@ function renderContentsCalendar(){
     var cs=byC[date]||[], ss=byS[date]||[];
     var cls="mcell ccell"+(wd===0?" sun":wd===6?" sat":"")+(date===today?" today":"");
     var tip=[y+"년 "+m+"월 "+d+"일"];
-    if(cs.length) tip.push("출시·제출: "+cs.map(function(c){ return c.name; }).join(", "));
+    if(cs.length) tip.push(cs.map(function(it){ return (it.kind==="release"?"출시":"제출")+" "+it.c.name; }).join(", "));
     if(ss.length) tip.push("수익: "+ss.map(function(x){ return x.c.name+" +"+fmtWon(x.s.amount); }).join(", "));
     var cell='<div class="'+cls+'" data-ccday="'+date+'" role="gridcell" aria-label="'+esc(tip.join(" / "))+'">';
     cell+='<div class="mcell-head"><span class="dn">'+d+'</span>'
@@ -4306,8 +4332,10 @@ function renderContentsCalendar(){
         + '</div>';
     if(cs.length){
       cell+='<div class="cc-chips">';
-      cs.slice(0,2).forEach(function(c){
-        cell+='<button class="cchip" type="button" data-cedit="'+esc(c.id)+'" style="--c:'+cPlatColor(c.platform)+'" title="'+esc((c.platform||"플랫폼 없음")+" · "+c.name)+'">'+esc(c.name)+'</button>';
+      cs.slice(0,2).forEach(function(it){
+        var c=it.c, isRel=(it.kind==="release");
+        cell+='<button class="cchip '+(isRel?"rel":"sub")+'" type="button" data-cedit="'+esc(c.id)+'" style="--c:'+cPlatColor(c.platform)+'" title="'+esc((isRel?"출시":"제출")+" · "+(c.platform||"플랫폼 없음")+" · "+c.name)+'">'
+          +   '<span class="ck">'+(isRel?"출시":"제출")+'</span><span class="nm">'+esc(c.name)+'</span></button>';
       });
       if(cs.length>2) cell+='<span class="cc-more">+'+(cs.length-2)+'</span>';
       cell+='</div>';
@@ -4330,12 +4358,17 @@ function renderContentsCalendar(){
   box.innerHTML=html;
 }
 
+/* 제출일 · 출시일 — 둘 중 하나라도 있으면 두 칸을 함께 보여 준다.
+   아직 없는 칸은 ‘—’로 두어 어느 쪽이 비었는지 카드에서 바로 보이게. */
+function cDayTxt(d){ return /^\d{4}-\d{2}-\d{2}$/.test(String(d||"")) ? esc(String(d).replace(/-/g,".")) : "—"; }
 function contentCardHTML(c){
   var t=contentTotals(c);
   var pIt=cPlatByName(c.platform), sIt=cStatByName(c.status);
-  var dateLbl=(c.status==="판매중")?"출시일":"제출일";
   var meta="";
-  if(c.date) meta+='<span class="mt"><i>'+dateLbl+'</i>'+esc(c.date.replace(/-/g,"."))+'</span>';
+  if(c.submitDate || c.releaseDate){
+    meta+='<span class="mt'+(c.submitDate?"":" none")+'" title="'+(c.submitDate?"제출일":"제출일 없음")+'"><i>제출</i>'+cDayTxt(c.submitDate)+'</span>';
+    meta+='<span class="mt'+(c.releaseDate?"":" none")+'" title="'+(c.releaseDate?"출시일":"출시일 없음")+'"><i>출시</i>'+cDayTxt(c.releaseDate)+'</span>';
+  }
   if(c.price>0) meta+='<span class="mt"><i>단가</i>'+fmtWon(c.price)+'</span>';
   meta+='<span class="mt"><i>판매</i>'+t.qty+'건</span>';
 
@@ -4406,7 +4439,8 @@ function openContentDlg(id){
   $("#cPlatform").value=c?(c.platform||""):(cPlatNames()[0]||"");
   $("#cName").value=c?c.name:"";
   $("#cStatus").value=c?(c.status||""):(cStatNames()[0]||"");
-  $("#cDate").value=c?c.date:"";
+  $("#cSubmit").value=c?(c.submitDate||""):"";
+  $("#cRelease").value=c?(c.releaseDate||""):"";
   $("#cPrice").value=(c && c.price>0)?fmtNum(c.price):"";
   $("#cUrl").value=c?c.url:"";
   $("#cMemo").value=c?c.memo:"";
@@ -4423,19 +4457,23 @@ function saveContent(){
   /* 목록에서 지워진 이름이면 예전 값은 그대로 살리고, 새로 적는 콘텐츠는 목록 첫 항목으로 */
   if(cPlatNames().indexOf(pf)<0 && !(c && pf===(c.platform||""))) pf=cPlatNames()[0]||"";
   if(cStatNames().indexOf(st)<0 && !(c && st===(c.status||""))) st=cStatNames()[0]||"";
-  var date=$("#cDate").value||"";
+  var date=$("#cSubmit").value||"";
   if(date && !/^\d{4}-\d{2}-\d{2}$/.test(date)) date="";
+  var relDate=$("#cRelease").value||"";
+  if(relDate && !/^\d{4}-\d{2}-\d{2}$/.test(relDate)) relDate="";
   var price=parseInt(digitsOnly($("#cPrice").value),10);
   if(!isFinite(price) || price<0) price=0;
   var url=$("#cUrl").value.trim().slice(0,300);
   if(url && !/^https?:\/\//i.test(url)) url="https://"+url.replace(/^\/+/, "");
   var memo=String($("#cMemo").value||"").slice(0,500);
   if(c){
-    c.platform=pf; c.name=name.slice(0,60); c.status=st; c.date=date;
+    c.platform=pf; c.name=name.slice(0,60); c.status=st;
+    c.submitDate=date; c.releaseDate=relDate; c.date=date||relDate;
     c.price=price; c.url=url; c.memo=memo;
     toast("콘텐츠를 수정했어요");
   }else{
-    contentsArr().push({id:uid(), platform:pf, name:name.slice(0,60), status:st, date:date,
+    contentsArr().push({id:uid(), platform:pf, name:name.slice(0,60), status:st,
+                        submitDate:date, releaseDate:relDate, date:date||relDate,
                         price:price, url:url, memo:memo, ts:Date.now(), sales:[]});
     cFilter.platform="all"; cFilter.status="all";
     toast("콘텐츠를 등록했어요");
@@ -4805,7 +4843,7 @@ function renderCatDlg(){
     + '</div>'
     + '<div class="csec" data-cx="stat">'
     +   '<div class="hd"><b>콘텐츠 상태</b><span>'+cStatList().length+'개</span></div>'
-    +   '<p class="hint">콘텐츠가 지금 어느 단계인지 고르는 목록이에요. ⋮⋮ 순서가 필터 칩·카드 배지 순서가 되고, ‘판매중’이라는 상태는 날짜를 ‘출시일’로 보여 줘요. 지울 때는 콘텐츠를 다른 상태로 옮길 수 있어요.</p>'
+    +   '<p class="hint">콘텐츠가 지금 어느 단계인지 고르는 목록이에요. ⋮⋮ 순서가 필터 칩·카드 배지 순서가 되고, 제출일·출시일은 상태와 상관없이 카드·달력에 각각 나와요. 지울 때는 콘텐츠를 다른 상태로 옮길 수 있어요.</p>'
     +   cxRows("stat")
     +   '<div class="cadd">'
     +     '<input type="color" id="cxsColor" value="'+CAT_PALETTE[(cStatList().length+1)%CAT_PALETTE.length]+'" aria-label="새 콘텐츠 상태 색">'
