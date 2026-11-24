@@ -6484,6 +6484,7 @@ function cloudUI(mode, text){
 
 /* ---------- 로그인 / 로그아웃 ---------- */
 function cloudSignIn(silent){
+  silent = (silent===true);   /* 버튼 클릭 이벤트가 그대로 들어와도 조용한 모드가 되지 않게 */
   if(cloud.mode==="file"){ toast("로컬 파일로 열었을 때는 클라우드 로그인을 쓸 수 없어요. 배포된 주소에서 열어 주세요."); return; }
   if(!cloud.auth){ toast("동기화 기능을 불러오지 못했어요. 인터넷 연결을 확인해 주세요."); return; }
   var provider;
@@ -7142,7 +7143,7 @@ function init(){
 
   /* 클라우드 동기화 UI */
   var cb=$("#cloudLoginBtn");
-  if(cb) cb.addEventListener("click", cloudSignIn);
+  if(cb) cb.addEventListener("click", function(){ cloudSignIn(false); });
   var co=$("#cloudOut");
   if(co) co.addEventListener("click", cloudSignOut);
 
