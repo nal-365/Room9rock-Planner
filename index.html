@@ -4313,6 +4313,18 @@ function delContentCat(kind, id){
   });
 }
 
+/* 콘텐츠 정렬 기준 날짜(제출일 → 없으면 출시일). 둘 다 없으면 빈 문자열이라 맨 아래로 간다 */
+function cSortDayISO(c){
+  var s=String((c&&c.submitDate)||""), r=String((c&&c.releaseDate)||"");
+  if(/^\d{4}-\d{2}-\d{2}$/.test(s)) return s;
+  if(/^\d{4}-\d{2}-\d{2}$/.test(r)) return r;
+  return "";
+}
+/* 정렬 칩 — 이름순은 없앴다(제출일 최신 / 제출일 오래된 / 누적 수익) */
+var C_SORTS=[["recent","최신순","제출일이 최근인 콘텐츠부터"],
+             ["date","날짜순","제출일이 오래된 콘텐츠부터"],
+             ["revenue","수익 높은순","누적 수익이 큰 콘텐츠부터"]];
+
 /* 콘텐츠 하나의 총 판매 건수·누적 수익·이번 달 수익 — 수익 내역이 바뀌면 매번 다시 센다 */
 function contentTotals(c){
   var rev=0, qty=0, mRev=0, mk=todayISO().slice(0,7);
@@ -4421,9 +4433,9 @@ function renderContents(){
   if(cntS[""]) statHTML+='<button class="fchip'+(cFilter.status==="__none"?" on":"")+' orphan" type="button" data-cstat="__none">상태 없음<small>'+cntS[""]+'</small></button>';
   $("#cStatChips").innerHTML=statHTML;
 
-  var sorts=[["recent","최신순"],["revenue","수익 높은순"],["name","이름순"]];
-  $("#cSortChips").innerHTML=sorts.map(function(s){
-    return '<button class="fchip'+(cFilter.sort===s[0]?" on":"")+'" type="button" data-csort="'+s[0]+'">'+s[1]+'</button>';
+  if(C_SORTS.map(function(s){ return s[0]; }).indexOf(cFilter.sort)<0) cFilter.sort="recent";  /* 예전에 저장된 이름순 등은 최신순으로 */
+  $("#cSortChips").innerHTML=C_SORTS.map(function(s){
+    return '<button class="fchip'+(cFilter.sort===s[0]?" on":"")+'" type="button" data-csort="'+s[0]+'" title="'+esc(s[2])+'" aria-pressed="'+(cFilter.sort===s[0]?"true":"false")+'">'+s[1]+'</button>';
   }).join("");
 
   /* 보기 전환(카드 | 달력) 상태 반영 */
@@ -4448,8 +4460,16 @@ function renderContents(){
       if(rb!==ra) return rb-ra;
       return (Number(b.ts)||0)-(Number(a.ts)||0);
     }
-    if(cFilter.sort==="name") return String(a.name).localeCompare(String(b.name),"ko");
-    return (Number(b.ts)||0)-(Number(a.ts)||0);
+    /* 최신순·날짜순 — 제출일 기준(없으면 출시일). 날짜가 하나도 없는 콘텐츠는 어느 쪽이든 맨 아래 */
+    var da=cSortDayISO(a), db=cSortDayISO(b);
+    if(!da && !db) return (Number(b.ts)||0)-(Number(a.ts)||0);
+    if(!da) return 1;
+    if(!db) return -1;
+    if(da!==db){
+      if(cFilter.sort==="date") return da<db ? -1 : 1;   /* 날짜순: 오래된 것부터 */
+      return da<db ? 1 : -1;                              /* 최신순: 최근 것부터 */
+    }
+    return cFilter.sort==="date" ? (Number(a.ts)||0)-(Number(b.ts)||0) : (Number(b.ts)||0)-(Number(a.ts)||0);
   });
 
   $("#cCount").textContent = (rows.length===nAll) ? ("전체 "+nAll+"개") : (rows.length+"개 / 전체 "+nAll+"개");
