@@ -5,7 +5,7 @@ pre{background:#f6f7fb;padding:10px;border-radius:8px;white-space:pre-wrap}
 .p{color:#1a7f4b}.f{color:#b3261e;font-weight:700}</style></head>
 <body>
 <h1>Drive 모듈 자체 점검</h1>
-<p>source module sha256:b98de877d479 (index.html에서 그대로 추출)</p>
+<p>source module sha256:ad595c87d409 (index.html에서 그대로 추출)</p>
 <pre id="out">running…</pre>
 <script>
 /* ---------- 페이지 스텁 ---------- */
@@ -184,13 +184,13 @@ function driveFetch(url, opts){
 
 /* ---------- 파일 찾기 / 새로 만들기 ---------- */
 function driveEnsureFile(){
-  if(drive.fileId) return Promise.resolve(drive.fileId);
+  if(drive.fileId) return Promise.resolve({id:drive.fileId, created:false});
   var q=encodeURIComponent("name = '"+DRIVE_NAME+"' and trashed = false");
   var fields=encodeURIComponent("files(id,name,modifiedTime,webViewLink)");
   return driveFetch(DRIVE_API+"?q="+q+"&spaces=drive&pageSize=10&orderBy="+encodeURIComponent("modifiedTime desc")+"&fields="+fields, {method:"GET"})
     .then(function(d){
       var files=(d && d.files)||[];
-      if(files.length){ drive.fileId=files[0].id; if(files[0].webViewLink) drive.webLink=files[0].webViewLink; driveSaveMeta(); return drive.fileId; }
+      if(files.length){ drive.fileId=files[0].id; if(files[0].webViewLink) drive.webLink=files[0].webViewLink; driveSaveMeta(); return {id:drive.fileId, created:false}; }
       return driveCreateFile();
     });
 }
@@ -213,7 +213,7 @@ function driveCreateFile(){
     drive.fileId=d.id;
     if(d.webViewLink) drive.webLink=d.webViewLink;
     driveSaveMeta();
-    return d.id;
+    return {id:d.id, created:true, webViewLink:d.webViewLink||""};   /* 내용까지 함께 올렸으니 PATCH는 생략 */
   });
 }
 function drivePayload(){
@@ -241,9 +241,10 @@ function driveBackup(manual, retried){
   catch(e){ driveSetState("error"); return Promise.resolve(false); }
   drive.running=true;
   driveSetState("busy");
-  return driveEnsureFile().then(function(id){
+  return driveEnsureFile().then(function(f){
+    if(f && f.created) return {id:f.id, webViewLink:f.webViewLink||""};
     var fields=encodeURIComponent("id,modifiedTime,webViewLink");
-    return driveFetch(DRIVE_UP+"/"+encodeURIComponent(id)+"?uploadType=media&fields="+fields,
+    return driveFetch(DRIVE_UP+"/"+encodeURIComponent(f.id)+"?uploadType=media&fields="+fields,
       {method:"PATCH", headers:{"Content-Type":"application/json"}, body:payload});
   }).then(function(d){
     drive.running=false;
@@ -415,6 +416,7 @@ function stubFetch(handler){
   };
 }
 function resetDrive(){
+  cloud.user = null;
   drive.state="off"; drive.token=""; drive.exp=0; drive.fileId=""; drive.lastAt=0;
   drive.webLink=""; drive.running=false; drive.again=false;
   if(drive.timer){ clearTimeout(drive.timer); drive.timer=null; }
@@ -568,7 +570,7 @@ function signedIn(token){
 
   /* 결과 출력 */
   var pass = results.filter(function(x){return x.indexOf("PASS")===0;}).length;
-  var head = pass+"/"+results.length+" passed (module sha b98de877d479)";
+  var head = pass+"/"+results.length+" passed (module sha ad595c87d409)";
   document.getElementById("out").textContent = head+"\n\n"+results.join("\n");
   document.title = pass+"/"+results.length+" drive-selftest";
   window.__results = results;
