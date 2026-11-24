@@ -1472,7 +1472,9 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
   .cchip .ck{font-size:7px;padding:0 2px;border-radius:2px;align-self:flex-start;margin-top:0}
   .ccell .crev{display:flex;flex-wrap:wrap;gap:0 3px;font-size:8px}
   .ccell .crev .nm{flex:1 1 100%;display:block}
-  .ccell .cc-sum{font-size:8px;padding:0 4px;border-radius:8px}
+  /* 칸이 50px 남짓이라 날짜 합계 알약은 글자가 잘리거나 숫자 중간에서 끡키므로 감춤
+     — 그날 수익 내역은 위에 금액까지 전부 보이니 합계를 눈으로 바로 더할 수 있다 */
+  .ccell .cc-sum{display:none}
 }
 @media print{
   .cont-head .btn,.cc-acts,.cc-foot,.cplat,.cont-filt,.ccal-top,.cseg-view,#cCatBtn{display:none !important}
