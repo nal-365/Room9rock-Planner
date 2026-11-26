@@ -250,6 +250,16 @@ button.mini:hover{background:#F7F3EA}
 .wcard .wdet{display:block;width:100%;border:0;border-top:1px dashed var(--wc-det);margin-top:3px;padding:3px 0 0;background:transparent;font:inherit;font-size:10.5px;line-height:1.5;color:var(--ink-soft);outline:none;resize:none;overflow:hidden;min-height:15px;height:auto}
 .wcard .wdet::placeholder{color:#CFC5B4}
 .wcard .del{opacity:.45}
+/* 일간 카드 순서 드래그 (⋮⋮ 핸들) */
+.wcard .tdrag{flex:none;display:grid;place-items:center;width:12px;height:18px;border-radius:4px;color:#C9BFAD;font-size:10px;line-height:1;letter-spacing:-1.5px;cursor:grab;touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent}
+.wcard .tdrag:hover{background:rgba(120,96,40,.09);color:var(--accent-deep)}
+.wcard .tdrag:active{cursor:grabbing}
+.task.ddnd-src{opacity:.25}
+.task.ddnd-before{box-shadow:inset 0 2px 0 0 var(--accent-deep)}
+.task.ddnd-after{box-shadow:inset 0 -2px 0 0 var(--accent-deep)}
+.task.ddnd-ghost{position:fixed;left:0;top:0;z-index:120;display:block;margin:0;padding:6px 8px 7px;background:#FFFDF8;border:1px solid var(--accent-line);border-radius:9px;box-shadow:0 14px 30px -12px rgba(52,62,92,.4);opacity:.98;transform:rotate(-.5deg);pointer-events:none;max-width:260px}
+.task.ddnd-ghost .tdrag{color:var(--accent-ring)}
+html.ddnd-on,html.ddnd-on body{-webkit-user-select:none;user-select:none;cursor:grabbing}
 
 /* Money */
 .money-list{display:flex;flex-direction:column;gap:4px;overflow:auto;min-height:50px}
@@ -547,6 +557,8 @@ html.cdnd-on,html.cdnd-on body{-webkit-user-select:none;user-select:none;cursor:
 /* 주간 할 일 드래그 앤 드롭 — 마우스·터치·펜슬 공통 */
 .wtask{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent}
 .wtask.drag-src{opacity:.22}
+.wtask.dd-before{box-shadow:inset 0 2px 0 0 var(--accent-deep)}
+.wtask.dd-after{box-shadow:inset 0 -2px 0 0 var(--accent-deep)}
 .wtask.wtask-ghost{position:fixed;left:0;top:0;z-index:80;display:flex;align-items:flex-start;gap:4px;pointer-events:none;margin:0;padding:4px 6px;border-radius:8px;background:#fff;border:1px solid var(--accent-line);box-shadow:0 14px 30px -12px rgba(52,62,92,.45);opacity:.97;transform:rotate(-1.2deg);max-width:240px;font-size:11.5px;line-height:1.35;color:var(--ink-soft)}
 .wcol.drop-over{background:#F2F6FC;box-shadow:inset 0 0 0 2px rgba(122,144,188,.4)}
 .wcol.drop-over .whead{box-shadow:inset 0 0 0 1.5px var(--accent-ring,#7A90BC)}
@@ -1206,6 +1218,7 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
   body[data-print="daily"] .wcard .wplat{font-size:4.8pt;padding:0 .4mm;border-radius:1px;-webkit-appearance:none;appearance:none;text-indent:0}
   body[data-print="daily"] .wcard .txt{font-size:6.4pt;padding:.2mm 0 0}
   body[data-print="daily"] .wcard .wdet{font-size:5.6pt;line-height:1.4;margin-top:.4mm;padding-top:.4mm}
+  body[data-print="daily"] .wcard .tdrag{display:none}
   body[data-print="daily"] .total-val b{font-size:11pt;color:#5B4BA6}
   body[data-print="daily"] .total-val i{font-size:6pt}
   body[data-print="daily"] .total-sub{font-size:4.8pt}
@@ -2147,8 +2160,8 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
         <li><b>칠하기</b> — 위쪽 형광펜을 고르고 타임테이블의 10분 블럭을 <b>살짝 꾹 눌러</b> 칠해요(<b>PC 마우스·트랙패드·펜 0.15초 · 손가락 0.18초</b>). 그보다 짧게 누르고 떼면 칠해지지 않고, 손가락은 먼저 움직이면 그냥 스크롤돼요. 꾹 누른 채로 끌면 범위가 칠해집니다. 한 시간이 6칸(10분)으로 나뉘어 있어 세로로 한 칸씩, 가로로 10분씩 이어서 칠할 수 있습니다.</li>
         <li><b>지우개</b> — <b>지우개</b>를 고르고 문질러 지워요. 잘못 칠했으면 <kbd>Ctrl</kbd>+<kbd>Z</kbd>(맥은 <kbd>⌘</kbd>+<kbd>Z</kbd>)로 되돌려요.</li>
         <li><b>할 일</b> — 네모를 누를 때마다 <b>□ → ○ 완료 → △ 일부 → × 못함 → → 미룸</b> 순서로 바뀌어요.</li>
-        <li><b>카드</b> — <b>작업·자기개발·일정·여가 시간</b> 열은 카드로 적어요. <b>작업·자기개발·일정</b> 카드는 위줄에서 상태와 분류(플랫폼·카테고리·일정 분류)를 고르고, <b>여가 시간</b> 카드는 상태 없이 분류만 골라요. 제목 아래 <b>상세 내역</b>에 여러 줄로 메모해요. 분류 목록은 카드의 <b>＋ 플랫폼/카테고리/분류 관리</b>나 카테고리 관리에서 직접 추가·이름 바꾸기·삭제할 수 있어요.</li>
-        <li><b>주간</b> — 일간에서 칠하고 적은 내용이 그대로 모이고, 주간에서 고쳐도 일간에 바로 반영돼요. 주간 화면 위쪽 형광펜도 그대로 쓸 수 있어요(PC 0.15초 · 터치 0.18초 꾹). 주간 위쪽 <b>할 일</b> 탭은 상태·분류 태그·제목·상세 내역이 붙은 카드로(끌어서 날짜 이동, 맨 아래 <b>작/일/자</b>로 분류 골라 빠른 추가), <b>건강</b> 탭은 식단을 시간·시간대와 내용 카드로, <b>여가시간</b> 탭은 카테고리 배지·제목·상세 내역 카드로 모아 보여 줘요.</li>
+        <li><b>카드</b> — <b>작업·자기개발·일정·여가 시간</b> 열은 카드로 적어요. <b>작업·자기개발·일정</b> 카드는 위줄에서 상태와 분류(플랫폼·카테고리·일정 분류)를 고르고, <b>여가 시간</b> 카드는 상태 없이 분류만 골라요. 제목 아래 <b>상세 내역</b>에 여러 줄로 메모해요. 분류 목록은 카드의 <b>＋ 플랫폼/카테고리/분류 관리</b>나 카테고리 관리에서 직접 추가·이름 바꾸기·삭제할 수 있어요. 카드 위쪽 <b>⋮⋮</b>를 끌면 같은 열 안에서 카드 순서를 위아래로 바꿀 수 있어요(PC는 바로, 터치는 잠깐 꾹 누른 뒤).</li>
+        <li><b>주간</b> — 일간에서 칠하고 적은 내용이 그대로 모이고, 주간에서 고쳐도 일간에 바로 반영돼요. 주간 화면 위쪽 형광펜도 그대로 쓸 수 있어요(PC 0.15초 · 터치 0.18초 꾹). 주간 위쪽 <b>할 일</b> 탭은 상태·분류 태그·제목·상세 내역이 붙은 카드로(끌어서 날짜 이동, 같은 날 안에서는 끌어 순서 바꾸기, 맨 아래 <b>작/일/자</b>로 분류 골라 빠른 추가), <b>건강</b> 탭은 식단을 시간·시간대와 내용 카드로, <b>여가시간</b> 탭은 카테고리 배지·제목·상세 내역 카드로 모아 보여 줘요.</li>
         <li><b>장부</b> — 날짜·분류·시간·내용·금액·수입/지출을 적고 상세 내역을 여러 줄로 남겨요. 총 지출·총 수입·잔액과 <b>분류별 모아보기</b>가 자동으로 정리되고, 분류를 누르면 그 내역만 필터링됩니다. 일간 장부 열과 주간 장부 탭은 한 건을 <b>1줄 분류·수입/지출 · 2줄 시간·내역·금액 · 3줄 상세 내역</b> 카드로 보여 줘요. 위의 <b>표 | 달력</b>으로 보기를 바꾸면 한 달 지출(−)과 수입(+)을 달력 한 장으로 모아 보고, 날짜 숫자 오른쪽 위에 그날 하루 총액(−지출, +수입)이 알약으로 붙고, 칸 안에 그날 내역이 <b>분류 · 내역 · 금액</b>으로 전부 나와요(내역이 많으면 칸이 자동으로 높아짐). 날짜 칸을 누르면 그날 일간으로 넘어가요.</li>
         <li><b>콘텐츠</b> — 이모티콘·스티커·속지처럼 만든 것마다 플랫폼과 진행 상태를 붙여 카드로 모아요. 등록할 때 <b>제출일</b>과 <b>출시일</b>을 따로 적고(둘 중 하나만 적어도 저장돼요), 카드에는 <b>제출 2026.11.19 · 출시 —</b>처럼 각각 나와요. 위의 <b>카드 | 목록 | 달력</b>으로 보기를 바꿔요(마지막에 고른 보기는 이 기기에 기억돼요). <b>목록</b>은 플랫폼·상태 배지와 이름·메모, 제출일·출시일, 단가·판매 건수, 누적 수익(이번 달)을 한 줄씩 표로 모아 여러 개를 한눈에 훑기 좋고, 줄 끝의 <b>＋</b>(수익 기록)·<b>▾</b>(수익 내역 펼치기)·<b>✎</b>·<b>✕</b>로 카드에서 하던 일을 그대로 해요(좁은 화면은 두 줄로 접혀요). <b>달력</b>에서는 월 달력에서 제출일은 <b>제출</b>, 출시일은 <b>출시</b> 배지로 날짜 칸에 따로 모이고, 날짜 칸의 콘텐츠 배지를 누르면 수정, 초록 +금액을 누르면 그 수익 내역이 열려요. 카드의 <b>＋ 수익 기록</b>으로 판매·정산 내역(날짜·건수·금액·메모)을 여러 건 쌓으면 <b>누적 수익</b>과 <b>총 판매 건수</b>가 바로 다시 계산되고, 위의 <b>총 누적 수익·이번 달 수익</b>과 플랫폼별 수익도 함께 따라가는데, <b>플랫폼별 수익</b>은 판매·출시 중인 콘텐츠에 이미 수익이 난 콘텐츠(판매중지 등)까지 함께 세요(기획·제작중·심사중처럼 팔지도 않고 수익도 없는 것은 개수에서 뺌). 수익 줄을 누르면 수정, ✕로 삭제됩니다. 플랫폼과 상태 목록은 옆의 <b>🏷️ 분류 관리</b>에서 직접 추가·삭제하고 ⋮⋮로 순서를 바꿔요.</li>
         <li><b>일간 열</b> — <b>건강</b>은 위에서부터 몸무게 → 오늘의 한 줄 → 식단(시간·시간대·내용, 여러 줄 가능)을 적고, 아래 트래커 한 칸에 물·약·에너지·장건강(안감·정상·딱딱함·설사·혈변 중 하나, 누르면 선택·다시 누르면 해제)·기분(5단계)을 모아 둡니다. <b>작업·자기개발·일정·여가 시간</b>은 분류·상세 내역이 붙은 카드로 적어요(작업·자기개발·일정은 앞의 실행 여부 버튼으로 완료 상태도 남겨요). <b>장부</b>는 맨 위에 오늘 지출·오늘 수입과 이번 달 지출·수입 합계를 두고, 그 아래에서 수입/지출을 골라 시간·분류·내용·금액·상세 내역을 적어요. 기분 이모지는 월간 달력에도 표시됩니다.</li>
@@ -3176,6 +3189,7 @@ function cardHTML(t, kind){
        : '<button class="st s'+st+'" title="'+ST_LABEL[st]+' · 누르면 상태 변경" aria-label="상태 '+ST_LABEL[st]+'">'+ST_SYM[st]+'</button>';
   return '<div class="task wcard wcard-'+kind+'" data-id="'+t.id+'" data-kind="'+kind+'">'
        +   '<div class="wcard-top">'
+       +     '<span class="tdrag" role="button" tabindex="-1" title="끌어서 순서 바꾸기" aria-label="이 카드의 순서 바꾸기 — ⋮⋮를 끌어 위아래로 옮겨요">⋮⋮</span>'
        +     stBtn
        +     '<select class="wplat'+(cur?" on":"")+'" aria-label="'+meta.one+'" title="'+meta.one+' 고르기">'+kindOptionsHTML(kind, cur)+'</select>'
        +     '<button class="del" title="삭제" aria-label="삭제">×</button>'
@@ -5581,7 +5595,8 @@ function toast(msg, actionLabel, action){
    짧은 탭/클릭은 기존처럼 openDay(), 실행 여부 버튼은 기존처럼 상태 순환 */
 var WDND_CFG={mousePx:6, touchPx:10, pressMs:220, tapPx:6, edgePx:48, scrollMax:18};
 var WDND={armed:false, active:false, down:null, ghost:null, grip:{x:0,y:0}, target:null,
-          timer:null, raf:null, suppress:false, lastX:0, lastY:0, moved:0};
+          timer:null, raf:null, suppress:false, lastX:0, lastY:0, moved:0,
+          mark:null, markAfter:false, spot:null};
 
 function wdndTouchBlock(e){ if(e.cancelable) e.preventDefault(); }
 function wdndClickGuard(e){
@@ -5599,6 +5614,7 @@ function wdndDown(e){
   if(e.target.closest(".wadd")) return;
   WDND.armed=true; WDND.moved=0; WDND.suppress=false;
   WDND.down={x:e.clientX, y:e.clientY, date:card.dataset.date, id:card.dataset.id,
+             kind:(card.classList.contains("t-home")?"home":(card.classList.contains("t-study")?"study":(card.classList.contains("t-leisure")?"leisure":"work"))),
              el:card, pointerId:e.pointerId, type:e.pointerType||"mouse"};
   try{ card.setPointerCapture(e.pointerId); }catch(err){}
   clearTimeout(WDND.timer); WDND.timer=null;
@@ -5668,7 +5684,9 @@ function wdndPaint(x,y){
     WDND.ghost.style.left=Math.round(x-WDND.grip.x)+"px";
     WDND.ghost.style.top =Math.round(y-WDND.grip.y-lift)+"px";
   }
-  var col=wdndColAt(x,y);
+  var el=document.elementFromPoint(x,y);
+  var col=(el && el.closest) ? el.closest(".wcol[data-date]") : null;
+  if(!col) col=wdndColAt(x,y);
   if(col!==WDND.target){
     if(WDND.target) WDND.target.classList.remove("drop-over","drop-same");
     WDND.target=col;
@@ -5677,6 +5695,32 @@ function wdndPaint(x,y){
       col.classList.toggle("drop-same", !!(WDND.down && col.dataset.date===WDND.down.date));
     }
   }
+  if(!col){ wdndMark(null,false); WDND.spot=null; return; }
+  /* 같은 분류(일정·작업·자기개발) 카드 사이에서 놓일 자리를 찾는다 — 주간은 분류별로 모여 보이기 때문 */
+  var src=WDND.down?WDND.down.el:null, kind=WDND.down?WDND.down.kind:"work";
+  var cands=[];
+  $$(".wtask[data-id]", col).forEach(function(c){ if(c!==src && wdndKindOfCard(c)===kind) cands.push(c); });
+  var mark=null, after=false;
+  for(var i=0;i<cands.length;i++){
+    var b=cands[i].getBoundingClientRect();
+    if(y < b.top+b.height/2){ mark=cands[i]; break; }
+  }
+  if(!mark){ after=true; if(cands.length) mark=cands[cands.length-1]; }
+  wdndMark(mark, after);
+  WDND.spot={date:col.dataset.date, beforeId:(after||!mark)?null:mark.dataset.id};
+}
+function wdndKindOfCard(card){
+  if(!card) return "work";
+  if(card.classList.contains("t-home")) return "home";
+  if(card.classList.contains("t-study")) return "study";
+  if(card.classList.contains("t-leisure")) return "leisure";
+  return "work";
+}
+function wdndMark(el, after){
+  if(WDND.mark===el && WDND.markAfter===after) return;
+  if(WDND.mark) WDND.mark.classList.remove("dd-before","dd-after");
+  WDND.mark=el; WDND.markAfter=after;
+  if(el) el.classList.add(after?"dd-after":"dd-before");
 }
 
 function wdndColAt(x,y){
@@ -5724,6 +5768,7 @@ function wdndUp(e){
   clearTimeout(WDND.timer); WDND.timer=null;
   if(!WDND.active){ WDND.armed=false; WDND.down=null; return; }   // 짧은 탭 → 기존 클릭 동작
   var target=WDND.target ? WDND.target.dataset.date : null;
+  var beforeId=WDND.spot ? WDND.spot.beforeId : null;
   var dragged=WDND.moved>=WDND_CFG.tapPx;
   wdndReset();
   if(!dragged){                    // 롱프레스만 하고 끌지 않음 → 그 날 일간 화면
@@ -5734,8 +5779,9 @@ function wdndUp(e){
   }
   WDND.suppress=true;              // 드래그 뒤 따라오는 click 무시
   setTimeout(function(){ WDND.suppress=false; }, 400);
-  if(!target || target===d.date) return;   // 같은 날짜에 놓으면 그대로 둔다
-  wdndMoveTask(d.date, d.id, target);
+  if(!target) return;                       // 보드 바깥에 놓음
+  if(target===d.date){ reorderTaskInDay(d.date, d.kind, d.id, beforeId, renderWeek); return; }   // 같은 날 = 순서 바꾸기
+  wdndMoveTask(d.date, d.id, target, beforeId);
 }
 
 function wdndReset(){
@@ -5744,19 +5790,24 @@ function wdndReset(){
   WDND.ghost=null;
   if(WDND.down && WDND.down.el) WDND.down.el.classList.remove("drag-src");
   if(WDND.target){ WDND.target.classList.remove("drop-over","drop-same"); WDND.target=null; }
+  if(WDND.mark){ WDND.mark.classList.remove("dd-before","dd-after"); WDND.mark=null; }
+  WDND.markAfter=false; WDND.spot=null;
   document.documentElement.classList.remove("wdnd-on");
   document.removeEventListener("touchmove", wdndTouchBlock, {passive:false});
   if(WDND.raf){ cancelAnimationFrame(WDND.raf); WDND.raf=null; }
   WDND.armed=false; WDND.active=false; WDND.down=null; WDND.moved=0;
 }
 
-function wdndMoveTask(fromDate, id, toDate){
+function wdndMoveTask(fromDate, id, toDate, beforeId){
   if(!fromDate || !toDate || fromDate===toDate) return;
   var from=getDay(fromDate), i=-1;
   for(var k=0;k<from.tasks.length;k++) if(from.tasks[k].id===id){ i=k; break; }
   if(i<0) return;
   var t=from.tasks.splice(i,1)[0];       // 내용·분류(list)·상태(st)·platform·detail 전부 그대로
-  getDay(toDate).tasks.push(t);
+  var to=getDay(toDate);
+  var j=-1;
+  if(beforeId) for(var m=0;m<to.tasks.length;m++) if(to.tasks[m].id===beforeId){ j=m; break; }
+  if(j>=0) to.tasks.splice(j,0,t); else to.tasks.push(t);
   renderWeek();
   scheduleSave();
   var dt=parseISO(toDate);
@@ -5982,6 +6033,189 @@ function cdndReset(){
   if(CDND.raf){ cancelAnimationFrame(CDND.raf); CDND.raf=null; }
   CDND.armed=false; CDND.active=false; CDND.down=null; CDND.src=null; CDND.rows=null;
   CDND.from=0; CDND.mark=null; CDND.markAfter=false; CDND.pos=null; CDND.moved=0;
+}
+
+/* ============================================================
+   7-D. 할 일 카드 순서 바꾸기 (일간 안에서 · 주간 같은 날 안에서)
+   ============================================================
+   일간은 카드 위쪽 ⋮⋮ 핸들에서 시작한다(입력칸·상태 버튼과 섮이지 않게).
+   마우스: 6px 끌면 바로 시작 / 터치·펜슬: 220ms 롱프레스 뒤 끌면 시작 */
+var DDND_CFG={mousePx:6, touchPx:10, pressMs:220};
+var DDND={armed:false, active:false, down:null, ghost:null, grip:{x:0,y:0}, rows:null, src:null,
+          pos:null, mark:null, markAfter:false, raf:null, lastX:0, lastY:0, moved:0, timer:null};
+
+/* 카드 배열 순서 = 화면 순서. fromId를 beforeId 앞으로 옭기고(둘 다 그 날 할 일), beforeId가 없으면 맨 뒤로 */
+function taskOrderIndex(date, id){
+  var d=getDay(date);
+  for(var i=0;i<d.tasks.length;i++) if(d.tasks[i].id===id) return i;
+  return -1;
+}
+function moveTaskBefore(date, id, beforeId){
+  var d=getDay(date);
+  var from=taskOrderIndex(date, id);
+  if(from<0) return false;
+  if(beforeId && beforeId===id) return false;
+  var t=d.tasks.splice(from,1)[0];
+  var to=beforeId ? taskOrderIndex(date, beforeId) : -1;
+  if(to<0){ d.tasks.push(t); return true; }
+  d.tasks.splice(to,0,t);
+  return true;
+}
+function restoreTaskOrder(date, ids){
+  var d=getDay(date), byId={};
+  d.tasks.forEach(function(t){ byId[t.id]=t; });
+  var next=[];
+  ids.forEach(function(id){ if(byId[id]) next.push(byId[id]); });
+  d.tasks.forEach(function(t){ if(ids.indexOf(t.id)<0) next.push(t); });
+  d.tasks=next;
+}
+/* kind(작업·자기개발·일정·여가) 안에서 id를 beforeId 앞으로 옭긴다. 바뀐 게 없으면 false */
+function reorderTaskInDay(date, kind, id, beforeId, render){
+  var d=getDay(date);
+  if(!d || !kind) return false;
+  var snapshot=d.tasks.map(function(t){ return t.id; });
+  var before=tasksOf(date,kind).map(function(t){ return t.id; }).join(",");
+  if(!moveTaskBefore(date, id, beforeId)) return false;
+  var after=tasksOf(date,kind).map(function(t){ return t.id; }).join(",");
+  if(before===after) return false;                 // 제자리에 놓음
+  if(render) render();
+  scheduleSave();
+  toast("순서를 바꿨어요", "되돌리기", function(){
+    restoreTaskOrder(date, snapshot);
+    if(render) render();
+    scheduleSave();
+  });
+  return true;
+}
+
+function ddndRowsOf(box){ return $$(".task[data-id]", box); }
+function ddndTouchBlock(e){ if(e.cancelable) e.preventDefault(); }
+
+function ddndDown(e){
+  if(DDND.active) return;
+  if(e.pointerType==="mouse" && e.button!==0) return;
+  var h=e.target.closest ? e.target.closest(".tdrag") : null;
+  if(!h) return;
+  var card=h.closest(".task[data-id]");
+  var box=card ? card.closest(".tasks-body") : null;
+  if(!card || !box) return;
+  var rows=ddndRowsOf(box);
+  if(rows.length<2) return;                        // 카드가 하나면 바꿀 순서가 없다
+  DDND.armed=true; DDND.moved=0; DDND.timer=null;
+  DDND.down={x:e.clientX, y:e.clientY, el:card, box:box, pointerId:e.pointerId, type:e.pointerType||"mouse"};
+  DDND.rows=rows; DDND.src=card;
+  try{ card.setPointerCapture(e.pointerId); }catch(err){}
+  clearTimeout(DDND.timer);
+  if(DDND.down.type!=="mouse"){
+    DDND.timer=setTimeout(function(){
+      DDND.timer=null;
+      if(!DDND.armed || DDND.active || !DDND.down) return;
+      ddndStart(DDND.down.x, DDND.down.y);
+    }, DDND_CFG.pressMs);
+  }
+}
+
+function ddndMove(e){
+  if(!DDND.armed || !DDND.down || e.pointerId!==DDND.down.pointerId) return;
+  var dx=e.clientX-DDND.down.x, dy=e.clientY-DDND.down.y;
+  var dist=Math.sqrt(dx*dx+dy*dy);
+  if(!DDND.active){
+    if(DDND.down.type==="mouse"){
+      if(dist<DDND_CFG.mousePx) return;
+      ddndStart(e.clientX, e.clientY);
+    }else{
+      if(dist>=DDND_CFG.touchPx) ddndReset();       // 롱프레스 전 이동 → 그냥 스크롤
+      return;
+    }
+  }
+  if(e.cancelable) e.preventDefault();
+  DDND.moved=Math.max(DDND.moved, dist);
+  ddndPaint(e.clientX, e.clientY);
+}
+
+function ddndStart(x,y){
+  var d=DDND.down;
+  if(!d) return;
+  clearTimeout(DDND.timer); DDND.timer=null;
+  var r=d.el.getBoundingClientRect();
+  DDND.grip={x:d.x-r.left, y:d.y-r.top};
+  DDND.active=true; DDND.moved=0;
+  var g=d.el.cloneNode(true);
+  g.removeAttribute("data-id");
+  g.classList.add("ddnd-ghost");
+  g.classList.remove("ddnd-src","ddnd-before","ddnd-after");
+  g.style.width=Math.round(r.width)+"px";
+  $$("input,textarea,select", g).forEach(function(el){ el.setAttribute("tabindex","-1"); });
+  document.body.appendChild(g);
+  DDND.ghost=g;
+  d.el.classList.add("ddnd-src");
+  document.documentElement.classList.add("ddnd-on");
+  document.addEventListener("touchmove", ddndTouchBlock, {passive:false});
+  if(navigator.vibrate){ try{ navigator.vibrate(8); }catch(err){} }
+  ddndPaint(x,y);
+  if(!DDND.raf) DDND.raf=requestAnimationFrame(ddndAutoScroll);
+}
+
+function ddndPaint(x,y){
+  DDND.lastX=x; DDND.lastY=y;
+  if(DDND.ghost){
+    var lift=(DDND.down && DDND.down.type!=="mouse") ? 26 : 0;
+    DDND.ghost.style.left=Math.round(x-DDND.grip.x)+"px";
+    DDND.ghost.style.top =Math.round(y-DDND.grip.y-lift)+"px";
+  }
+  var rows=DDND.rows||[], others=[];
+  for(var i=0;i<rows.length;i++) if(rows[i]!==DDND.src) others.push(rows[i]);
+  var pos=others.length, mark=null, after=false;
+  for(var k=0;k<others.length;k++){
+    var b=others[k].getBoundingClientRect();
+    if(y < b.top+b.height/2){ pos=k; mark=others[k]; break; }
+  }
+  if(pos===others.length){ after=true; if(others.length) mark=others[others.length-1]; }
+  DDND.pos=pos;
+  if(mark!==DDND.mark || after!==DDND.markAfter){
+    if(DDND.mark) DDND.mark.classList.remove("ddnd-before","ddnd-after");
+    DDND.mark=mark; DDND.markAfter=after;
+    if(mark) mark.classList.add(after?"ddnd-after":"ddnd-before");
+  }
+}
+
+function ddndAutoScroll(){
+  DDND.raf=null;
+  if(!DDND.active) return;
+  var y=DDND.lastY, moved=false;
+  if(y<80){ window.scrollBy(0,-9); moved=true; }
+  else if(y>window.innerHeight-80){ window.scrollBy(0,9); moved=true; }
+  if(moved) ddndPaint(DDND.lastX, DDND.lastY);
+  if(DDND.active) DDND.raf=requestAnimationFrame(ddndAutoScroll);
+}
+
+function ddndUp(e){
+  if(!DDND.armed || !DDND.down) return;
+  if(e && e.pointerId!=null && e.pointerId!==DDND.down.pointerId) return;
+  var d=DDND.down;
+  clearTimeout(DDND.timer); DDND.timer=null;
+  if(!DDND.active){ DDND.armed=false; DDND.down=null; DDND.rows=null; DDND.src=null; return; }
+  var box=d.box, srcId=d.el.dataset.id;
+  var rows=DDND.rows||[], others=[], pos=DDND.pos;
+  for(var i=0;i<rows.length;i++) if(rows[i]!==DDND.src) others.push(rows[i]);
+  var beforeId=(pos==null || pos>=others.length) ? null : others[pos].dataset.id;
+  var kind=String(box.id||"").replace("taskList-","");
+  ddndReset();
+  if(!kind) return;
+  reorderTaskInDay(curDate, kind, srcId, beforeId, function(){ renderTaskList(kind); });
+}
+
+function ddndReset(){
+  clearTimeout(DDND.timer); DDND.timer=null;
+  if(DDND.ghost && DDND.ghost.parentNode) DDND.ghost.parentNode.removeChild(DDND.ghost);
+  DDND.ghost=null;
+  if(DDND.src) DDND.src.classList.remove("ddnd-src");
+  if(DDND.mark) DDND.mark.classList.remove("ddnd-before","ddnd-after");
+  document.documentElement.classList.remove("ddnd-on");
+  document.removeEventListener("touchmove", ddndTouchBlock, {passive:false});
+  if(DDND.raf){ cancelAnimationFrame(DDND.raf); DDND.raf=null; }
+  DDND.armed=false; DDND.active=false; DDND.down=null; DDND.rows=null; DDND.src=null;
+  DDND.pos=null; DDND.mark=null; DDND.markAfter=false; DDND.moved=0;
 }
 
 /* ============================================================
@@ -6314,6 +6548,15 @@ function bindEvents(){
   document.addEventListener("click", wdndClickGuard, true);
   document.addEventListener("contextmenu", function(e){ if(WDND.active) e.preventDefault(); });
   window.addEventListener("blur", function(){ if(WDND.armed || WDND.active) wdndReset(); });
+
+  // 일간 할 일 카드 순서 드래그 앤 드롭 (카드 위 ⋮⋮ 핸들에서 시작)
+  var dailyBoard=$("#viewDaily");
+  dailyBoard.addEventListener("pointerdown", ddndDown);
+  document.addEventListener("pointermove", ddndMove, {passive:false});
+  document.addEventListener("pointerup", ddndUp);
+  document.addEventListener("pointercancel", ddndUp);
+  document.addEventListener("contextmenu", function(e){ if(DDND.active) e.preventDefault(); });
+  window.addEventListener("blur", function(){ if(DDND.armed || DDND.active) ddndReset(); });
 
   cols.addEventListener("click", function(e){
     var st=e.target.closest(".wst");
