@@ -3538,13 +3538,13 @@ function refreshSums(){
     chips.innerHTML = h || '<span class="none">아직 칠한 시간이 없어요</span>';
   }
 
-  // 주간 하루 합계
+  // 주간 하루 집중 시간 (잠·휴식·이동처럼 '집중 제외'인 형광펜은 빼고)
   $$(".wcol").forEach(function(col){
     var st=dayStats(col.dataset.date);
     var f=col.querySelector(".wfoot");
     if(f){
-      f.innerHTML='<span class="wfl">합계</span><b>'+fmtHM(st.total).h+'</b><i>H</i> <b>'+fmtHM(st.total).m+'</b><i>M</i>';
-      f.classList.toggle("zero", st.total===0);
+      f.innerHTML='<span class="wfl">집중</span><b>'+fmtHM(st.focus).h+'</b><i>H</i> <b>'+fmtHM(st.focus).m+'</b><i>M</i>';
+      f.classList.toggle("zero", st.focus===0);
     }
   });
   renderWeekStats();
@@ -3709,7 +3709,7 @@ function renderWeekTime(){
     html+='<div class="wcol'+(date===today?" today":"")+'" data-date="'+date+'">'
         +   weekHeadHTML(date)
         +   ttHTML(date,true)
-        +   '<div class="wfoot zero"><b>0</b><i>H</i> <b>00</b><i>M</i></div>'
+        +   '<div class="wfoot zero" title="잠·휴식·이동을 뺀 집중 시간"><span class="wfl">집중</span><b>0</b><i>H</i> <b>00</b><i>M</i></div>'
         + '</div>';
   });
   var cols=$("#weekTime");
