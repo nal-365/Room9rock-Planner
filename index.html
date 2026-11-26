@@ -809,7 +809,13 @@ html.wdnd-on,html.wdnd-on body{-webkit-user-select:none;user-select:none;cursor:
 .mcell .mtasks .cnt{flex:none;min-width:20px;font-family:var(--sans);font-size:9.5px;font-weight:800;color:var(--tc,#8A97A8);letter-spacing:0}
 .mcell .mtasks .one{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
 .mcell .mtasks.second{color:var(--ink-soft);padding-left:0}
-.mcell .mone{align-self:flex-end;margin-top:auto;background:#EAF5DC;color:#41631F;border-radius:999px;padding:1px 6px;font-family:var(--sans);font-size:9px;font-weight:800;letter-spacing:0;white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis}
+/* 월간 칸 아래쪽 고정 영역 — 값이 없는 날도 같은 높이를 비워 두어 시간 알약·컬러바·금액이
+   한 주의 모든 칸에서 같은 가로선에 놓인다(할 일 줄 수·금액 유무와 무관) */
+.mcell-foot{margin-top:auto;display:flex;flex-direction:column;gap:3px;min-width:0}
+.mcell-time{display:flex;align-items:flex-start;min-height:16px;min-width:0}
+.mcell-bar{display:block;min-height:5px;min-width:0}
+.mcell-amt{display:flex;align-items:flex-end;justify-content:flex-end;min-height:17px;min-width:0}
+.mcell .mone{align-self:flex-end;background:#EAF5DC;color:#41631F;border-radius:999px;padding:1px 6px;font-family:var(--sans);font-size:9px;font-weight:800;letter-spacing:0;white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis}
 .mstats{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:12px}
 .sc-wide b{font-size:14px;padding-top:4px}
 
@@ -1075,6 +1081,11 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
   .mcell .mone{font-size:8px;padding:0 3px;letter-spacing:-.1px}
   .mcell .mone.tight{font-size:7.2px;padding:0 2px}
   .mcell .mone.tighter{font-size:6.4px;padding:0 1px;letter-spacing:-.2px}
+  /* 좁은 화면 — 고정 영역 높이도 함께 줄여 칸이 길어지지 않게 */
+  .mcell-foot{gap:2px}
+  .mcell-time{min-height:14px}
+  .mcell-bar{min-height:3px}
+  .mcell-amt{min-height:14px}
   .mstats{grid-template-columns:1fr}
   .stat-cards{grid-template-columns:repeat(2,minmax(0,1fr))}
   .dlg{padding:10px}
@@ -3940,10 +3951,15 @@ function renderMonth(){
             + '<span class="one">'+esc(shownTxt)+'</span></span>';
       });
     }
-    if(sm.total)
-      cell+='<span class="tdb" title="집중 '+hmText(sm.focus)+'">'+hmText(sm.total)+'</span>';
+    /* 아래쪽 고정 영역 — 시간 알약 → 컬러바 → 금액을 늘 같은 자리에 둔다.
+       값이 없는 날도 같은 높이를 비워 두어, 한 주의 모든 칸에서 세 줄이 같은 가로선에 놓인다. */
+    cell+='<div class="mcell-foot">';
+    cell+='<span class="mcell-time">'
+        + (sm.total ? '<span class="tdb" title="집중 '+hmText(sm.focus)+'">'+hmText(sm.total)+'</span>' : '')
+        + '</span>';
     var keys=Object.keys(sm.by).filter(function(c){ return sm.by[c]>0 && cat(c); })
       .sort(function(a,b){ return sm.by[b]-sm.by[a]; });
+    cell+='<span class="mcell-bar">';
     if(keys.length){
       var shownBar=keys.slice(0,4), rest=0;
       keys.slice(4).forEach(function(c){ rest+=sm.by[c]; });
@@ -3952,12 +3968,16 @@ function renderMonth(){
       if(rest) cell+='<i style="flex:'+rest+';--c:#DFD8CA"></i>';
       cell+='</span>';
     }
+    cell+='</span>';
+    cell+='<span class="mcell-amt">';
     if(sm.spend>0){
       var wtxt=fmtWon(sm.spend);
       /* 좁은 화면에서도 전체 금액이 잘리지 않도록 글자 수에 따라 조금씩 줄여 표시한다 */
       var wcls=(wtxt.length>=10)?" tighter":((wtxt.length>=8)?" tight":"");
       cell+='<span class="mone'+wcls+'" title="지출 '+wtxt+'" aria-label="지출 '+wtxt+'">'+wtxt+'</span>';
     }
+    cell+='</span>';
+    cell+='</div>';
     cell+='</div>';
     html+=cell;
   }
