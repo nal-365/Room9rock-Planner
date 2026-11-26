@@ -114,6 +114,6 @@ function run(){
     add('점검이 사용자 데이터를 남기지 않음(테스트 날짜 비움)', slots().length===0, 'date='+DATE+' slots='+JSON.stringify(slots()));
   });
 }
-window.addEventListener('load', function(){ run(); });
+setTimeout(function(){ run().catch(function(e){ add('스크립트 오류', false, String(e && e.message || e)); }); }, 150);
 </script>
 </body></html>
