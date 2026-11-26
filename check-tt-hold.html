@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><title>타임테이블 칠하기 점검</title>
+<style>
+  body{margin:0;background:#fff;font-family:ui-sans-serif,system-ui,sans-serif}
+  #out{padding:14px 16px;font-family:ui-monospace,Menlo,monospace;font-size:13px;line-height:1.6;white-space:pre-wrap}
+  .pass{color:#1F7A57;font-weight:700}.fail{color:#B4302A;font-weight:700}
+  iframe{display:block;width:1440px;height:1500px;border:0}
+</style></head>
+<body>
+<div id="out">running…</div>
+<iframe id="f" src="./index.html?check=1"></iframe>
+<script>
+var out=[], logEl=document.getElementById("out"), f=document.getElementById("f");
+function say(t){ out.push(t); logEl.textContent=out.join("\n"); }
+function verdict(name, ok, detail){ say((ok?"PASS  ":"FAIL  ")+name+"  — "+(detail||"")); return ok; }
+function sleep(ms){ return new Promise(function(r){ setTimeout(r, ms); }); }
+var t0=Date.now();
+async function waitDoc(){
+  for(;;){
+    var d=null;
+    try{ d=f.contentDocument; }catch(e){}
+    if(d && d.readyState==="complete" && d.querySelector("#viewDaily .tt-grid:not(.mini)")) return d;
+    if(Date.now()-t0>20000) throw new Error("iframe 준비 실패");
+    await sleep(100);
+  }
+}
+(async function(){
+  try{
+    var d=await waitDoc(), w=d.defaultView;
+    await sleep(400);
+    var grid=d.querySelector("#viewDaily .tt-grid:not(.mini)");
+    grid.scrollIntoView({block:"center"});
+    await sleep(200);
+    var cells=grid.querySelector(".tt-cells");
+    function pt(col,row){ var r=cells.getBoundingClientRect();
+      return {clientX:r.left+r.width*(col+0.5)/6, clientY:r.top+r.height*(row+0.5)/24}; }
+    function fire(type,p,pointerType,id){
+      grid.dispatchEvent(new w.PointerEvent(type,{pointerId:id,pointerType:pointerType,isPrimary:true,
+        button:0,buttons:(type==="pointerup"?0:1),clientX:p.clientX,clientY:p.clientY,bubbles:true,cancelable:true}));
+    }
+    function painted(){ return grid.querySelectorAll(".tt-cell.on").length; }
+
+    /* 1) 되돌리기 버튼 제거 확인 */
+    var undos=d.querySelectorAll("#undoBtn,#undoBtnWeek,.undo-btn,.pal-scroll").length;
+    var dbar=d.querySelector("#viewDaily .board-tools"), wbar=d.querySelector(".week-board .board-tools");
+    var dkids=dbar?dbar.children.length:-1, wkids=wbar?wbar.children.length:-1;
+    var dtext=dbar?dbar.innerText.replace(/\s+/g," "):"";
+    verdict("일간·주간 도구줄에 되돌리기 버튼·pal-scroll 없음", undos===0, "요소 수="+undos);
+    verdict("도구줄 구성이 '형광펜 라벨 + 팔레트' 둘뿐", dkids===2 && wkids===2, "일간 자식="+dkids+" · 주간 자식="+wkids);
+    verdict("도구줄 문구에 '되돌리기' 없음", dtext.indexOf("되돌리기")<0, JSON.stringify(dtext.slice(0,80)));
+
+    var base=painted();
+    say("기준 칠한 칸 수 = "+base);
+
+    /* 2) 마우스 짧은 클릭(60ms) → 칠하지 않음 */
+    var p=pt(1,14), a=w.performance.now();
+    fire("pointerdown",p,"mouse",101); await sleep(60); fire("pointerup",p,"mouse",101);
+    var dt=Math.round(w.performance.now()-a); await sleep(120);
+    verdict("마우스 60ms 짧은 클릭 무시", painted()===base, "누른 시간≈"+dt+"ms · 칠한 칸="+painted());
+
+    /* 3) 마우스 160ms(>0.15초) → 칠하기 시작 */
+    p=pt(1,15); a=w.performance.now();
+    fire("pointerdown",p,"mouse",102); await sleep(160);
+    dt=Math.round(w.performance.now()-a);
+    var during=painted();
+    fire("pointerup",p,"mouse",102); await sleep(120);
+    verdict("마우스 0.15초 꾹 누르면 칠해짐", during>base, "누른 시간≈"+dt+"ms · 칠한 칸="+during);
+
+    /* 4) 터치 150ms(<0.18초) → 아직 칠하지 않음 */
+    base=painted();
+    p=pt(3,16); a=w.performance.now();
+    fire("pointerdown",p,"touch",103); await sleep(150); fire("pointerup",p,"touch",103);
+    dt=Math.round(w.performance.now()-a); await sleep(120);
+    verdict("터치 0.15초는 아직 무시(0.18초 기준 유지)", painted()===base, "누른 시간≈"+dt+"ms · 칠한 칸="+painted());
+
+    /* 5) 터치 230ms(>0.18초) → 칠해짐 */
+    p=pt(3,17); a=w.performance.now();
+    fire("pointerdown",p,"touch",104); await sleep(230);
+    dt=Math.round(w.performance.now()-a);
+    during=painted();
+    fire("pointerup",p,"touch",104); await sleep(120);
+    verdict("터치 0.18초 꾹 누르면 칠해짐", during>base, "누른 시간≈"+dt+"ms · 칠한 칸="+during);
+
+    /* 6) 마우스로 꾹 누른 뒤 끌면 범위가 칠해짐 */
+    base=painted();
+    var from=pt(5,12), to=pt(5,14);
+    fire("pointerdown",from,"mouse",105); await sleep(200);
+    var one=painted();
+    fire("pointermove",to,"mouse",105); await sleep(80);
+    fire("pointerup",to,"mouse",105); await sleep(120);
+    verdict("꾹 누른 채 끌면 범위 칠하기", painted()>one && one>base, "앵커 후="+one+" · 끌고 난 뒤="+painted());
+
+    /* 7) Ctrl+Z 되돌리기 유지 */
+    var before=painted();
+    d.dispatchEvent(new w.KeyboardEvent("keydown",{key:"z",ctrlKey:true,bubbles:true,cancelable:true}));
+    await sleep(150);
+    verdict("Ctrl+Z 되돌리기 동작", painted()<before, before+" → "+painted());
+    for(var i=0;i<8 && painted()>0;i++){
+      d.dispatchEvent(new w.KeyboardEvent("keydown",{key:"z",ctrlKey:true,bubbles:true,cancelable:true}));
+      await sleep(120);
+    }
+    say("정리 후 칠한 칸 수 = "+painted()+" (기준 "+base+"으로 복구)");
+
+    /* 8) 빈 칸 개수·도구줄 스크린샷용 상태 */
+    say("점검 끝 — 총 "+out.filter(function(x){return x.indexOf("PASS")===0;}).length+"개 통과 / "+
+        out.filter(function(x){return x.indexOf("FAIL")===0;}).length+"개 실패");
+    document.body.dataset.done="1";
+  }catch(e){
+    say("ERROR "+e.message);
+    document.body.dataset.done="1";
+  }
+})();
+</script>
+</body></html>
