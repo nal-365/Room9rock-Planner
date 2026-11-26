@@ -120,7 +120,23 @@ function run(){
       add('주간 되돌리기 동작', wpainted()===wstart && wUndo.disabled, 'painted='+wpainted()+' undoDisabled='+wUndo.disabled);
     }
 
-    // 8) 점검이 남긴 것이 없는지
+    // 8) 좁은 화면(아이패드 세로 768 / 폰 390)에서 팔레트 스크롤·되돌리기 고정
+    var frEl=document.getElementById('fr');
+    var widths=[768,390];
+    for(var wi=0; wi<widths.length; wi++){
+      frEl.style.width=widths[wi]+'px'; await sleep(500);
+      var sc=d.querySelector('.pal-scroll'), tb=d.querySelector('.board-tools'), ub=d.querySelector('#undoBtn');
+      var before=ub.getBoundingClientRect();
+      sc.scrollLeft=220; await sleep(150);
+      var after=ub.getBoundingClientRect();
+      add(widths[wi]+'px: 팔레트는 옆으로 밀리고 되돌리기 버튼은 제자리',
+          sc.scrollWidth>sc.clientWidth+20 && Math.abs(before.left-after.left)<1 && after.right<=tb.getBoundingClientRect().right+1 && after.width>0,
+          'scrollW='+sc.scrollWidth+' clientW='+sc.clientWidth+' scrollLeft='+sc.scrollLeft+' btnLeft '+before.left.toFixed(1)+'→'+after.left.toFixed(1)+' btnRight='+after.right.toFixed(1)+' toolsRight='+tb.getBoundingClientRect().right.toFixed(1));
+      sc.scrollLeft=0;
+    }
+    frEl.style.width='1280px'; await sleep(400);
+
+    // 9) 점검이 남긴 것이 없는지
     d.querySelector('.tab[data-view="daily"]').click(); await sleep(300);
     var g2=d.querySelector('#dailyTT .tt-grid');
     add('점검 뒤 오늘 칠한 칸이 처음과 같음', g2.querySelectorAll('.tt-cell.on').length===start,
