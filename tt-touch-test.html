@@ -122,19 +122,26 @@ function run(){
 
     // 8) 좁은 화면(아이패드 세로 768 / 폰 390)에서 팔레트 스크롤·되돌리기 고정
     var frEl=document.getElementById('fr');
-    var widths=[768,390];
-    for(var wi=0; wi<widths.length; wi++){
-      frEl.style.width=widths[wi]+'px'; await sleep(500);
-      var sc=d.querySelector('.pal-scroll'), tb=d.querySelector('.board-tools'), ub=d.querySelector('#undoBtn');
+    async function checkBar(width, tag, scSel, tbSel, ubSel){
+      frEl.style.width=width+'px'; await sleep(550);
+      var sc=d.querySelector(scSel), tb=d.querySelector(tbSel), ub=d.querySelector(ubSel);
+      if(!sc || !tb || !ub){ add(width+'px '+tag+': 도구줄 확인', false, '요소 없음'); return; }
+      var t=0; while(t<20 && tb.getBoundingClientRect().width===0){ await sleep(100); t++; }
       var before=ub.getBoundingClientRect();
-      sc.scrollLeft=220; await sleep(150);
+      sc.scrollLeft=240; await sleep(180);
       var after=ub.getBoundingClientRect();
-      add(widths[wi]+'px: 팔레트는 옆으로 밀리고 되돌리기 버튼은 제자리',
-          sc.scrollWidth>sc.clientWidth+20 && Math.abs(before.left-after.left)<1 && after.right<=tb.getBoundingClientRect().right+1 && after.width>0,
-          'scrollW='+sc.scrollWidth+' clientW='+sc.clientWidth+' scrollLeft='+sc.scrollLeft+' btnLeft '+before.left.toFixed(1)+'→'+after.left.toFixed(1)+' btnRight='+after.right.toFixed(1)+' toolsRight='+tb.getBoundingClientRect().right.toFixed(1));
+      var tbR=tb.getBoundingClientRect();
+      add(width+'px '+tag+': 팔레트는 옆으로 밀리고 되돌리기 버튼은 제자리',
+          sc.scrollWidth>sc.clientWidth+20 && Math.abs(before.left-after.left)<1 && after.right<=tbR.right+1 && after.width>0,
+          'scrollW='+sc.scrollWidth+' clientW='+sc.clientWidth+' scrollLeft='+sc.scrollLeft+' btnLeft '+before.left.toFixed(1)+'→'+after.left.toFixed(1)+' btnRight='+after.right.toFixed(1)+' toolsRight='+tbR.right.toFixed(1));
       sc.scrollLeft=0;
     }
-    frEl.style.width='1280px'; await sleep(400);
+    await checkBar(768,'주간 도구줄','#weekPaneTime .pal-scroll','#weekPaneTime .board-tools','#undoBtnWeek');
+    await checkBar(390,'주간 도구줄','#weekPaneTime .pal-scroll','#weekPaneTime .board-tools','#undoBtnWeek');
+    d.querySelector('.tab[data-view="daily"]').click(); await sleep(500);
+    await checkBar(768,'일간 도구줄','#viewDaily .pal-scroll','#viewDaily .board-tools','#undoBtn');
+    await checkBar(390,'일간 도구줄','#viewDaily .pal-scroll','#viewDaily .board-tools','#undoBtn');
+    frEl.style.width='1280px'; await sleep(500);
 
     // 9) 점검이 남긴 것이 없는지
     d.querySelector('.tab[data-view="daily"]').click(); await sleep(300);
