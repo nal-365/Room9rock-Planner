@@ -376,7 +376,7 @@ button.mini:hover{background:#F7F3EA}
   background-image:
     repeating-linear-gradient(to right, rgba(214,202,182,.62) 0 1px, transparent 1px calc(100% / 6)),
     repeating-linear-gradient(to bottom, rgba(198,184,162,.8) 0 1px, transparent 1px var(--hour-h));
-  touch-action:none;user-select:none;-webkit-user-select:none;cursor:crosshair;border-radius:3px;overflow:hidden;outline:none}
+  touch-action:pan-x pan-y;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent;cursor:crosshair;border-radius:3px;overflow:hidden;outline:none}
 .tt-cells{position:absolute;inset:0;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));grid-template-rows:repeat(24,var(--hour-h))}
 .tt-cell{display:block;min-width:0;min-height:0;margin:1px;border-radius:3px;background:transparent;transition:background .1s}
 .tt-grid:not(.painting) .tt-cell:not(.on):hover{background:rgba(175,186,216,.22)}
@@ -386,7 +386,7 @@ button.mini:hover{background:#F7F3EA}
 .tt-grid.empty::after{content:"10분 블럭을 눌러 칠해 보세요";position:absolute;left:0;right:0;top:44%;text-align:center;font-size:10.5px;color:#CFC5B2;pointer-events:none;letter-spacing:.3px;z-index:2}
 .tt-now{position:absolute;width:0;border-left:2px solid rgba(205,106,90,.9);pointer-events:none;z-index:3;box-shadow:0 0 5px rgba(205,106,90,.3)}
 .tt-now::before{content:"";position:absolute;left:-5px;top:-2px;width:8px;height:8px;border-radius:50%;background:var(--red);box-shadow:0 0 0 2px rgba(255,253,250,.92)}
-.tt-grid.painting{cursor:crosshair}
+.tt-grid.painting{cursor:crosshair;touch-action:none}
 .tt.mini{padding-top:6px;gap:3px;--hour-h:26px}
 .tt.mini .tt-hours{width:15px}
 .tt.mini .tt-grid{border-radius:2px}
@@ -432,9 +432,16 @@ button.mini:hover{background:#F7F3EA}
 .chips .none{font-size:11px;color:#BFB5A4}
 
 /* ---------- 형광펜 팔레트 (보드 상단 도구줄) ---------- */
-.board-tools{display:flex;align-items:center;gap:7px;padding:5px 12px;border-bottom:1px solid #E7E0D2;background:linear-gradient(180deg,#FFFDF8,#FAF6EE);overflow-x:auto;-webkit-overflow-scrolling:touch;flex:none}
+.board-tools{display:flex;align-items:center;gap:7px;padding:5px 12px;border-bottom:1px solid #E7E0D2;background:linear-gradient(180deg,#FFFDF8,#FAF6EE);overflow:hidden;flex:none}
 .board-tools .lab{flex:none;font-size:9.5px;letter-spacing:.6px;color:#B3A897}
+/* 팔레트 칩만 옆으로 밀리고, 도구줄 오른쪽 끝의 되돌리기 버튼은 제자리에 남는다 */
+.pal-scroll{flex:1 1 auto;min-width:0;display:flex;align-items:center;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.pal-scroll::-webkit-scrollbar{height:0;width:0}
 .pal-in{display:flex;gap:0;align-items:center;flex:none}
+.undo-btn{flex:none;display:inline-flex;align-items:center;gap:3px;border:1px solid var(--line-strong);background:#fff;border-radius:8px;padding:5px 9px 5px 8px;font-family:var(--sans);font-size:11px;font-weight:800;letter-spacing:.1px;color:#4E5F87;cursor:pointer;white-space:nowrap;touch-action:manipulation;-webkit-tap-highlight-color:transparent;transition:background .15s,border-color .15s,color .15s,opacity .15s}
+.undo-btn:hover:not(:disabled){background:#F5F0E5;border-color:var(--accent-ring);color:var(--accent-deep)}
+.undo-btn:active:not(:disabled){transform:translateY(1px)}
+.undo-btn:disabled{opacity:.4;color:#A9A093;border-color:var(--line);background:#FBF8F1;cursor:default}
 .cat{position:relative;display:flex;flex-direction:column;align-items:center;gap:2px;border:0;background:transparent;padding:4px 5px 3px;border-radius:8px;cursor:pointer;width:auto;min-width:56px;flex:none;touch-action:manipulation;transition:background .14s,box-shadow .14s}
 .cat:hover{background:#F5F0E5}
 .cat.on{background:var(--accent-soft);box-shadow:inset 0 0 0 1.5px var(--accent-ring)}
@@ -1714,7 +1721,8 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
 
         <div class="board-tools" aria-label="형광펜 팔레트">
           <span class="lab">형광펜</span>
-          <div class="pal-in" id="paletteItems"></div>
+          <div class="pal-scroll"><div class="pal-in" id="paletteItems"></div></div>
+          <button class="undo-btn no-print" id="undoBtn" type="button" title="마지막 칠하기 되돌리기 (Ctrl+Z)" disabled>↺ 되돌리기</button>
         </div>
 
         <div class="board-cols">
@@ -1894,7 +1902,8 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
         <div class="week-board">
           <div class="board-tools week-tools no-print" aria-label="주간 형광펜 팔레트">
             <span class="lab">형광펜</span>
-            <div class="pal-in" id="paletteItemsWeek"></div>
+            <div class="pal-scroll"><div class="pal-in" id="paletteItemsWeek"></div></div>
+            <button class="undo-btn" id="undoBtnWeek" type="button" title="마지막 칠하기 되돌리기 (Ctrl+Z)" disabled>↺ 되돌리기</button>
           </div>
           <div class="week-scroll">
             <div class="week-cols" id="weekTime"></div>
@@ -2137,11 +2146,11 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
     <div class="dlg-head"><strong>사용법 &amp; 설정</strong><button class="x" data-close="1" aria-label="닫기">✕</button></div>
     <div class="dlg-body">
       <ul class="tips">
-        <li><b>칠하기</b> — 위쪽 형광펜을 고르고 타임테이블의 10분 블럭을 누르거나 끌면 칠해져요. 한 시간이 6칸(10분)으로 나뉘어 있어 세로로 한 칸씩, 가로로 10분씩 이어서 칠할 수 있습니다. 마우스·손가락·애플펜슬 모두 됩니다.</li>
-        <li><b>지우개</b> — <b>지우개</b>를 고르고 문질러 지워요. 잘못 칠했으면 <kbd>Ctrl</kbd>+<kbd>Z</kbd>로 되돌리기.</li>
+        <li><b>칠하기</b> — 위쪽 형광펜을 고르고 타임테이블의 10분 블럭을 누르거나 끌면 칠해져요. 한 시간이 6칸(10분)으로 나뉘어 있어 세로로 한 칸씩, 가로로 10분씩 이어서 칠할 수 있습니다. <b>마우스·애플펜슬</b>은 누르는 즉시 칠해지고, <b>손가락(터치)</b>은 스치기만 해도 칠해지지 않도록 <b>0.18초 꾹 누르고</b> 있어야 칠하기가 시작돼요(그 전에 손가락을 움직이면 그냥 스크롤됩니다). 꾹 누른 채로 끌면 범위가 칠해집니다.</li>
+        <li><b>지우개</b> — <b>지우개</b>를 고르고 문질러 지워요. 잘못 칠했으면 도구줄 오른쪽 끝 <b>↺ 되돌리기</b> 버튼을 누르거나 <kbd>Ctrl</kbd>+<kbd>Z</kbd>로 되돌리기(되돌릴 칠하기가 없을 때는 버튼이 흐려져 있어요).</li>
         <li><b>할 일</b> — 네모를 누를 때마다 <b>□ → ○ 완료 → △ 일부 → × 못함 → → 미룸</b> 순서로 바뀌어요.</li>
         <li><b>카드</b> — <b>작업·자기개발·일정·여가 시간</b> 열은 카드로 적어요. <b>작업·자기개발·일정</b> 카드는 위줄에서 상태와 분류(플랫폼·카테고리·일정 분류)를 고르고, <b>여가 시간</b> 카드는 상태 없이 분류만 골라요. 제목 아래 <b>상세 내역</b>에 여러 줄로 메모해요. 분류 목록은 카드의 <b>＋ 플랫폼/카테고리/분류 관리</b>나 카테고리 관리에서 직접 추가·이름 바꾸기·삭제할 수 있어요.</li>
-        <li><b>주간</b> — 일간에서 칠하고 적은 내용이 그대로 모이고, 주간에서 고쳐도 일간에 바로 반영돼요. 주간 화면 위쪽 형광펜도 그대로 쓸 수 있어요. 주간 위쪽 <b>할 일</b> 탭은 상태·분류 태그·제목·상세 내역이 붙은 카드로(끌어서 날짜 이동, 맨 아래 <b>작/일/자</b>로 분류 골라 빠른 추가), <b>건강</b> 탭은 식단을 시간·시간대와 내용 카드로, <b>여가시간</b> 탭은 카테고리 배지·제목·상세 내역 카드로 모아 보여 줘요.</li>
+        <li><b>주간</b> — 일간에서 칠하고 적은 내용이 그대로 모이고, 주간에서 고쳐도 일간에 바로 반영돼요. 주간 화면 위쪽 형광펜도 그대로 쓸 수 있어요(터치는 0.18초 꾹, 오른쪽 끝 <b>↺ 되돌리기</b>). 주간 위쪽 <b>할 일</b> 탭은 상태·분류 태그·제목·상세 내역이 붙은 카드로(끌어서 날짜 이동, 맨 아래 <b>작/일/자</b>로 분류 골라 빠른 추가), <b>건강</b> 탭은 식단을 시간·시간대와 내용 카드로, <b>여가시간</b> 탭은 카테고리 배지·제목·상세 내역 카드로 모아 보여 줘요.</li>
         <li><b>장부</b> — 날짜·분류·시간·내용·금액·수입/지출을 적고 상세 내역을 여러 줄로 남겨요. 총 지출·총 수입·잔액과 <b>분류별 모아보기</b>가 자동으로 정리되고, 분류를 누르면 그 내역만 필터링됩니다. 일간 장부 열과 주간 장부 탭은 한 건을 <b>1줄 분류·수입/지출 · 2줄 시간·내역·금액 · 3줄 상세 내역</b> 카드로 보여 줘요. 위의 <b>표 | 달력</b>으로 보기를 바꾸면 한 달 지출(−)과 수입(+)을 달력 한 장으로 모아 보고, 날짜 숫자 오른쪽 위에 그날 하루 총액(−지출, +수입)이 알약으로 붙고, 칸 안에 그날 내역이 <b>분류 · 내역 · 금액</b>으로 전부 나와요(내역이 많으면 칸이 자동으로 높아짐). 날짜 칸을 누르면 그날 일간으로 넘어가요.</li>
         <li><b>콘텐츠</b> — 이모티콘·스티커·속지처럼 만든 것마다 플랫폼과 진행 상태를 붙여 카드로 모아요. 등록할 때 <b>제출일</b>과 <b>출시일</b>을 따로 적고(둘 중 하나만 적어도 저장돼요), 카드에는 <b>제출 2026.11.19 · 출시 —</b>처럼 각각 나와요. 위의 <b>카드 | 목록 | 달력</b>으로 보기를 바꿔요(마지막에 고른 보기는 이 기기에 기억돼요). <b>목록</b>은 플랫폼·상태 배지와 이름·메모, 제출일·출시일, 단가·판매 건수, 누적 수익(이번 달)을 한 줄씩 표로 모아 여러 개를 한눈에 훑기 좋고, 줄 끝의 <b>＋</b>(수익 기록)·<b>▾</b>(수익 내역 펼치기)·<b>✎</b>·<b>✕</b>로 카드에서 하던 일을 그대로 해요(좁은 화면은 두 줄로 접혀요). <b>달력</b>에서는 월 달력에서 제출일은 <b>제출</b>, 출시일은 <b>출시</b> 배지로 날짜 칸에 따로 모이고, 날짜 칸의 콘텐츠 배지를 누르면 수정, 초록 +금액을 누르면 그 수익 내역이 열려요. 카드의 <b>＋ 수익 기록</b>으로 판매·정산 내역(날짜·건수·금액·메모)을 여러 건 쌓으면 <b>누적 수익</b>과 <b>총 판매 건수</b>가 바로 다시 계산되고, 위의 <b>총 누적 수익·이번 달 수익</b>과 플랫폼별 수익도 함께 따라가는데, <b>플랫폼별 수익</b>은 판매·출시 중인 콘텐츠에 이미 수익이 난 콘텐츠(판매중지 등)까지 함께 세요(기획·제작중·심사중처럼 팔지도 않고 수익도 없는 것은 개수에서 뺌). 수익 줄을 누르면 수정, ✕로 삭제됩니다. 플랫폼과 상태 목록은 옆의 <b>🏷️ 분류 관리</b>에서 직접 추가·삭제하고 ⋮⋮로 순서를 바꿔요.</li>
         <li><b>일간 열</b> — <b>건강</b>은 위에서부터 몸무게 → 오늘의 한 줄 → 식단(시간·시간대·내용, 여러 줄 가능)을 적고, 아래 트래커 한 칸에 물·약·에너지·장건강(안감·정상·딱딱함·설사·혈변 중 하나, 누르면 선택·다시 누르면 해제)·기분(5단계)을 모아 둡니다. <b>작업·자기개발·일정·여가 시간</b>은 분류·상세 내역이 붙은 카드로 적어요(작업·자기개발·일정은 앞의 실행 여부 버튼으로 완료 상태도 남겨요). <b>장부</b>는 맨 위에 오늘 지출·오늘 수입과 이번 달 지출·수입 합계를 두고, 그 아래에서 수입/지출을 골라 시간·분류·내용·금액·상세 내역을 적어요. 기분 이모지는 월간 달력에도 표시됩니다.</li>
@@ -2879,6 +2888,11 @@ function slotAt(grid, clientX, clientY){
   return row*6+col;
 }
 var stroke=null;
+/* 터치로 꾹 눌러 칠하기 — 손가락이 스치기만 해도 칠해지지 않게 한다
+   mouse·pen: 누르는 즉시 칠하기 / touch: TT_HOLD_MS 동안 제자리에 꾹 눌렀을 때만 칠하기 시작 */
+var touchHold=null;
+var TT_HOLD_MS=180;
+var TT_HOLD_SLOP=8;
 
 function bindGrid(grid){
   if(grid.__b) return;
@@ -2889,21 +2903,58 @@ function bindGrid(grid){
   grid.addEventListener("pointercancel", onUp);
   grid.addEventListener("lostpointercapture", onUp);
   grid.addEventListener("contextmenu", function(e){ e.preventDefault(); });
+  /* 꾹 눌러 칠하기가 시작된 뒤에는 손가락이 밀려도 화면이 스크롤되지 않게 막는다 */
+  grid.addEventListener("touchmove", onTouchMove, {passive:false});
+}
+function cancelHold(){
+  if(touchHold && touchHold.timer) clearTimeout(touchHold.timer);
+  touchHold=null;
+}
+function onTouchMove(e){
+  var grid=e.currentTarget;
+  if(stroke && stroke.grid===grid){ if(e.cancelable) e.preventDefault(); return; }
+  if(touchHold && touchHold.grid===grid){
+    var t=e.touches && e.touches[0];
+    if(t && (Math.abs(t.clientX-touchHold.x)>TT_HOLD_SLOP || Math.abs(t.clientY-touchHold.y)>TT_HOLD_SLOP)) cancelHold();
+  }
+}
+function startStroke(grid, date, pointerId, x, y){
+  getDay(date);
+  pushUndo(date);
+  var idx=slotAt(grid, x, y);
+  stroke={grid:grid, date:date, id:pointerId, anchor:idx, last:idx, val:(tool.type==="erase"?null:tool.id)};
+  grid.classList.add("painting");
+  paintRange(date, idx, idx, stroke.val);
+  updateUndoButtons();
 }
 function onDown(e){
   if(e.pointerType==="mouse" && e.button!==0) return;
   var grid=e.currentTarget;
+  var date=grid.dataset.date;
+  if(e.pointerType==="touch"){
+    cancelHold();
+    getDay(date);
+    var id=e.pointerId, x=e.clientX, y=e.clientY;
+    var hold={grid:grid, date:date, id:id, x:x, y:y, timer:0};
+    hold.timer=setTimeout(function(){
+      if(touchHold!==hold) return;
+      hold.timer=0;
+      touchHold=null;
+      try{ grid.setPointerCapture(id); }catch(err){}
+      startStroke(grid, date, id, x, y);
+    }, TT_HOLD_MS);
+    touchHold=hold;
+    return;
+  }
   e.preventDefault();
   try{ grid.setPointerCapture(e.pointerId); }catch(err){}
-  var date=grid.dataset.date;
-  getDay(date);
-  pushUndo(date);
-  var idx=slotAt(grid, e.clientX, e.clientY);
-  stroke={grid:grid, date:date, id:e.pointerId, anchor:idx, last:idx, val:(tool.type==="erase"?null:tool.id)};
-  grid.classList.add("painting");
-  paintRange(date, idx, idx, stroke.val);
+  startStroke(grid, date, e.pointerId, e.clientX, e.clientY);
 }
 function onMove(e){
+  if(touchHold && e.pointerId===touchHold.id){
+    if(Math.abs(e.clientX-touchHold.x)>TT_HOLD_SLOP || Math.abs(e.clientY-touchHold.y)>TT_HOLD_SLOP) cancelHold();
+    return;
+  }
   if(!stroke || e.pointerId!==stroke.id) return;
   var idx=slotAt(stroke.grid, e.clientX, e.clientY);
   if(idx===stroke.last) return;
@@ -2911,6 +2962,7 @@ function onMove(e){
   stroke.last=idx;
 }
 function onUp(e){
+  if(touchHold && (!e || e.pointerId===touchHold.id)) cancelHold();
   if(!stroke || (e && e.pointerId!==stroke.id)) return;
   try{ stroke.grid.classList.remove("painting"); }catch(err){}
   stroke=null;
@@ -2994,15 +3046,34 @@ function pushUndo(date){
   if(!d) return;
   undoStack.push({date:date, slots:Object.assign({},d.slots)});
   if(undoStack.length>40) undoStack.shift();
+  updateUndoButtons();
 }
-function doUndo(){
-  var u=undoStack.pop();
-  if(!u){ toast("되돌릴 작업이 없어요"); return; }
+/* 되돌릴 이력의 위치 — scope가 날짜면 그날 것, "week"이면 이번 주 것, 없으면 가장 최근 것 */
+function undoIndexFor(scope){
+  var wk=(scope==="week")?weekDates():null;
+  for(var i=undoStack.length-1;i>=0;i--){
+    if(!scope) return i;
+    if(wk){ if(wk.indexOf(undoStack[i].date)>=0) return i; }
+    else if(undoStack[i].date===scope) return i;
+  }
+  return -1;
+}
+function doUndo(scope){
+  var i=undoIndexFor(scope);
+  if(i<0){ toast("되돌릴 작업이 없어요"); updateUndoButtons(); return; }
+  var u=undoStack.splice(i,1)[0];
   getDay(u.date).slots=u.slots;
   renderBlocksFor(u.date);
   refreshSums();
   scheduleSave();
+  updateUndoButtons();
   toast("되돌렸어요");
+}
+function updateUndoButtons(){
+  var b=$("#undoBtn");
+  if(b) b.disabled=(undoIndexFor(curDate)<0);
+  var w=$("#undoBtnWeek");
+  if(w) w.disabled=(undoIndexFor("week")<0);
 }
 
 /* ============================================================
@@ -3040,6 +3111,7 @@ function renderDaily(){
   renderDday();
   refreshSums();
   renderNowLine();
+  updateUndoButtons();
 }
 
 function renderFeedback(){
@@ -3501,6 +3573,7 @@ function renderWeek(){
 
   syncWeekTabs();
   renderWeekTab();
+  updateUndoButtons();
 }
 
 /* ---------- 주간 인덱스 탭 (할 일 · 건강 · 타임테이블 · 장부 · 여가시간) ---------- */
@@ -6195,6 +6268,12 @@ function bindEvents(){
 
   // 팔레트 (일간·주간 공통)
   ["#paletteItems","#paletteItemsWeek"].forEach(bindPalette);
+
+  // 되돌리기 (일간은 그날 칠하기, 주간은 이번 주 칠하기)
+  var undoDaily=$("#undoBtn");
+  if(undoDaily) undoDaily.addEventListener("click", function(){ doUndo(curDate); });
+  var undoWeek=$("#undoBtnWeek");
+  if(undoWeek) undoWeek.addEventListener("click", function(){ doUndo("week"); });
 
   // 합계 모드
   $("#modeSeg").addEventListener("click", function(e){
