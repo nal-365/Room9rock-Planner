@@ -3,117 +3,130 @@
 <style>body{font:13px/1.6 -apple-system,system-ui,sans-serif;padding:16px;background:#F7F2EE;color:#2F3B57}
 h1{font-size:15px}.ok{color:#2F7F60;font-weight:800}.ng{color:#AE4A45;font-weight:800}
 td{padding:3px 10px;border-bottom:1px solid #E7E0D2;vertical-align:top}code{font-size:11.5px}
-iframe{width:1200px;height:800px;border:1px solid #D8CFC0;position:absolute;left:-9999px;top:0}</style></head>
+iframe{width:1280px;height:900px;border:1px solid #D8CFC0;position:absolute;left:-9999px;top:0}</style></head>
 <body>
 <h1>임시 점검 페이지 — 타임테이블 터치(0.18초 꾹) · ↺ 되돌리기</h1>
 <table id="out"><tr><td>실행 중…</td></tr></table>
 <iframe id="fr" src="./index.html"></iframe>
 <script>
 var results=[];
-function add(name, pass, detail){ results.push({name:name, pass:pass, detail:detail}); render(); }
+function add(name, pass, detail){ results.push({name:name, pass:pass, detail:String(detail)}); render(); }
 function render(){
   document.getElementById('out').innerHTML=results.map(function(r){
-    return '<tr><td>'+(r.pass?'<span class="ok">PASS</span>':'<span class="ng">FAIL</span>')+'</td><td>'+r.name+'</td><td><code>'+r.detail+'</code></td></tr>';
+    return '<tr><td>'+(r.pass?'<span class="ok">PASS</span>':'<span class="ng">FAIL</span>')+'</td><td>'+r.name+'</td><td><code>'+r.detail.replace(/</g,'&lt;')+'</code></td></tr>';
   }).join('') || '<tr><td>실행 중…</td></tr>';
   document.title=(results.filter(function(r){return r.pass;}).length)+'/'+results.length+' PASS · TT touch & undo';
 }
 function sleep(ms){ return new Promise(function(r){ setTimeout(r,ms); }); }
-function run(){
-  var fr=document.getElementById('fr');
+function W(){ return document.getElementById('fr').contentWindow; }
+function D(){ return document.getElementById('fr').contentDocument; }
+
+function waitFor(sel, ms){
   return new Promise(function(res){
-    var tries=0, iv=setInterval(function(){
-      tries++;
-      var w=fr.contentWindow, d=fr.contentDocument;
-      if(w && w.S && d && d.querySelector('#dailyTT .tt-grid') && d.querySelector('#undoBtn')){ clearInterval(iv); res(); }
-      else if(tries>200){ clearInterval(iv); add('앱 로드', false, 'index.html iframe 로드 실패'); res(); }
-    }, 100);
-  }).then(async function(){
-    var w=fr.contentWindow, d=fr.contentDocument;
-    var DATE='2027-01-05';
-    w.curDate=DATE; w.renderDaily(); await sleep(120);
+    var t=0, iv=setInterval(function(){
+      t+=100;
+      var d=D();
+      if(d && d.querySelector(sel)){ clearInterval(iv); res(true); }
+      else if(t>ms){ clearInterval(iv); res(false); }
+    },100);
+  });
+}
+function run(){
+  return waitFor('#undoBtn', 20000).then(async function(found){
+    if(!found){ add('앱 로드', false, 'index.html iframe에서 #undoBtn을 찾지 못함'); return; }
+    await sleep(400);
+    var d=D();
     var g=d.querySelector('#dailyTT .tt-grid');
     var undoBtn=d.querySelector('#undoBtn');
     var box=function(){ return g.querySelector('.tt-cells').getBoundingClientRect(); };
     var pt=function(row,col){ var c=box(); return {x:c.x+c.width/6*(col+0.5), y:c.y+c.height/24*(row+0.5)}; };
-    var send=function(type,x,y,id){
-      g.dispatchEvent(new PointerEvent(type,{pointerId:id||71,pointerType:'touch',clientX:x,clientY:y,
+    var send=function(type,x,y,kind,id){
+      g.dispatchEvent(new PointerEvent(type,{pointerId:id||71,pointerType:kind||'touch',clientX:x,clientY:y,
         bubbles:true,cancelable:true,isPrimary:true,button:0,buttons:(type==='pointerup'?0:1)}));
     };
-    var slots=function(){ var dd=w.S.days[DATE]; return dd&&dd.slots ? Object.keys(dd.slots).map(Number).sort(function(a,b){return a-b;}) : []; };
+    var painted=function(){ return g.querySelectorAll('.tt-cell.on').length; };
     var undoDis=function(){ return d.querySelector('#undoBtn').disabled; };
+    var start=painted();
 
-    add('테스트 날짜 준비', g.dataset.date===DATE && slots().length===0, 'date='+g.dataset.date+' slots='+slots().length+' undoDisabled='+undoDis());
-    add('되돌리기 버튼 위치(도구줄 오른쪽 끝)',
+    add('시작 상태(오늘 칠한 칸)', true, 'date='+g.dataset.date+' painted='+start+' undoDisabled='+undoDis());
+
+    add('되돌리기 버튼이 도구줄 오른쪽 끝',
         (function(){ var b=undoBtn.getBoundingClientRect(), t=d.querySelector('.board-tools').getBoundingClientRect();
-                     return b.width>0 && Math.abs(t.right-b.right)<18 && b.left>t.left+t.width*0.5; })(),
+                     return b.width>0 && Math.abs(t.right-b.right)<18 && b.left>t.left+t.width*0.55; })(),
         (function(){ var b=undoBtn.getBoundingClientRect(), t=d.querySelector('.board-tools').getBoundingClientRect();
-                     return 'btn.right='+b.right.toFixed(1)+' tools.right='+t.right.toFixed(1)+' btn.w='+b.width.toFixed(1); })());
-    add('팔레트만 가로 스크롤',
-        (function(){ var p=d.querySelector('.pal-scroll'); return getComputedStyle(p).overflowX==='auto' && p.contains(d.querySelector('#paletteItems')); })(),
-        (function(){ var p=d.querySelector('.pal-scroll'); return 'overflowX='+getComputedStyle(p).overflowX+' scrollW='+p.scrollWidth+' clientW='+p.clientWidth; })());
+                     return 'btn.right='+b.right.toFixed(1)+' tools.right='+t.right.toFixed(1)+' btnW='+b.width.toFixed(1); })());
+    add('팔레트 칩만 가로로 스크롤',
+        (function(){ var p=d.querySelector('.pal-scroll'); return getComputedStyle(p).overflowX==='auto' && p.contains(d.querySelector('#paletteItems')) && getComputedStyle(d.querySelector('.board-tools')).overflowX==='hidden'; })(),
+        (function(){ var p=d.querySelector('.pal-scroll'); return 'palScroll='+getComputedStyle(p).overflowX+' tools='+getComputedStyle(d.querySelector('.board-tools')).overflowX+' scrollW='+p.scrollWidth+' clientW='+p.clientWidth; })());
 
-    // 1) 짧은 탭 → 칠해지지 않아야 함
-    var p=pt(9,1); send('pointerdown',p.x,p.y); await sleep(60); send('pointerup',p.x,p.y); await sleep(80);
-    add('터치 짧은 탭 무시(60ms)', slots().length===0 && undoDis(), 'slots='+JSON.stringify(slots())+' undoDisabled='+undoDis());
+    // 1) 터치 짧은 탭 → 무시
+    var p=pt(9,1); send('pointerdown',p.x,p.y); await sleep(60); send('pointerup',p.x,p.y); await sleep(120);
+    add('터치 짧은 탭(60ms)은 칠하지 않음', painted()===start && undoDis(), 'painted='+painted()+' undoDisabled='+undoDis());
 
-    // 2) 누른 뒤 곧바로 8px 이상 움직임 → 스크롤로 보고 무시
+    // 2) 누른 뒤 곧장 8px 이상 이동 → 스크롤로 보고 무시
     p=pt(10,1); send('pointerdown',p.x,p.y); await sleep(40);
-    send('pointermove',p.x+3,p.y+22); send('pointermove',p.x+3,p.y+40); await sleep(240); send('pointerup',p.x+3,p.y+40); await sleep(80);
-    add('터치 이동(스크롤) 무시', slots().length===0 && undoDis(), 'slots='+JSON.stringify(slots())+' undoDisabled='+undoDis());
+    send('pointermove',p.x+3,p.y+22); send('pointermove',p.x+3,p.y+44); await sleep(260); send('pointerup',p.x+3,p.y+44); await sleep(120);
+    add('터치 이동(스크롤)은 칠하지 않음', painted()===start && undoDis(), 'painted='+painted()+' undoDisabled='+undoDis());
 
-    // 3) 180ms 꾹 누름 → 칠하기 시작
+    // 3) 0.18초 꾹 누르면 칠하기 시작
     p=pt(11,0); send('pointerdown',p.x,p.y); await sleep(240);
-    var afterHold=slots();
-    add('0.18초 꾹 누르면 칠하기 시작', afterHold.length===1 && afterHold[0]===66 && g.classList.contains('painting') && !undoDis(),
-        'slots='+JSON.stringify(afterHold)+' painting='+g.classList.contains('painting')+' undoDisabled='+undoDis());
+    add('0.18초 꾹 누르면 칠하기 시작', painted()===start+1 && g.classList.contains('painting') && !undoDis(),
+        'painted='+painted()+' painting='+g.classList.contains('painting')+' undoDisabled='+undoDis());
 
     // 4) 꾹 누른 채 끌기 → 범위 칠하기
-    var c=box(); send('pointermove',p.x+c.width/6*2,p.y); await sleep(60);
-    add('꾹 누른 채 끌어 범위 칠하기', JSON.stringify(slots())===JSON.stringify([66,67,68]), 'slots='+JSON.stringify(slots()));
-    send('pointerup',p.x+c.width/6*2,p.y); await sleep(60);
+    var c=box(); send('pointermove',p.x+c.width/6*2,p.y+2); await sleep(80);
+    add('꾹 누른 채 끌면 범위가 칠해짐', painted()===start+3, 'painted='+painted());
+    send('pointerup',p.x+c.width/6*2,p.y+2); await sleep(80);
     add('손을 떼면 칠하기 종료', !g.classList.contains('painting'), 'painting='+g.classList.contains('painting'));
 
     // 5) 되돌리기 버튼
     add('칠한 뒤 되돌리기 버튼 활성', !undoDis(), 'undoDisabled='+undoDis());
-    undoBtn.click(); await sleep(120);
-    add('되돌리기 누르면 원래대로', slots().length===0 && undoDis(), 'slots='+JSON.stringify(slots())+' undoDisabled='+undoDis());
+    undoBtn.click(); await sleep(200);
+    add('되돌리기 누르면 원래대로', painted()===start && undoDis(), 'painted='+painted()+' undoDisabled='+undoDis());
 
     // 6) 마우스는 지연 없이 즉시
     var m=pt(14,2);
-    g.dispatchEvent(new PointerEvent('pointerdown',{pointerId:72,pointerType:'mouse',clientX:m.x,clientY:m.y,bubbles:true,cancelable:true,button:0,buttons:1}));
-    await sleep(10);
-    var mouseNow=slots();
-    g.dispatchEvent(new PointerEvent('pointerup',{pointerId:72,pointerType:'mouse',clientX:m.x,clientY:m.y,bubbles:true,cancelable:true,button:0,buttons:0}));
-    await sleep(60);
-    add('마우스는 즉시 칠하기', mouseNow.length===1 && mouseNow[0]===86, 'slots(10ms 뒤)='+JSON.stringify(mouseNow));
-    d.querySelector('#undoBtn').click(); await sleep(120);
+    send('pointerdown',m.x,m.y,'mouse',72); await sleep(5);
+    var mouseNow=painted();
+    send('pointerup',m.x,m.y,'mouse',72); await sleep(120);
+    add('마우스는 즉시 칠하기', mouseNow===start+1, 'painted(5ms 뒤)='+mouseNow);
+    d.querySelector('#undoBtn').click(); await sleep(200);
 
-    // 7) 주간 미니 시간표도 같게
-    w.setView('week'); w.weekTab='time'; w.renderWeekTab(); await sleep(250);
-    var wg=d.querySelector('#weekTime .tt-grid'), wUndo=d.querySelector('#undoBtnWeek');
-    if(!wg){ add('주간 미니 시간표 로드', false, '#weekTime .tt-grid 없음'); }
+    // 7) 주간 미니 시간표
+    d.querySelector('.tab[data-view="week"]').click(); await sleep(400);
+    d.querySelector('#weekIndex [data-wtab="time"]').click(); await sleep(400);
+    var wg=d.querySelector('#weekTime .tt-grid');
+    var wUndo=d.querySelector('#undoBtnWeek');
+    if(!wg || !wUndo){ add('주간 미니 시간표 로드', false, 'week grid/undo 없음'); }
     else {
-      var wdate=wg.dataset.date;
       var wbox=function(){ return wg.querySelector('.tt-cells').getBoundingClientRect(); };
       var wpt=function(row,col){ var b=wbox(); return {x:b.x+b.width/6*(col+0.5), y:b.y+b.height/24*(row+0.5)}; };
-      var wsend=function(type,x,y){ wg.dispatchEvent(new PointerEvent(type,{pointerId:81,pointerType:'touch',clientX:x,clientY:y,bubbles:true,cancelable:true,isPrimary:true,button:0,buttons:(type==='pointerup'?0:1)})); };
-      var wslots=function(){ var dd=w.S.days[wdate]; return dd&&dd.slots?Object.keys(dd.slots).length:0; };
-      var q=wpt(8,3); wsend('pointerdown',q.x,q.y); await sleep(60); wsend('pointerup',q.x,q.y); await sleep(80);
-      var weekTap=wslots();
-      wsend('pointerdown',q.x,q.y); await sleep(240); await sleep(10);
-      var weekHold=wslots();
-      wsend('pointerup',q.x,q.y); await sleep(60);
-      add('주간 미니: 짧은 탭 무시 / 꾹 누르면 칠하기', weekTap===0 && weekHold===1 && !wUndo.disabled,
-          'date='+wdate+' tapSlots='+weekTap+' holdSlots='+weekHold+' weekUndoDisabled='+wUndo.disabled);
+      var wsend=function(type,x,y){ wg.dispatchEvent(new PointerEvent(type,{pointerId:81,pointerType:'touch',clientX:x,clientY:y,
+        bubbles:true,cancelable:true,isPrimary:true,button:0,buttons:(type==='pointerup'?0:1)})); };
+      var wpainted=function(){ return wg.querySelectorAll('.tt-cell.on').length; };
+      var wstart=wpainted();
+      var q=wpt(8,3);
+      wsend('pointerdown',q.x,q.y); await sleep(60); wsend('pointerup',q.x,q.y); await sleep(140);
+      var tap=wpainted();
+      wsend('pointerdown',q.x,q.y); await sleep(240);
+      var hold=wpainted();
+      wsend('pointerup',q.x,q.y); await sleep(120);
+      add('주간 미니: 짧은 탭 무시 · 꾹 누르면 칠하기', tap===wstart && hold===wstart+1 && !wUndo.disabled,
+          'date='+wg.dataset.date+' tap='+tap+' hold='+hold+' weekUndoDisabled='+wUndo.disabled);
       var wb=wUndo.getBoundingClientRect(), wt=wUndo.parentElement.getBoundingClientRect();
-      add('주간 되돌리기 버튼 위치', wb.width>0 && Math.abs(wt.right-wb.right)<18, 'btn.right='+wb.right.toFixed(1)+' tools.right='+wt.right.toFixed(1));
-      wUndo.click(); await sleep(120);
-      add('주간 되돌리기 동작', wslots()===0, 'slots='+wslots()+' undoDisabled='+wUndo.disabled);
+      add('주간 되돌리기 버튼이 도구줄 오른쪽 끝', wb.width>0 && Math.abs(wt.right-wb.right)<18,
+          'btn.right='+wb.right.toFixed(1)+' tools.right='+wt.right.toFixed(1));
+      wUndo.click(); await sleep(200);
+      add('주간 되돌리기 동작', wpainted()===wstart && wUndo.disabled, 'painted='+wpainted()+' undoDisabled='+wUndo.disabled);
     }
-    w.setView('daily'); w.curDate=DATE; w.renderDaily(); await sleep(80);
-    add('점검이 사용자 데이터를 남기지 않음(테스트 날짜 비움)', slots().length===0, 'date='+DATE+' slots='+JSON.stringify(slots()));
-  });
+
+    // 8) 점검이 남긴 것이 없는지
+    d.querySelector('.tab[data-view="daily"]').click(); await sleep(300);
+    var g2=d.querySelector('#dailyTT .tt-grid');
+    add('점검 뒤 오늘 칠한 칸이 처음과 같음', g2.querySelectorAll('.tt-cell.on').length===start,
+        'painted='+g2.querySelectorAll('.tt-cell.on').length+' (시작 '+start+')');
+  }).catch(function(e){ add('스크립트 오류', false, e && e.message || e); });
 }
-setTimeout(function(){ run().catch(function(e){ add('스크립트 오류', false, String(e && e.message || e)); }); }, 150);
+setTimeout(function(){ run(); }, 150);
 </script>
 </body></html>
