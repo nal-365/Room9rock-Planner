@@ -20,14 +20,15 @@ function render(){
 function sleep(ms){ return new Promise(function(r){ setTimeout(r,ms); }); }
 function run(){
   var fr=document.getElementById('fr');
-  var w=fr.contentWindow, d=fr.contentDocument;
   return new Promise(function(res){
     var tries=0, iv=setInterval(function(){
       tries++;
-      if(w && w.S && d.querySelector('#dailyTT .tt-grid') && d.querySelector('#undoBtn')){ clearInterval(iv); res(); }
-      else if(tries>120){ clearInterval(iv); add('앱 로드', false, 'index.html iframe 로드 실패'); res(); }
+      var w=fr.contentWindow, d=fr.contentDocument;
+      if(w && w.S && d && d.querySelector('#dailyTT .tt-grid') && d.querySelector('#undoBtn')){ clearInterval(iv); res(); }
+      else if(tries>200){ clearInterval(iv); add('앱 로드', false, 'index.html iframe 로드 실패'); res(); }
     }, 100);
   }).then(async function(){
+    var w=fr.contentWindow, d=fr.contentDocument;
     var DATE='2027-01-05';
     w.curDate=DATE; w.renderDaily(); await sleep(120);
     var g=d.querySelector('#dailyTT .tt-grid');
