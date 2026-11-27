@@ -3967,8 +3967,12 @@ function monthItemHTML(t){
   if(!tx) tx=(k==="work")?platName(t.platform):kindName(k,t.category);
   if(!tx) tx=MONTH_ITEM_NAME[k];
   var st=t.st||0;
-  var tip=MONTH_ITEM_NAME[k]+" · "+ST_LABEL[st]+(tx?" — "+tx:"");
-  return '<div class="mi'+(st===1?" done":"")+'" style="--c:'+MONTH_ITEM_COLOR[k]+'" title="'+esc(tip)+'">'
+  /* 여가(leisure) 카드는 일간·주간에서 실행 여부(st)를 쓰지 않아 모두 같은 글자·점 색으로 보인다.
+     예전 여가 기록에 남아 있는 st===1 때문에 월간 목록에서만 흐린 색(done)으로 갈라져 보이지 않게 한다. */
+  var isDone=(st===1 && k!=="leisure");
+  var tip=(k==="leisure") ? (MONTH_ITEM_NAME[k]+(tx?" — "+tx:""))
+                          : (MONTH_ITEM_NAME[k]+" · "+ST_LABEL[st]+(tx?" — "+tx:""));
+  return '<div class="mi'+(isDone?" done":"")+'" style="--c:'+MONTH_ITEM_COLOR[k]+'" title="'+esc(tip)+'">'
        +   '<i aria-hidden="true"></i><span>'+esc(tx)+'</span>'
        + '</div>';
 }
