@@ -3070,6 +3070,9 @@ var stroke=null;
 var pendingHold=null;
 var TT_HOLD_MS=180;
 var TT_PC_HOLD_MS=150;
+/* 일간 타임테이블에서 이미 칠해진 블록을 눌렀을 때는 팝오버(덩어리 ↔ 할 일 연결)가 열려야 하므로
+   홀드 시작을 넉넉히 늦춘다 — 사람의 보통 클릭(약 150~240ms)은 칠하기로 번지지 않는다 */
+var TT_ON_HOLD_MS=280;
 var TT_HOLD_SLOP=8;
 
 function bindGrid(grid){
@@ -3116,6 +3119,10 @@ function onDown(e){
     try{ grid.setPointerCapture(e.pointerId); }catch(err){}
   }
   var id=e.pointerId, x=e.clientX, y=e.clientY;
+  var holdMs=isTouch?TT_HOLD_MS:TT_PC_HOLD_MS;
+  /* 일간 타임테이블의 칠해진 칸(지우개가 아닐 때)은 짧은 클릭 = 팝오버, 꾹 누름 = 덮어칠하기 */
+  var tCell=(e.target && e.target.closest)?e.target.closest(".tt-cell"):null;
+  if(tCell && tCell.classList.contains("on") && tool.type!=="erase" && grid.closest && grid.closest("#dailyTT")) holdMs=TT_ON_HOLD_MS;
   var hold={grid:grid, date:date, id:id, x:x, y:y, timer:0};
   hold.timer=setTimeout(function(){
     if(pendingHold!==hold) return;
@@ -3123,7 +3130,7 @@ function onDown(e){
     pendingHold=null;
     if(isTouch){ try{ grid.setPointerCapture(id); }catch(err){} }
     startStroke(grid, date, id, x, y);
-  }, isTouch?TT_HOLD_MS:TT_PC_HOLD_MS);
+  }, holdMs);
   pendingHold=hold;
 }
 function onMove(e){
@@ -3250,7 +3257,9 @@ function doUndo(){
 var TB_LIST_KINDS=["work","study","home"];
 var TB_KIND_NAME={work:"작업", study:"자기개발", home:"일정"};
 var TB_KIND_COLOR={work:"#FBE49B", study:"#FAC9D6", home:"#FBC79C"};
-var TB_TAP_MS_MOUSE=145, TB_TAP_MS_TOUCH=175, TB_TAP_SLOP=6;
+/* 짧은 탭 기준 — 일간 칠해진 칸의 홀드 시작(TT_ON_HOLD_MS=280ms)보다 짧아야
+   일반적인 사람의 클릭(약 150~240ms)이 칠하기가 아니라 팝오버로 간다 */
+var TB_TAP_MS_MOUSE=260, TB_TAP_MS_TOUCH=260, TB_TAP_SLOP=6;
 var tbPop=null;
 var tbResizeTimer=null;
 
@@ -3552,8 +3561,8 @@ function tbClose(){
   tbPop=null;
   renderBlocksFor(date);   /* 열어 둔 테두리·칸 툴팁을 원래대로 되돌린다 */
 }
-/* 짧은 탭 감지 — 앱의 꾹 눌러 칠하기(터치 0.18초·PC 0.15초)보다 살짝 짧은 기준이라
-   탭과 칠하기가 서로 겹치지 않는다. 칠해진 칸에서만 팝오버가 열린다. */
+/* 짧은 탭 감지 — 칠해진 칸에서만 팝오버가 열린다.
+   일간 칠해진 칸은 홀드 시작이 TT_ON_HOLD_MS(0.28초)라, 보통 클릭(0.15~0.24초)은 탭으로 잡힌다. */
 function bindTbTap(){
   var wrap=$("#dailyTT");
   if(!wrap || wrap.__tbtap) return;
@@ -3574,6 +3583,7 @@ function bindTbTap(){
     var grid=down.grid;
     down=null;
     if(dt>limit || moved) return;
+    if(tool.type==="erase") return;   /* 지우개로 칠해진 칸을 눌러도 팝오버는 열지 않는다 */
     if(!cell || !cell.classList.contains("on")) return;
     var i=parseInt(cell.getAttribute("data-i"),10);
     if(!isFinite(i)) return;
