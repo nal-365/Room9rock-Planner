@@ -3967,9 +3967,10 @@ function monthItemHTML(t){
   if(!tx) tx=(k==="work")?platName(t.platform):kindName(k,t.category);
   if(!tx) tx=MONTH_ITEM_NAME[k];
   var st=t.st||0;
-  /* 할일·자기개발 탭: 한 일(st===1)은 진하게, 안 한 일(미완료·일부·못함·미룸)은 흐리게(dim).
+  /* 할일·자기개발 탭: 한 일(st===1 완료)과 일부 완료(st===2 △)는 진하게,
+     안 한 일(미완료·못함·미룸 = st 0·3·4)만 흐리게(dim).
      여가(leisure) 카드는 일간·주간에서 실행 여부(st)를 쓰지 않아 모두 같은 진한 글자·점 색으로 보인다. */
-  var isDim=(st!==1 && k!=="leisure");
+  var isDim=(st!==1 && st!==2 && k!=="leisure");
   var tip=(k==="leisure") ? (MONTH_ITEM_NAME[k]+(tx?" — "+tx:""))
                           : (MONTH_ITEM_NAME[k]+" · "+ST_LABEL[st]+(tx?" — "+tx:""));
   return '<div class="mi'+(isDim?" dim":"")+'" style="--c:'+MONTH_ITEM_COLOR[k]+'" title="'+esc(tip)+'">'
