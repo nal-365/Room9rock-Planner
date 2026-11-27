@@ -3917,7 +3917,9 @@ function renderMonth(){
     cell+='<div class="mcell-head"><span class="dn">'+d+'</span>'
         + (sm.mood?'<span class="mo" aria-hidden="true">'+moodEmoji(sm.mood)+'</span>':'<span class="mo none" aria-hidden="true">·</span>')+'</div>';
     /* 할 일 — 일정(home)과 작업(work·목록 미지정)을 모두 표시한다.
-       순서는 주간과 같게 일정 → 작업, 같은 무리 안에서는 미완료 → 완료.
+       순서는 주간과 같게 일정 → 작업.
+       일정은 일간·주간에서 배치한 순서 그대로 두어 가장 위 항목이 보이게 하고,
+       작업은 미완료 → 완료로 정렬한다.
        칸 안 배치는 날짜 줄 → 일정 → 작업 → 시간 총합·컬러바 → 장부 순이다. */
     var mHome=[], mWork=[];
     sm.tasks.forEach(function(t){
@@ -3927,7 +3929,7 @@ function renderMonth(){
     });
     var pendFirst=function(a){ return a.filter(function(t){ return t.st!==1; }).concat(a.filter(function(t){ return t.st===1; })); };
     var mgroups=[
-      {label:"일정", kind:"home", color:"#EFA96A", tcolor:"#B4703A", list:pendFirst(mHome)},
+      {label:"일정", kind:"home", color:"#EFA96A", tcolor:"#B4703A", list:mHome},
       {label:"작업", kind:"work", color:"#EBCB5A", tcolor:"#8E7415", list:pendFirst(mWork)}
     ].filter(function(g){ return g.list.length; });
     if(mgroups.length){
