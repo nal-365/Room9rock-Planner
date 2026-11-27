@@ -3996,8 +3996,12 @@ function renderMonth(){
     var sm=daySummary(date);
     var cls="mcell"+(wd===0?" sun":wd===6?" sat":"")+(date===today?" today":"");
     var cell='<div class="'+cls+'" data-date="'+date+'" role="gridcell" tabindex="0" aria-label="'+monthLabelText(curMon)+" "+d+'일 일간 열기">';
-    cell+='<div class="mcell-head"><span class="dn">'+d+'</span>'
-        + (sm.mood?'<span class="mo" aria-hidden="true">'+moodEmoji(sm.mood)+'</span>':'<span class="mo none" aria-hidden="true">·</span>')+'</div>';
+    /* 날짜만 — 기분 이모지는 전체 탭에서만 보여 준다. */
+    cell+='<div class="mcell-head"><span class="dn">'+d+'</span>';
+    if(mtab==="all"){
+      cell+=(sm.mood?'<span class="mo" aria-hidden="true">'+moodEmoji(sm.mood)+'</span>':'<span class="mo none" aria-hidden="true">·</span>');
+    }
+    cell+='</div>';
     /* 할 일 — 일정(home)과 작업(work·목록 미지정)을 모두 표시한다.
        순서는 주간과 같게 일정 → 작업.
        일정은 일간·주간에서 배치한 순서 그대로 두어 가장 위 항목이 보이게 하고,
@@ -4012,7 +4016,8 @@ function renderMonth(){
     var pendFirst=function(a){ return a.filter(function(t){ return t.st!==1; }).concat(a.filter(function(t){ return t.st===1; })); };
     if(mtab!=="all"){
       /* 할일·자기개발·여가 탭 — 그 분류의 항목을 줄임 없이 전부 펼쳐 보여 준다.
-         순서는 전체와 같게 일정 → 작업, 각 묶음 안은 미완료 → 완료. */
+         순서는 주간 보드와 같게 미완료→완료 재정렬 없이 일간·주간에서 배치한 입력 순서 그대로.
+         할일 탭은 일정 → 작업, 각 묶음 안은 입력 순서. */
       var keep=sm.tasks.filter(function(t){
         var k=monthTaskKind(t);
         if(mtab==="tasks") return (k==="home"||k==="work");
@@ -4020,9 +4025,9 @@ function renderMonth(){
       });
       if(keep.length){
         var groups=(mtab==="tasks")
-          ? [ pendFirst(keep.filter(function(t){ return monthTaskKind(t)==="home"; })),
-              pendFirst(keep.filter(function(t){ return monthTaskKind(t)!=="home"; })) ]
-          : [ pendFirst(keep) ];
+          ? [ keep.filter(function(t){ return monthTaskKind(t)==="home"; }),
+              keep.filter(function(t){ return monthTaskKind(t)!=="home"; }) ]
+          : [ keep ];
         cell+='<div class="mi-list">';
         groups.forEach(function(g){ g.forEach(function(t){ cell+=monthItemHTML(t); }); });
         cell+='</div>';
@@ -4054,33 +4059,36 @@ function renderMonth(){
         });
       }
     }
-    /* 아래쪽 고정 영역 — 시간 알약 → 컬러바 → 금액을 늘 같은 자리에 둔다.
-       값이 없는 날도 같은 높이를 비워 두어, 한 주의 모든 칸에서 세 줄이 같은 가로선에 놓인다. */
-    cell+='<div class="mcell-foot">';
-    cell+='<span class="mcell-time">'
-        + (sm.total ? '<span class="tdb" title="집중 '+hmText(sm.focus)+'">'+hmText(sm.total)+'</span>' : '')
-        + '</span>';
-    var keys=Object.keys(sm.by).filter(function(c){ return sm.by[c]>0 && cat(c); })
-      .sort(function(a,b){ return sm.by[b]-sm.by[a]; });
-    cell+='<span class="mcell-bar">';
-    if(keys.length){
-      var shownBar=keys.slice(0,4), rest=0;
-      keys.slice(4).forEach(function(c){ rest+=sm.by[c]; });
-      cell+='<span class="mbar" aria-hidden="true">';
-      shownBar.forEach(function(c){ cell+='<i style="flex:'+sm.by[c]+';--c:'+catColor(c)+'"></i>'; });
-      if(rest) cell+='<i style="flex:'+rest+';--c:#DFD8CA"></i>';
+    /* 아래쪽 고정 영역 — 전체 탭에서만. 시간 알약 → 컬러바 → 금액을 늘 같은 자리에 둔다.
+       값이 없는 날도 같은 높이를 비워 두어, 한 주의 모든 칸에서 세 줄이 같은 가로선에 놓인다.
+       할일·자기개발·여가 탭은 날짜와 항목 목록만 두고 이 영역을 만들지 않는다. */
+    if(mtab==="all"){
+      cell+='<div class="mcell-foot">';
+      cell+='<span class="mcell-time">'
+          + (sm.total ? '<span class="tdb" title="집중 '+hmText(sm.focus)+'">'+hmText(sm.total)+'</span>' : '')
+          + '</span>';
+      var keys=Object.keys(sm.by).filter(function(c){ return sm.by[c]>0 && cat(c); })
+        .sort(function(a,b){ return sm.by[b]-sm.by[a]; });
+      cell+='<span class="mcell-bar">';
+      if(keys.length){
+        var shownBar=keys.slice(0,4), rest=0;
+        keys.slice(4).forEach(function(c){ rest+=sm.by[c]; });
+        cell+='<span class="mbar" aria-hidden="true">';
+        shownBar.forEach(function(c){ cell+='<i style="flex:'+sm.by[c]+';--c:'+catColor(c)+'"></i>'; });
+        if(rest) cell+='<i style="flex:'+rest+';--c:#DFD8CA"></i>';
+        cell+='</span>';
+      }
       cell+='</span>';
+      cell+='<span class="mcell-amt">';
+      if(sm.spend>0){
+        var wtxt=fmtWon(sm.spend);
+        /* 좁은 화면에서도 전체 금액이 잘리지 않도록 글자 수에 따라 조금씩 줄여 표시한다 */
+        var wcls=(wtxt.length>=10)?" tighter":((wtxt.length>=8)?" tight":"");
+        cell+='<span class="mone'+wcls+'" title="지출 '+wtxt+'" aria-label="지출 '+wtxt+'">'+wtxt+'</span>';
+      }
+      cell+='</span>';
+      cell+='</div>';
     }
-    cell+='</span>';
-    cell+='<span class="mcell-amt">';
-    if(sm.spend>0){
-      var wtxt=fmtWon(sm.spend);
-      /* 좁은 화면에서도 전체 금액이 잘리지 않도록 글자 수에 따라 조금씩 줄여 표시한다 */
-      var wcls=(wtxt.length>=10)?" tighter":((wtxt.length>=8)?" tight":"");
-      cell+='<span class="mone'+wcls+'" title="지출 '+wtxt+'" aria-label="지출 '+wtxt+'">'+wtxt+'</span>';
-    }
-    cell+='</span>';
-    cell+='</div>';
     cell+='</div>';
     html+=cell;
   }
