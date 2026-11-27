@@ -449,6 +449,9 @@ html.ddnd-on,html.ddnd-on body{-webkit-user-select:none;user-select:none;cursor:
 .tp-st.s2{border-style:solid;border-color:#F0D49A;background:#FDF5E4;color:#A97315}
 .tp-st.s3{border-style:solid;border-color:#E7B7B3;background:#FBEDEC;color:#AE4A45}
 .tp-st.s4{border-style:solid;border-color:#BCC8E4;background:#EEF2FA;color:#4E608F}
+/* 여가 카드는 실행 여부 칸이 없으므로 상태 네모 자리에 작은 점만 둔다(제목 왼쪽 정렬 유지) */
+.tp-st.none{border:0;background:transparent}
+.tp-st.none i{display:block;width:5px;height:5px;border-radius:50%;background:#5FB3A5}
 .tp-tx{min-width:0}
 .tp-t{display:block;font-size:11px;font-weight:700;letter-spacing:-.15px;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.35}
 .tp-m{display:block;font-size:9px;color:#A1968A;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.35;letter-spacing:-.1px}
@@ -3253,10 +3256,12 @@ function doUndo(){
    · from·to = 자정부터의 분(예: 14:30 → 870, 15:50 → 950), to는 끝(그 분은 포함하지 않음)
    · taskId가 있으면 오늘 할 일 카드 연결, 없으면 한 줄 메모만 있는 기록
    · 칠한 같은 색 덩어리를 짧게 탭하면 팝오버가 열리고, 연결된 덩어리 위에는
-     얇은 한 줄 라벨이 붙는다(인쇄에서는 라벨을 숨긴다). */
-var TB_LIST_KINDS=["work","study","home"];
-var TB_KIND_NAME={work:"작업", study:"자기개발", home:"일정"};
-var TB_KIND_COLOR={work:"#FBE49B", study:"#FAC9D6", home:"#FBC79C"};
+     얇은 한 줄 라벨이 붙는다(인쇄에서는 라벨을 숨긴다).
+   · 팝오버 목록은 작업·자기개발·일정에 더해 여가(leisure) 카드까지 보여 준다.
+     여가 카드는 실행 여부(상태)가 없어 상태 네모 자리에 작은 점만 둔다. */
+var TB_LIST_KINDS=["work","study","home","leisure"];
+var TB_KIND_NAME={work:"작업", study:"자기개발", home:"일정", leisure:"여가"};
+var TB_KIND_COLOR={work:"#FBE49B", study:"#FAC9D6", home:"#FBC79C", leisure:"#CFF0EA"};
 /* 짧은 탭 기준 — 일간 칠해진 칸의 홀드 시작(TT_ON_HOLD_MS=280ms)보다 짧아야
    일반적인 사람의 클릭(약 150~240ms)이 칠하기가 아니라 팝오버로 간다 */
 var TB_TAP_MS_MOUSE=260, TB_TAP_MS_TOUCH=260, TB_TAP_SLOP=6;
@@ -3417,15 +3422,18 @@ function tbRowsHTML(date, sel){
         +   '<i></i>'+TB_KIND_NAME[kind]+'<span>'+arr.length+'</span></div>';
     arr.forEach(function(t){
       var st=t.st||0;
+      /* 여가 카드는 상태 칸이 없으므로 빈 점을 두어 제목 줄을 위 카드들과 맞춘다 */
+      var stCell=(kind==="leisure") ? '<span class="tp-st none"><i></i></span>'
+                 : '<span class="tp-st s'+st+'">'+(ST_SYM[st]||"")+'</span>';
       html+='<button type="button" class="tp-row'+(sel===t.id?" on":"")+'" data-id="'+esc(t.id)+'">'
-          +   '<span class="tp-st s'+st+'">'+(ST_SYM[st]||"")+'</span>'
+          +   stCell
           +   '<span class="tp-tx"><span class="tp-t">'+esc(t.text||"(제목 없음)")+'</span>'
           +     '<span class="tp-m">'+esc(tbMetaText(t,kind))+'</span></span>'
           +   '<span class="tp-ck">✓</span>'
           + '</button>';
     });
   });
-  if(!html) html='<div class="tp-empty">오늘 작업·자기개발·일정 카드가 아직 없어요.</div>';
+  if(!html) html='<div class="tp-empty">오늘 작업·자기개발·일정·여가 카드가 아직 없어요.</div>';
   return html;
 }
 function tbBuild(date, range, link){
