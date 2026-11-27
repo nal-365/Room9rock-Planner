@@ -3917,15 +3917,19 @@ function daySummary(date){
 function monthTotals(key){
   var p=String(key).split("-").map(Number);
   var dim=new Date(p[0], p[1], 0, 12).getDate();
-  var total=0, focus=0, daysWith=0, spend=0, income=0, by={};
+  var total=0, focus=0, daysWith=0, focusDays=0, spend=0, income=0, by={};
   for(var d=1;d<=dim;d++){
     var sm=daySummary(key+"-"+pad(d));
     total+=sm.total; focus+=sm.focus; spend+=sm.spend; income+=sm.income;
     if(sm.total>0) daysWith++;
+    if(sm.focus>0) focusDays++;
     Object.keys(sm.by).forEach(function(c){ by[c]=(by[c]||0)+sm.by[c]; });
   }
-  return {days:dim, total:total, focus:focus, daysWith:daysWith, spend:spend, income:income, by:by,
-          avg: daysWith? Math.round(total/daysWith):0};
+  /* 하루 평균은 집중 시간(잠·휴식·이동 등 '집중 제외' 형광펜을 뺀 시간) 기준 —
+     집중이 기록된 날로만 나눈다. 기록한 날 수(daysWith)는 예전대로 전체 시간 기준. */
+  return {days:dim, total:total, focus:focus, daysWith:daysWith, focusDays:focusDays,
+          spend:spend, income:income, by:by,
+          focusAvg: focusDays? Math.round(focus/focusDays):0};
 }
 
 /* ---------- 월간 인덱스 탭 (전체 · 할일 · 자기개발 · 여가) ----------
@@ -4113,16 +4117,21 @@ var MONTH_TAB_TONE={
   study:  {t:"#FCE9F0", ti:"#9C4B63", bar:{study:"#EC8FA8"}},
   leisure:{t:"#CFF0EA", ti:"#2F7A6E", bar:{leisure:"#5FB3A5"}}
 };
-/* 탭별 '집중 시간'에 합산할 형광펜 카테고리 — 기본 DEF_CATS ID + 이름 키워드(사용자가 이름을 바꿔도 따라가게)
-   할일 탭은 아래 MONTH_TASKS_TIME_SPLIT에서 '작업'과 '집중 업무'를 따로 센다. */
+/* 탭별 '집중 시간'에 합산할 형광펜 카테고리 — 기본 DEF_CATS ID + 이름 키워드
+   실제 이름(작업 · 자기개발 · 일정 · 운동 · 근무 · 잠 · 여가 · 이동)을 먼저 보고,
+   그 이름이 하나도 없을 때만 기본 ID로 넘어간다(catIdsFor).
+   여가는 기본 ID를 아예 두지 않는다 — 기본 '휴식·이동'을 '이동'으로 바꿔 쓰고 있어서
+   ID(rest)로 잡으면 여가 통계에 이동 시간이 섞인다. 이름이 '여가'인 형광펜만 센다.
+   할일 탭은 아래 MONTH_TASKS_TIME_SPLIT에서 '작업'과 '일정'을 따로 센다. */
 var MONTH_TAB_TIME_MATCH={
   study:  {ids:["self"],        keys:["자기개발"],       label:"집중 시간 (자기개발)"},
-  leisure:{ids:["rest"],        keys:["휴식","이동"],    label:"집중 시간 (휴식·이동)"}
+  leisure:{ids:[],              keys:["여가"],          label:"집중 시간 (여가)"}
 };
-/* 할일 탭 왼쪽 카드 — 타임테이블 색 '작업'·'집중 업무'를 따로: 각 기록한 날·하루 평균과 그 시간 합계 */
+/* 할일 탭 왼쪽 카드 — 타임테이블 색 '작업'·'일정'을 따로: 각 기록한 날·하루 평균과 그 시간 합계
+   (기본 '집중 업무'(deep)는 쓰지 않는다. 이름이 '작업'인 형광펜만, 없을 때만 기본 work ID) */
 var MONTH_TASKS_TIME_SPLIT=[
-  {label:"작업",      ids:["work"], keys:["작업"]},
-  {label:"집중 업무", ids:["deep"], keys:["집중업무"]}
+  {label:"작업", ids:["work"],  keys:["작업"]},
+  {label:"일정", ids:["event"], keys:["일정"]}
 ];
 var MONTH_TAB_BAR_TITLE={tasks:"할일 분류별 집계 (실행)", study:"자기개발 분류별 집계 (실행)", leisure:"여가 분류별 집계"};
 var MONTH_TAB_EMPTY={
@@ -4133,15 +4142,21 @@ var MONTH_TAB_EMPTY={
 function normCatName(s){ return String(s==null?"":s).replace(/[\s·ㆍ.,\/_\-\(\)]/g,"").toLowerCase(); }
 /* 할 일 카드의 list(home/work/study/leisure) → 월간 인덱스 탭 키 */
 function monthTabOfTask(t){ var k=monthTaskKind(t); return (k==="home"||k==="work")?"tasks":k; }
-/* 형광펜 카테고리 묶음 — 기본 ID + 이름 키워드에 걸리는 카테고리 ID 전부 */
+/* 형광펜 카테고리 묶음 — 이름 키워드에 걸리는 카테고리를 먼저 찾고,
+   정말 하나도 없을 때만 기본 ID로 넘어간다. 둘을 섞지 않는 이유:
+   기본 '휴식·이동'(rest)을 '이동'으로 바꿔 쓴 상태에서 rest를 함께 넣으면
+   여가 통계에 이동 시간이 잡힌다. 이름이 맞으면 이름 쪽만 쓴다. */
 function catIdsFor(ids, keys){
-  var out={};
-  (ids||[]).forEach(function(id){ if(cat(id)) out[id]=1; });
+  var out={}, kk=[];
+  (keys||[]).forEach(function(k){ var n=normCatName(k); if(n) kk.push(n); });
   (S.cats||[]).forEach(function(c){
     var n=normCatName(c.name);
     if(!n) return;
-    for(var i=0;i<(keys||[]).length;i++){ if(n.indexOf(keys[i])>=0){ out[c.id]=1; break; } }
+    for(var i=0;i<kk.length;i++){ if(n.indexOf(kk[i])>=0){ out[c.id]=1; break; } }
   });
+  if(!Object.keys(out).length){
+    (ids||[]).forEach(function(id){ if(cat(id)) out[id]=1; });
+  }
   return Object.keys(out);
 }
 /* 카테고리 묶음이 1분 이상 기록된 날 수 · 합계 · 그 날들로만 나눈 하루 평균(분) */
@@ -4185,8 +4200,8 @@ function monthTabCounts(tab){
   list.sort(function(a,b){ return b.n-a.n || (a.nm<b.nm?-1:1); });
   return list;
 }
-/* 탭 기준 시간 — 그 탭의 형광펜 카테고리(자기개발 / 휴식·이동)가 1분 이상 기록된 날 수와,
-   그 날들로만 나눈 하루 평균. 전체 탭(mt.daysWith · mt.avg)과 같은 방식이라
+/* 탭 기준 시간 — 그 탭의 형광펜 카테고리(자기개발 / 여가)가 1분 이상 기록된 날 수와,
+   그 날들로만 나눈 하루 평균. 전체 탭(mt.daysWith · mt.focusAvg)과 같은 방식이라
    시간이 비어 있는 날 때문에 평균이 끌어내려지지 않는다. (할일 탭은 MONTH_TASKS_TIME_SPLIT 사용) */
 function monthTabFocus(tab){
   var spec=MONTH_TAB_TIME_MATCH[tab];
@@ -4211,7 +4226,7 @@ function renderMonthStats(mt){
            +   '<span>'+esc(label)+'</span><b>'+val+'</b></div>';
     };
     if(isTasks){
-      /* 할일 탭 — 작업과 집중 업무를 따로: 각 기록한 날·하루 평균과 그 시간 합계 */
+      /* 할일 탭 — 작업과 일정을 따로: 각 기록한 날·하루 평균과 그 시간 합계 */
       cards.innerHTML = MONTH_TASKS_TIME_SPLIT.map(function(s){
         var sp=catSpan(catIdsFor(s.ids, s.keys));
         return tabCard(s.label+" · 기록한 날 · 평균", sp.days+"일 · "+hmText(sp.avg))
@@ -4243,7 +4258,7 @@ function renderMonthStats(mt){
   cards.innerHTML =
       '<div class="sc"><span>이달의 총 시간</span><b>'+hmText(mt.total)+'</b></div>'
     + '<div class="sc"><span>집중 시간 (잠·휴식 제외)</span><b>'+hmText(mt.focus)+'</b></div>'
-    + '<div class="sc sc-wide"><span>기록한 날 · 하루 평균</span><b>'+mt.daysWith+'일 · '+hmText(mt.avg)+'</b></div>'
+    + '<div class="sc sc-wide"><span>기록한 날 · 하루 평균 (집중)</span><b>'+mt.daysWith+'일 · '+hmText(mt.focusAvg)+'</b></div>'
     + '<div class="sc"><span>이달의 소비 합계</span><b style="color:#A9504A">'+fmtWon(mt.spend)+'</b></div>';
 
   var maxM=0;
