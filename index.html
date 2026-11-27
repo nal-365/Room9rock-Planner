@@ -4008,8 +4008,8 @@ function renderMonth(){
     cell+='</div>';
     /* 할 일 — 일정(home)과 작업(work·목록 미지정)을 모두 표시한다.
        순서는 주간과 같게 일정 → 작업.
-       일정은 일간·주간에서 배치한 순서 그대로 두어 가장 위 항목이 보이게 하고,
-       작업은 미완료 → 완료로 정렬한다.
+       일정·작업 모두 일간·주간에서 배치한 입력 순서 그대로 두어 가장 위 항목이 보이게 하고,
+       완료/전체 개수는 그대로 센다(미완료→완료 재정렬 없음).
        칸 안 배치는 날짜 줄 → 일정 → 작업 → 시간 총합·컬러바 → 장부 순이다. */
     var mHome=[], mWork=[];
     sm.tasks.forEach(function(t){
@@ -4017,7 +4017,6 @@ function renderMonth(){
       if(k==="home") mHome.push(t);
       else if(k==="work") mWork.push(t);
     });
-    var pendFirst=function(a){ return a.filter(function(t){ return t.st!==1; }).concat(a.filter(function(t){ return t.st===1; })); };
     if(mtab!=="all"){
       /* 할일·자기개발·여가 탭 — 그 분류의 항목을 줄임 없이 전부 펼쳐 보여 준다.
          순서는 주간 보드와 같게 미완료→완료 재정렬 없이 일간·주간에서 배치한 입력 순서 그대로.
@@ -4039,7 +4038,7 @@ function renderMonth(){
     } else {
       var mgroups=[
         {label:"일정", kind:"home", color:"#EFA96A", tcolor:"#B4703A", list:mHome},
-        {label:"작업", kind:"work", color:"#EBCB5A", tcolor:"#8E7415", list:pendFirst(mWork)}
+        {label:"작업", kind:"work", color:"#EBCB5A", tcolor:"#8E7415", list:mWork}
       ].filter(function(g){ return g.list.length; });
       if(mgroups.length){
         // 한 줄에 제목 한 개만 보여 준다. 전체·완료 개수는 앞의 1/3 카운트가 이미 보여 준다.
