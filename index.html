@@ -3507,7 +3507,19 @@ function tbOpenAt(grid, min){
   else{
     var comp=tbComponent(slots, idx);
     if(!comp) return;
-    range={from:comp.from, to:comp.to, cat:comp.cat};
+    /* 같은 덩어리 안에 이미 다른 할 일이 연결된 칸이 있으면 그 칸은 건너뛰고,
+       탭한 칸이 속한 이어진 빈 구간만 새 연결 범위로 잡는다(연결끼리 겹치지 않게). */
+    var free=comp.cells.filter(function(i){
+      var m=i*10;
+      for(var k=0;k<arr.length;k++) if(m>=arr[k].from && m<arr[k].to) return false;
+      return true;
+    });
+    var pos=free.indexOf(idx);
+    if(pos<0) return;
+    var a=pos, b=pos;
+    while(a>0 && free[a-1]===free[a]-1) a--;
+    while(b<free.length-1 && free[b+1]===free[b]+1) b++;
+    range={from:free[a]*10, to:(free[b]+1)*10, cat:comp.cat};
   }
   tbClose();
   tbBuild(date, range, link);
