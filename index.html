@@ -581,16 +581,21 @@ html.wdnd-on,html.wdnd-on body{-webkit-user-select:none;user-select:none;cursor:
 .wfoot i{font-style:normal;font-size:8.5px;font-weight:800;opacity:.7;margin:0 2px 0 1px;letter-spacing:0}
 .wfoot.zero b{color:#C6BCAB}
 
-/* ---------- 주간 인덱스 탭 (다이어리 색인 라벨) ---------- */
-.week-index{display:flex;align-items:flex-end;gap:4px;margin:14px 0 0;padding:0 12px;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;scrollbar-width:none}
-.week-index::-webkit-scrollbar{display:none}
-.week-index .wi{flex:0 0 auto;min-width:102px;display:flex;align-items:center;justify-content:center;gap:4px;position:relative;top:1px;margin-bottom:-1px;border:1px solid rgba(120,140,170,.18);border-bottom:0;border-radius:9px 9px 0 0;background:var(--t,#F3EFE6);color:var(--ti,#8A7F6D);font-family:var(--sans);font-size:12px;font-weight:800;letter-spacing:.2px;padding:8px 16px 7px;cursor:pointer;white-space:nowrap;opacity:.55;transition:opacity .15s,top .15s,padding .15s;touch-action:manipulation}
-.week-index .wi i{flex:none;width:6px;height:6px;border-radius:2px;background:currentColor;opacity:.4}
-.week-index .wi:hover{opacity:.85}
-.week-index .wi.on{top:0;opacity:1;background:var(--t);color:var(--ti);padding-bottom:9px;box-shadow:0 -1px 0 rgba(255,255,255,.7) inset, 0 -4px 12px -9px rgba(80,64,44,.55)}
-.week-index .wi.on i{opacity:.8}
-.week-index .wi.on::before{content:"";position:absolute;left:7px;right:7px;top:0;height:2px;border-radius:0 0 2px 2px;background:var(--ti);opacity:.35}
-.week-index .wi:focus-visible{outline:2px solid var(--accent-ring);outline-offset:-2px}
+/* ---------- 주간·월간 인덱스 탭 (다이어리 색인 라벨) ---------- */
+.week-index,.month-index{display:flex;align-items:flex-end;gap:4px;padding:0 12px;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.week-index{margin:14px 0 0}
+/* 월간은 달력 프레임 바로 위에 붙는다(.month-wrap gap 12px를 되돌린다) */
+.month-index{margin:0 0 -12px}
+.week-index::-webkit-scrollbar,.month-index::-webkit-scrollbar{display:none}
+.week-index .wi,.month-index .wi{flex:0 0 auto;min-width:102px;display:flex;align-items:center;justify-content:center;gap:4px;position:relative;top:1px;margin-bottom:-1px;border:1px solid rgba(120,140,170,.18);border-bottom:0;border-radius:9px 9px 0 0;background:var(--t,#F3EFE6);color:var(--ti,#8A7F6D);font-family:var(--sans);font-size:12px;font-weight:800;letter-spacing:.2px;padding:8px 16px 7px;cursor:pointer;white-space:nowrap;opacity:.55;transition:opacity .15s,top .15s,padding .15s;touch-action:manipulation}
+.week-index .wi i,.month-index .wi i{flex:none;width:6px;height:6px;border-radius:2px;background:currentColor;opacity:.4}
+.week-index .wi:hover,.month-index .wi:hover{opacity:.85}
+.week-index .wi.on,.month-index .wi.on{top:0;opacity:1;background:var(--t);color:var(--ti);padding-bottom:9px;box-shadow:0 -1px 0 rgba(255,255,255,.7) inset, 0 -4px 12px -9px rgba(80,64,44,.55)}
+.week-index .wi.on i,.month-index .wi.on i{opacity:.8}
+.week-index .wi.on::before,.month-index .wi.on::before{content:"";position:absolute;left:7px;right:7px;top:0;height:2px;border-radius:0 0 2px 2px;background:var(--ti);opacity:.35}
+.week-index .wi:focus-visible,.month-index .wi:focus-visible{outline:2px solid var(--accent-ring);outline-offset:-2px}
+/* 선택한 월간 탭이 달력 프레임 위를 살짝 덮어 폴더 색인처럼 보이게 */
+.month-index .wi.on{margin-bottom:-3px}
 
 .week-pane[hidden]{display:none}
 .week-pane{padding-top:0}
@@ -717,9 +722,10 @@ html.wdnd-on,html.wdnd-on body{-webkit-user-select:none;user-select:none;cursor:
 .week-pane .lcount{margin-top:auto;border-top:1px dashed var(--line);padding-top:4px;font-size:9px;font-weight:800;color:#B3A897;text-align:right;letter-spacing:.2px}
 @media (max-width:720px){
   .week-index{gap:3px;padding:0 5px;margin-top:9px}
-  .week-index .wi{flex:1 1 0;min-width:0;font-size:10.5px;padding:6px 3px 5px;gap:3px;letter-spacing:0}
-  .week-index .wi.on{padding-bottom:7px}
-  .week-index .wi i{width:5px;height:5px}
+  .month-index{gap:3px;padding:0 8px;margin:0 0 -9px}
+  .week-index .wi,.month-index .wi{flex:1 1 0;min-width:0;font-size:10.5px;padding:6px 3px 5px;gap:3px;letter-spacing:0}
+  .week-index .wi.on,.month-index .wi.on{padding-bottom:7px}
+  .week-index .wi i,.month-index .wi i{width:5px;height:5px}
   .wsum{display:grid;grid-template-columns:1fr;gap:6px}
   .wsum .sc{max-width:none}
   .week-frame{padding:7px;border-radius:12px}
@@ -748,8 +754,8 @@ html.wdnd-on,html.wdnd-on body{-webkit-user-select:none;user-select:none;cursor:
   .whead span{font-size:9px}
 }
 @media (max-width:430px){
-  .week-index .wi{font-size:9.8px;padding:5px 2px 4px}
-  .week-index .wi i{display:none}
+  .week-index .wi,.month-index .wi{font-size:9.8px;padding:5px 2px 4px}
+  .week-index .wi i,.month-index .wi i{display:none}
 }
 
 .wstats{margin-top:14px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:12px}
@@ -781,7 +787,19 @@ html.wdnd-on,html.wdnd-on body{-webkit-user-select:none;user-select:none;cursor:
 .mcells{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));grid-auto-rows:minmax(78px,auto)}
 /* 월간 탭 달력 — 내용이 없어도 칸이 납작해지지 않도록 줄 높이를 넉넉히 두고, 칸 사이는 살짝 띄운다.
    행 높이는 가장 큰 주에 맞춰 모든 주를 균등하게(1fr) 두어 일정 없는 주가 납작해지지 않는다 */
-#mCells{grid-auto-rows:minmax(104px,1fr);gap:6px;background:#EFE9DC;align-items:stretch}
+#mCells{grid-auto-rows:minmax(104px,1fr);gap:6px;background:var(--mf-gap,#EFE9DC);align-items:stretch}
+/* 월간 인덱스 탭별 프레임 톤 — 주간 보드(--wf-*)와 같은 방식으로 변수만 바꾼다 */
+#viewMonth .mgrid-frame{--mf-a:#FAF4E7;--mf-b:#F0E4CB;--mf-sh:rgba(120,100,62,.42);--mf-gap:#EDE3CE;background:linear-gradient(180deg,var(--mf-a),var(--mf-b));box-shadow:0 22px 48px -36px var(--mf-sh),inset 0 1px 0 rgba(255,255,255,.7)}
+#viewMonth[data-mtab="tasks"] .mgrid-frame{--mf-a:#FEF8DE;--mf-b:#FDF0B8;--mf-sh:rgba(122,94,18,.38);--mf-gap:#F2E9C6}
+#viewMonth[data-mtab="study"] .mgrid-frame{--mf-a:#FEF4F7;--mf-b:#FCE9F0;--mf-sh:rgba(124,74,92,.34);--mf-gap:#F3E3E9}
+#viewMonth[data-mtab="leisure"] .mgrid-frame{--mf-a:#E1F8F4;--mf-b:#CFF0EA;--mf-sh:rgba(40,92,84,.34);--mf-gap:#DFEEEC}
+/* 탭별 내용 — 그 분류의 항목을 줄임 없이 전부 펼친 목록 */
+#mCells .mcell .mi-list{display:flex;flex-direction:column;gap:2px;min-width:0;margin-top:1px}
+#mCells .mcell .mi{display:flex;align-items:flex-start;gap:4px;min-width:0;font-size:10.5px;line-height:1.3;color:var(--ink-soft);letter-spacing:-.1px}
+#mCells .mcell .mi>i{flex:none;width:5px;height:5px;border-radius:1.5px;background:var(--c);margin-top:4px}
+#mCells .mcell .mi>span{min-width:0;word-break:keep-all;overflow-wrap:anywhere}
+#mCells .mcell .mi.done>span{color:#9C9284}
+#mCells .mcell .mi.done>i{opacity:.85}
 #mCells .mcell{padding:7px 10px 8px;border:0;min-width:0;max-width:100%;overflow:hidden}
 .mcell{position:relative;display:flex;flex-direction:column;gap:3px;min-width:0;padding:5px 6px 6px;border-right:1px dashed #EDE6D8;border-bottom:1px dashed #EDE6D8;background:#fff;text-align:left;cursor:pointer;transition:background .14s,box-shadow .14s}
 .mcell:nth-child(7n){border-right:0}
@@ -1078,6 +1096,10 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
   .mcell .mtasks .cnt{font-size:8.5px;min-width:0}
   .mcell .mtasks .tdot{width:5px;height:5px}
   .mcell .mtasks .one{display:none}
+  /* 월간 인덱스 탭 목록 — 좁은 칸에서는 글자가 한 글자씩 꺾이므로 점만 남긴다 */
+  #mCells .mcell .mi>span{display:none}
+  #mCells .mcell .mi{gap:0}
+  #mCells .mcell .mi-list{gap:3px}
   .mcell .mone{font-size:8px;padding:0 3px;letter-spacing:-.1px}
   .mcell .mone.tight{font-size:7.2px;padding:0 2px}
   .mcell .mone.tighter{font-size:6.4px;padding:0 1px;letter-spacing:-.2px}
@@ -1364,6 +1386,8 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
   body[data-print="month"] .print-head{flex:none;margin-bottom:0}
   body[data-print="month"] .month-top{gap:2mm;flex:none;align-items:flex-end}
   body[data-print="month"] .mgrid-frame{flex:1 1 auto;min-height:0;display:flex;background:#fff;padding:0;box-shadow:none;border-radius:0}
+  /* 탭 색은 화면용 — 인쇄는 종이에 맞게 흰 바탕 */
+  body[data-print="month"] #viewMonth .mgrid-frame{--mf-a:#fff;--mf-b:#fff;--mf-gap:#fff;background:#fff;box-shadow:none}
   body[data-print="month"] .mgrid{flex:1;display:flex;flex-direction:column;min-height:0;box-shadow:none;border:1px solid #DDE4EC;border-radius:0}
   body[data-print="month"] .mdow{flex:none;background:#F7F4EC}
   body[data-print="month"] #viewMonth .mdow{column-gap:0}
@@ -1385,6 +1409,9 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
   body[data-print="month"] .mcell .mtasks .one{display:block}
   body[data-print="month"] .mcell .mtasks .tdot{width:1mm;height:1mm}
   body[data-print="month"] .mcell .mtasks.second{display:flex;padding-left:0}
+  body[data-print="month"] #mCells .mcell .mi-list{gap:.5mm;margin-top:0}
+  body[data-print="month"] #mCells .mcell .mi{font-size:5.2pt;line-height:1.25;gap:.6mm}
+  body[data-print="month"] #mCells .mcell .mi>i{width:1mm;height:1mm;border-radius:.3mm;margin-top:.8mm}
   body[data-print="month"] .mcell .mone{font-size:4.8pt;padding:0 1mm;margin-top:auto;background:#EAF5DC !important}
   body[data-print="month"] .mstats{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:2mm}
   body[data-print="month"] .stat-cards{gap:1.5mm}
@@ -1990,6 +2017,13 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
         </div>
       </div>
 
+      <div class="month-index no-print" id="monthIndex" role="tablist" aria-label="월간 모아보기">
+        <button class="wi" type="button" role="tab" data-mtab="all" aria-selected="true" style="--t:#F2E6CF;--ti:#806A47"><i></i>전체</button>
+        <button class="wi" type="button" role="tab" data-mtab="tasks" aria-selected="false" tabindex="-1" style="--t:#FDF0B8;--ti:#8A6A12"><i></i>할일</button>
+        <button class="wi" type="button" role="tab" data-mtab="study" aria-selected="false" tabindex="-1" style="--t:#FCE9F0;--ti:#9C4B63"><i></i>자기개발</button>
+        <button class="wi" type="button" role="tab" data-mtab="leisure" aria-selected="false" tabindex="-1" style="--t:#CFF0EA;--ti:#2F7A6E"><i></i>여가</button>
+      </div>
+
       <div class="mgrid-frame">
         <div class="mgrid">
           <div class="mdow" aria-hidden="true">
@@ -2409,7 +2443,7 @@ function blankState(){
     mealSlots: MEAL_SLOTS.slice(),
     contentPlatforms: DEF_CONTENT_PLATFORMS.map(function(d,i){ return {id:"cp"+(i+1), name:d.name, color:d.color}; }),
     contentStatuses: DEF_CONTENT_STATUSES.map(function(d,i){ return {id:"cs"+(i+1), name:d.name, color:d.color}; }),
-    settings:{ names:{}, mode:"all", dday:{label:"",date:""}, helpSeen:false },
+    settings:{ names:{}, mode:"all", dday:{label:"",date:""}, helpSeen:false, monthTab:"all" },
     ledger:{entries:[]},
     contents:[],
     savedAt:null
@@ -2654,6 +2688,7 @@ function normalize(o){
   }
   var st=o.settings||{};
   s.settings.mode = st.mode==="focus" ? "focus" : "all";
+  s.settings.monthTab = (st.monthTab==="tasks"||st.monthTab==="study"||st.monthTab==="leisure") ? st.monthTab : "all";
   s.settings.dday = {label:(st.dday&&st.dday.label)||"", date:(st.dday&&st.dday.date)||""};
   s.settings.helpSeen = !!st.helpSeen;
   s.ledger={entries:[]};
@@ -3893,6 +3928,51 @@ function monthTotals(key){
           avg: daysWith? Math.round(total/daysWith):0};
 }
 
+/* ---------- 월간 인덱스 탭 (전체 · 할일 · 자기개발 · 여가) ----------
+   선택한 탭은 S.settings.monthTab 에 저장되어 새로고침 후에도 유지된다. */
+var MONTH_TABS=["all","tasks","study","leisure"];
+var MONTH_ITEM_COLOR={home:"#EC9E58", work:"#E3C24E", study:"#EC8FA8", leisure:"#5FB3A5"};
+var MONTH_ITEM_NAME={home:"일정", work:"작업", study:"자기개발", leisure:"여가"};
+function monthTaskKind(t){ var k=t.list; return (k==="home"||k==="study"||k==="leisure")?k:"work"; }
+function monthTabKey(){
+  var k=(S.settings&&S.settings.monthTab)||"all";
+  return MONTH_TABS.indexOf(k)<0 ? "all" : k;
+}
+/* 인쇄는 탭과 상관없이 달 전체 기록을 찍는다(종이에서는 탭을 고를 수 없으므로 예전과 같은 결과). */
+var printMonthAll=false;
+function syncMonthTabs(){
+  var k=monthTabKey();
+  $$("#monthIndex .wi").forEach(function(b){
+    var on=(b.dataset.mtab===k);
+    b.classList.toggle("on", on);
+    b.setAttribute("aria-selected", on?"true":"false");
+    b.tabIndex = on?0:-1;
+  });
+  var vm=$("#viewMonth");
+  if(vm) vm.setAttribute("data-mtab", k);
+}
+function setMonthTab(k){
+  if(MONTH_TABS.indexOf(k)<0) k="all";
+  var same=(monthTabKey()===k);
+  if(!S.settings) S.settings={};
+  S.settings.monthTab=k;
+  syncMonthTabs();
+  if(!same) renderMonth();
+  scheduleSave();
+}
+/* 탭별 목록 한 줄 — 분류 점 + 제목(줄임 없음), 완료는 흐린 글자 */
+function monthItemHTML(t){
+  var k=monthTaskKind(t);
+  var tx=String(t.text==null?"":t.text).trim();
+  if(!tx) tx=(k==="work")?platName(t.platform):kindName(k,t.category);
+  if(!tx) tx=MONTH_ITEM_NAME[k];
+  var st=t.st||0;
+  var tip=MONTH_ITEM_NAME[k]+" · "+ST_LABEL[st]+(tx?" — "+tx:"");
+  return '<div class="mi'+(st===1?" done":"")+'" style="--c:'+MONTH_ITEM_COLOR[k]+'" title="'+esc(tip)+'">'
+       +   '<i aria-hidden="true"></i><span>'+esc(tx)+'</span>'
+       + '</div>';
+}
+
 function renderMonth(){
   var box=$("#mCells");
   if(!box) return;
@@ -3905,8 +3985,10 @@ function renderMonth(){
   $("#mPrintMonth").textContent=monthLabelText(curMon);
   $("#monthGoal").value=rec.goal||"";
   $("#monthReview").value=rec.review||"";
+  syncMonthTabs();
 
   var html="";
+  var mtab = printMonthAll ? "all" : monthTabKey();
   for(var i=0;i<lead;i++) html+='<div class="mcell out" aria-hidden="true"></div>';
   for(var d=1;d<=dim;d++){
     var date=curMon+"-"+pad(d);
@@ -3923,35 +4005,54 @@ function renderMonth(){
        칸 안 배치는 날짜 줄 → 일정 → 작업 → 시간 총합·컬러바 → 장부 순이다. */
     var mHome=[], mWork=[];
     sm.tasks.forEach(function(t){
-      var k=(t.list||"work");
+      var k=monthTaskKind(t);
       if(k==="home") mHome.push(t);
       else if(k==="work") mWork.push(t);
     });
     var pendFirst=function(a){ return a.filter(function(t){ return t.st!==1; }).concat(a.filter(function(t){ return t.st===1; })); };
-    var mgroups=[
-      {label:"일정", kind:"home", color:"#EFA96A", tcolor:"#B4703A", list:mHome},
-      {label:"작업", kind:"work", color:"#EBCB5A", tcolor:"#8E7415", list:pendFirst(mWork)}
-    ].filter(function(g){ return g.list.length; });
-    if(mgroups.length){
-      // 한 줄에 제목 한 개만 보여 준다. 전체·완료 개수는 앞의 1/3 카운트가 이미 보여 준다.
-      var perMax=1;
-      mgroups.forEach(function(g, gi){
-        var gDone=0;
-        g.list.forEach(function(t){ if(t.st===1) gDone++; });
-        var shown=g.list.slice(0, perMax);
-        var tipNames=g.list.slice(0,8).map(function(t){
-          var tx=String(t.text||"").trim()||g.label;
-          var pn=(g.kind==="work")?platName(t.platform):"";
-          return pn? tx+" ("+pn+")" : tx;
-        }).join(", ");
-        if(g.list.length>8) tipNames+=" 외 "+(g.list.length-8)+"개";
-        var tip=g.label+" "+g.list.length+"개 중 "+gDone+"개 완료"+(tipNames?" — "+tipNames:"");
-        var shownTxt=shown.map(function(t){ return String(t.text||"").trim()||g.label; }).join(" · ");
-        cell+='<span class="mtasks'+(gi?" second":"")+'" data-kind="'+g.kind+'" style="--c:'+g.color+';--tc:'+g.tcolor+'" title="'+esc(tip)+'">'
-            + '<i class="tdot" aria-hidden="true"></i>'
-            + '<span class="cnt">'+gDone+'/'+g.list.length+'</span>'
-            + '<span class="one">'+esc(shownTxt)+'</span></span>';
+    if(mtab!=="all"){
+      /* 할일·자기개발·여가 탭 — 그 분류의 항목을 줄임 없이 전부 펼쳐 보여 준다.
+         순서는 전체와 같게 일정 → 작업, 각 묶음 안은 미완료 → 완료. */
+      var keep=sm.tasks.filter(function(t){
+        var k=monthTaskKind(t);
+        if(mtab==="tasks") return (k==="home"||k==="work");
+        return k===mtab;
       });
+      if(keep.length){
+        var groups=(mtab==="tasks")
+          ? [ pendFirst(keep.filter(function(t){ return monthTaskKind(t)==="home"; })),
+              pendFirst(keep.filter(function(t){ return monthTaskKind(t)!=="home"; })) ]
+          : [ pendFirst(keep) ];
+        cell+='<div class="mi-list">';
+        groups.forEach(function(g){ g.forEach(function(t){ cell+=monthItemHTML(t); }); });
+        cell+='</div>';
+      }
+    } else {
+      var mgroups=[
+        {label:"일정", kind:"home", color:"#EFA96A", tcolor:"#B4703A", list:mHome},
+        {label:"작업", kind:"work", color:"#EBCB5A", tcolor:"#8E7415", list:pendFirst(mWork)}
+      ].filter(function(g){ return g.list.length; });
+      if(mgroups.length){
+        // 한 줄에 제목 한 개만 보여 준다. 전체·완료 개수는 앞의 1/3 카운트가 이미 보여 준다.
+        var perMax=1;
+        mgroups.forEach(function(g, gi){
+          var gDone=0;
+          g.list.forEach(function(t){ if(t.st===1) gDone++; });
+          var shown=g.list.slice(0, perMax);
+          var tipNames=g.list.slice(0,8).map(function(t){
+            var tx=String(t.text||"").trim()||g.label;
+            var pn=(g.kind==="work")?platName(t.platform):"";
+            return pn? tx+" ("+pn+")" : tx;
+          }).join(", ");
+          if(g.list.length>8) tipNames+=" 외 "+(g.list.length-8)+"개";
+          var tip=g.label+" "+g.list.length+"개 중 "+gDone+"개 완료"+(tipNames?" — "+tipNames:"");
+          var shownTxt=shown.map(function(t){ return String(t.text||"").trim()||g.label; }).join(" · ");
+          cell+='<span class="mtasks'+(gi?" second":"")+'" data-kind="'+g.kind+'" style="--c:'+g.color+';--tc:'+g.tcolor+'" title="'+esc(tip)+'">'
+              + '<i class="tdot" aria-hidden="true"></i>'
+              + '<span class="cnt">'+gDone+'/'+g.list.length+'</span>'
+              + '<span class="one">'+esc(shownTxt)+'</span></span>';
+        });
+      }
     }
     /* 아래쪽 고정 영역 — 시간 알약 → 컬러바 → 금액을 늘 같은 자리에 둔다.
        값이 없는 날도 같은 높이를 비워 두어, 한 주의 모든 칸에서 세 줄이 같은 가로선에 놓인다. */
@@ -6549,6 +6650,24 @@ function bindEvents(){
     });
   });
 
+  // 월간 인덱스 탭 (전체 · 할일 · 자기개발 · 여가)
+  var mIndex=$("#monthIndex");
+  if(mIndex){
+    mIndex.addEventListener("click", function(e){
+      var b=e.target.closest(".wi");
+      if(!b) return;
+      setMonthTab(b.dataset.mtab);
+    });
+    mIndex.addEventListener("keydown", function(e){
+      if(e.key!=="ArrowLeft" && e.key!=="ArrowRight") return;
+      var list=$$(".wi", mIndex), i=list.indexOf(document.activeElement);
+      if(i<0) return;
+      e.preventDefault(); e.stopPropagation();
+      var n=list[(i+(e.key==="ArrowRight"?1:list.length-1))%list.length];
+      setMonthTab(n.dataset.mtab); n.focus();
+    });
+  }
+
   var goalTimer=null;
   $("#weekGoal").addEventListener("input", function(e){
     getWeek(curWeek).goal=e.target.value;
@@ -6842,8 +6961,8 @@ function bindEvents(){
     if(e.key==="Escape"){ $("#helpDlg").hidden=true; $("#ddayEdit").hidden=true; closeEntry(); closeCatDlg(); closeContentDlg(); closeRevenueDlg(); if(askResolve) askClose(false); }
     if(e.key==="ArrowLeft" && view==="daily"){ curDate=addDays(curDate,-1); renderDaily(); }
     if(e.key==="ArrowRight" && view==="daily"){ curDate=addDays(curDate,1); renderDaily(); }
-    if(e.key==="ArrowLeft" && view==="month"){ curMon=shiftMonth(curMon,-1); renderMonth(); }
-    if(e.key==="ArrowRight" && view==="month"){ curMon=shiftMonth(curMon,1); renderMonth(); }
+    if(e.key==="ArrowLeft" && view==="month" && !(e.target.closest && e.target.closest(".month-index"))){ curMon=shiftMonth(curMon,-1); renderMonth(); }
+    if(e.key==="ArrowRight" && view==="month" && !(e.target.closest && e.target.closest(".month-index"))){ curMon=shiftMonth(curMon,1); renderMonth(); }
   });
 
   window.addEventListener("beforeunload", function(){ if(dirty) saveNow(); });
@@ -6951,12 +7070,18 @@ function doPrint(){
     ? "@page{size:A4 landscape;margin:7mm}"
     : "@page{size:A4 portrait;margin:9mm}";
   document.body.setAttribute("data-print", view);
-  var go=function(){ setTimeout(function(){ window.print(); }, 40); };
+  var restoreMonth=null;
+  if(view==="month" && monthTabKey()!=="all"){
+    printMonthAll=true; renderMonth();
+    restoreMonth=function(){ printMonthAll=false; if(view==="month") renderMonth(); };
+  }
+  var go=function(){ setTimeout(function(){ window.print(); if(restoreMonth) setTimeout(restoreMonth,0); }, 40); };
   if(document.fonts && document.fonts.ready && document.fonts.ready.then) document.fonts.ready.then(go, go);
   else go();
 }
 window.addEventListener("afterprint", function(){
   document.body.removeAttribute("data-print");
+  if(printMonthAll){ printMonthAll=false; if(view==="month") renderMonth(); }
 });
 
 function openHelp(){
@@ -7702,6 +7827,7 @@ function driveBoot(){
 function init(){
   renderPalette();
   bindEvents();
+  syncMonthTabs();
   renderDaily();
   renderLedger();
   renderContents();
