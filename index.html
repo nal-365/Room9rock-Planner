@@ -798,8 +798,8 @@ html.wdnd-on,html.wdnd-on body{-webkit-user-select:none;user-select:none;cursor:
 #mCells .mcell .mi{display:flex;align-items:flex-start;gap:4px;min-width:0;font-size:10.5px;line-height:1.3;color:var(--ink-soft);letter-spacing:-.1px}
 #mCells .mcell .mi>i{flex:none;width:5px;height:5px;border-radius:1.5px;background:var(--c);margin-top:4px}
 #mCells .mcell .mi>span{min-width:0;word-break:keep-all;overflow-wrap:anywhere}
-#mCells .mcell .mi.done>span{color:#9C9284}
-#mCells .mcell .mi.done>i{opacity:.85}
+#mCells .mcell .mi.dim>span{color:#9C9284}
+#mCells .mcell .mi.dim>i{opacity:.45}
 #mCells .mcell{padding:7px 10px 8px;border:0;min-width:0;max-width:100%;overflow:hidden}
 .mcell{position:relative;display:flex;flex-direction:column;gap:3px;min-width:0;padding:5px 6px 6px;border-right:1px dashed #EDE6D8;border-bottom:1px dashed #EDE6D8;background:#fff;text-align:left;cursor:pointer;transition:background .14s,box-shadow .14s}
 .mcell:nth-child(7n){border-right:0}
@@ -3967,12 +3967,12 @@ function monthItemHTML(t){
   if(!tx) tx=(k==="work")?platName(t.platform):kindName(k,t.category);
   if(!tx) tx=MONTH_ITEM_NAME[k];
   var st=t.st||0;
-  /* 여가(leisure) 카드는 일간·주간에서 실행 여부(st)를 쓰지 않아 모두 같은 글자·점 색으로 보인다.
-     예전 여가 기록에 남아 있는 st===1 때문에 월간 목록에서만 흐린 색(done)으로 갈라져 보이지 않게 한다. */
-  var isDone=(st===1 && k!=="leisure");
+  /* 할일·자기개발 탭: 한 일(st===1)은 진하게, 안 한 일(미완료·일부·못함·미룸)은 흐리게(dim).
+     여가(leisure) 카드는 일간·주간에서 실행 여부(st)를 쓰지 않아 모두 같은 진한 글자·점 색으로 보인다. */
+  var isDim=(st!==1 && k!=="leisure");
   var tip=(k==="leisure") ? (MONTH_ITEM_NAME[k]+(tx?" — "+tx:""))
                           : (MONTH_ITEM_NAME[k]+" · "+ST_LABEL[st]+(tx?" — "+tx:""));
-  return '<div class="mi'+(isDone?" done":"")+'" style="--c:'+MONTH_ITEM_COLOR[k]+'" title="'+esc(tip)+'">'
+  return '<div class="mi'+(isDim?" dim":"")+'" style="--c:'+MONTH_ITEM_COLOR[k]+'" title="'+esc(tip)+'">'
        +   '<i aria-hidden="true"></i><span>'+esc(tx)+'</span>'
        + '</div>';
 }
