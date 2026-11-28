@@ -943,7 +943,7 @@ html.wdnd-on,html.wdnd-on body{-webkit-user-select:none;user-select:none;cursor:
 
 /* ---------- 장부 ----------
    콘텐츠 탭과 같은 결로 다시 짰다: 헤더(장부 · 전체 건수 / 🏷️ 분류 관리 · ＋ 추가) → 요약 3칸 →
-   분류별 금액 줄 → 필터 칩(분류 · 지출 세부 · 수입 세부 · 정렬) → 흰 본문 카드(월 이동 · N건 / 상세 내역 목록).
+   필터 칩(분류 · 지출 세부 · 수입 세부 · 정렬) → 본문 2단(왼쪽 상세 내역 카드 · 오른쪽 분류별 모아보기 카드).
    장부 달력은 월간 색인의 '장부' 탭에 그대로 있고, 데이터(Firebase·Drive 백업) 스키마도 그대로다. */
 .ledger-wrap{display:grid;gap:10px;max-width:1280px;margin:0 auto}
 .month-nav{display:flex;align-items:center;gap:6px;background:#fff;border:1px solid var(--line);border-radius:11px;padding:6px 9px}
@@ -988,6 +988,41 @@ html.wdnd-on,html.wdnd-on body{-webkit-user-select:none;user-select:none;cursor:
    좁은 화면은 한 건을 두 줄 카드로 접는다. */
 .led-board .cboard-head{margin-bottom:9px}
 .led-board .ccount{font-variant-numeric:tabular-nums}
+
+/* 본문 2단 — 왼쪽 상세 내역 카드, 오른쪽 분류별 모아보기 카드.
+   장부 표가 7칸이라 좁은 화면에서는 오른쪽 카드를 아래로 쌓는다(≤1120px). */
+.led-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:12px;align-items:start;min-width:0}
+@media (min-width:1121px){
+  .led-grid{grid-template-columns:minmax(0,1.75fr) minmax(0,1fr)}
+}
+/* 분류별 모아보기 — 상세 내역 카드(.cboard)와 같은 흰 카드 결. 한 분류가 색 점 · 분류명 · 금액 /
+   진행 막대바 / N건 · N% 한 묶음이고, 누르면 그 분류(그리고 그 구분)만 걸러 본다. */
+.ledger-side{background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 1px 3px rgba(52,84,140,.07);padding:11px 12px 9px;min-width:0}
+.lside-head{display:flex;align-items:baseline;gap:5px;margin-bottom:4px;padding:0 5px}
+.lside-head .lab{font-size:10px;letter-spacing:.5px;color:var(--ink-mute)}
+.lside-head small{font-size:9px;font-weight:700;letter-spacing:0;color:#A9BAD3}
+.lcat-list{display:grid;gap:1px;min-width:0}
+.lc{display:block;width:100%;border:0;background:transparent;padding:6px 6px 7px;border-radius:9px;cursor:pointer;text-align:left;touch-action:manipulation;font-family:inherit;min-width:0}
+.lc:hover{background:#F5F9FF}
+.lc.on{background:var(--accent-soft);box-shadow:inset 0 0 0 1px var(--accent-line)}
+.lc-top{display:flex;align-items:center;gap:6px;font-size:12px;min-width:0}
+.lc-top i{width:9px;height:9px;border-radius:2.5px;flex:none;background:var(--c);box-shadow:inset 0 0 0 1px rgba(0,0,0,.05)}
+.lc-top .nm{flex:1;min-width:0;color:var(--ink-soft);font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lc-top b{flex:none;font-size:12.5px;letter-spacing:-.2px;color:var(--ink);font-variant-numeric:tabular-nums}
+.lc.in .lc-top b{color:#2F7F60}
+.lc-bar{display:block;height:6px;border-radius:4px;background:#EDF2FC;margin:5px 0 4px;overflow:hidden}
+.lc-bar>span{display:block;height:100%;border-radius:4px;background:var(--c);min-width:4px}
+.lc-sub{display:block;font-size:10px;font-weight:700;color:var(--ink-mute);font-variant-numeric:tabular-nums}
+/* 수입 줄 — 지출 묶음 아래에 조금 떼어 놓고, 막대 없이 금액·건수만 보여 준다(지출 구성과 섞이지 않게) */
+.lc.in{margin-top:5px}
+#lCats>.lc.in:first-child{margin-top:0}
+.lc-none{padding:7px 6px 9px;font-size:11px;line-height:1.55;color:#A9BAD3}
+/* 한 단으로 쌓이는 중간 폭(721~1120px) — 카드가 화면 폭을 다 쓰므로 분류를 두 줄로 나눠 막대가 너무 길어지지 않게 */
+@media (min-width:721px) and (max-width:1120px){
+  .lcat-list{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:10px}
+  .lc.in{margin-top:0}
+}
+
 .ledger-table-card{--lt-cols:58px minmax(0,.62fr) 46px minmax(0,1.5fr) 98px 50px 54px;min-width:0}
 
 /* ---------- 장부 달력 (월간 → 장부 색인) ----------
@@ -1256,6 +1291,11 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
   .c-type i{width:6px;height:6px}
   .lt-detail{grid-column:1 / -1;font-size:11px;margin-top:1px}
   .lt-foot{font-size:11.5px;padding:8px 0 2px}
+  /* 분류별 모아보기 — 폰에서는 상세 내역 아래로 쌓이고, 카드 여백만 살짝 좁힌다 */
+  .ledger-side{padding:10px 9px 7px;border-radius:12px}
+  .lc{padding:7px 6px 8px}
+  .lc-top{font-size:12.5px}
+  .lc-sub{font-size:10.5px}
   .lt-foot b{font-size:12.5px}
 }
 @media (max-width:420px){
@@ -1333,6 +1373,7 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
   #viewLedger .csum b{font-size:12pt}
   #viewLedger .csum em{font-size:6.5pt}
   #viewLedger .cboard{box-shadow:none;border:0;border-radius:0;padding:0}
+  #viewLedger .led-grid{display:block}
   #viewLedger .ledger-table-card{border:1px solid #DDD;border-radius:0;padding:2mm 3mm;--lt-cols:15mm 24mm 10mm minmax(0,1fr) 20mm 9mm}
   #viewLedger .lt-row{display:grid;grid-template-columns:var(--lt-cols);grid-template-areas:none;column-gap:2mm;
     margin:0;padding:1.4mm 0;border:0;border-top:1px solid #EEE;border-radius:0;background:transparent;font-size:8pt}
@@ -2213,13 +2254,6 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
         </div>
       </div>
 
-      <!-- 분류별 금액 — 콘텐츠 탭 '플랫폼별 수익' 줄과 같은 결.
-           고른 달 전체(필터와 무관)의 분류별 합계·건수를 지출(−)·수입(+)으로 모으고, 누르면 그 분류로 필터 -->
-      <div class="cplat no-print" id="lCatBox">
-        <span class="lab" title="고른 달 전체 내역을 분류별로 더한 금액이에요(필터와 상관없이 그 달 기준). 분류를 누르면 그 분류만 보여 줘요.">분류별 금액<small class="lab-sub">그 달 전체</small></span>
-        <div class="cplat-in" id="lCatSum"></div>
-      </div>
-
       <!-- 필터 칩 — 콘텐츠 탭 필터 행과 같은 결: 분류 · 지출 세부 · 수입 세부 · 정렬 -->
       <div class="cont-filt no-print" id="lFiltBox">
         <div class="cf"><span class="lab">분류</span><div class="cf-chips" id="lTypeChips"></div></div>
@@ -2228,27 +2262,40 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
         <div class="cf"><span class="lab">정렬</span><div class="cf-chips" id="lSortChips"></div></div>
       </div>
 
-      <!-- 본문 흰 카드 — 위: 월 이동 · 오른쪽 건수 / 아래: 상세 내역 목록(합계 줄) -->
-      <section class="cboard led-board" aria-label="장부 내역">
-        <div class="cboard-head">
-          <div class="cboard-mid no-print" id="lMonthNav">
-            <button type="button" class="mnav" id="lPrev" aria-label="이전 달">‹</button>
-            <b class="mon-lab" id="lMonth" aria-live="polite">2026년 11월</b>
-            <button type="button" class="mnav" id="lNext" aria-label="다음 달">›</button>
-            <button type="button" class="ctoday" id="lToday">이번 달</button>
+      <!-- 본문 2단 — 왼쪽 상세 내역 카드(위: 월 이동 · 오른쪽 건수 / 아래: 내역 목록 · 합계 줄),
+           오른쪽 분류별 모아보기 카드. 좁은 화면에서는 오른쪽 카드가 아래로 쌓인다. -->
+      <div class="led-grid">
+        <section class="cboard led-board" aria-label="장부 내역">
+          <div class="cboard-head">
+            <div class="cboard-mid no-print" id="lMonthNav">
+              <button type="button" class="mnav" id="lPrev" aria-label="이전 달">‹</button>
+              <b class="mon-lab" id="lMonth" aria-live="polite">2026년 11월</b>
+              <button type="button" class="mnav" id="lNext" aria-label="다음 달">›</button>
+              <button type="button" class="ctoday" id="lToday">이번 달</button>
+            </div>
+            <span class="ccount no-print" id="lCount">0건</span>
           </div>
-          <span class="ccount no-print" id="lCount">0건</span>
-        </div>
 
-        <div class="ledger-table-card" id="lTable">
-          <div class="lt-row lt-headrow">
-            <span>날짜</span><span>카테고리</span><span>시간</span><span>내역</span><span class="c-num">금액</span><span>구분</span><span></span>
+          <div class="ledger-table-card" id="lTable">
+            <div class="lt-row lt-headrow">
+              <span>날짜</span><span>카테고리</span><span>시간</span><span>내역</span><span class="c-num">금액</span><span>구분</span><span></span>
+            </div>
+            <div id="lRows"></div>
+            <div class="lt-empty" id="lEmpty"></div>
+            <div class="lt-foot"><span>합계</span><b id="lTotal">0원</b></div>
           </div>
-          <div id="lRows"></div>
-          <div class="lt-empty" id="lEmpty"></div>
-          <div class="lt-foot"><span>합계</span><b id="lTotal">0원</b></div>
-        </div>
-      </section>
+        </section>
+
+        <!-- 분류별 모아보기 — 고른 달 전체(필터와 무관)의 분류별 합계·건수를 색 점·금액·막대바로 모은다.
+             누르면 그 분류(그리고 그 구분)만 걸러 본다. -->
+        <aside class="ledger-side no-print" aria-label="분류별 모아보기">
+          <div class="lside-head">
+            <span class="lab" title="고른 달 전체 내역을 분류별로 더한 금액이에요(필터와 상관없이 그 달 기준). 분류를 누르면 그 분류만 보여 줘요.">분류별 모아보기</span>
+            <small>이 달 전체</small>
+          </div>
+          <div class="lcat-list" id="lCats"></div>
+        </aside>
+      </div>
     </div>
   </section>
 
@@ -2356,7 +2403,7 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
         <li><b>할 일</b> — 네모를 누를 때마다 <b>□ → ○ 완료 → △ 일부 → × 못함 → → 미룸</b> 순서로 바뀌어요.</li>
         <li><b>카드</b> — <b>작업·자기개발·일정·여가 시간</b> 열은 카드로 적어요. <b>작업·자기개발·일정</b> 카드는 위줄에서 상태와 분류(플랫폼·카테고리·일정 분류)를 고르고, <b>여가 시간</b> 카드는 상태 없이 분류만 골라요. 제목 아래 <b>상세 내역</b>에 여러 줄로 메모해요. 분류 목록은 카드의 <b>＋ 플랫폼/카테고리/분류 관리</b>나 카테고리 관리에서 직접 추가·이름 바꾸기·삭제할 수 있어요. 카드 위쪽 <b>⋮⋮</b>를 끌면 같은 열 안에서 카드 순서를 위아래로 바꿀 수 있어요(PC는 바로, 터치는 잠깐 꾹 누른 뒤).</li>
         <li><b>주간</b> — 일간에서 칠하고 적은 내용이 그대로 모이고, 주간에서 고쳐도 일간에 바로 반영돼요. 주간 화면 위쪽 형광펜도 그대로 쓸 수 있어요(PC 0.15초 · 터치 0.18초 꾹). 주간 위쪽 <b>할 일</b> 탭은 상태·분류 태그·제목·상세 내역이 붙은 카드로(끌어서 날짜 이동, 같은 날 안에서는 끌어 순서 바꾸기, 맨 아래 <b>작/일/자</b>로 분류 골라 빠른 추가), <b>건강</b> 탭은 식단을 시간·시간대와 내용 카드로, <b>여가시간</b> 탭은 카테고리 배지·제목·상세 내역 카드로 모아 보여 줘요.</li>
-        <li><b>장부</b> — 콘텐츠 탭과 같은 모양으로 정리했어요. 맨 위 왼쪽에 <b>장부</b>와 전체 건수, 오른쪽에 <b>🏷️ 분류 관리</b>·<b>＋ 추가</b>가 있고, 누르면 <b>＋ 추가</b>가 날짜·구분(지출/수입)·분류·시간·구매내역·금액·상세 내역을 적는 창을 엽니다(수정도 같은 창). 그 아래 <b>총 지출·총 수입·잔액</b> 카드 3칸은 고른 달과 필터에 맞춰 다시 계산되고, <b>분류(전체·수입·지출)</b>와 <b>세부 분류</b>·<b>정렬(최신순·날짜순·높은금액순)</b> 칩으로 걸러 볼 수 있어요. <b>세부 분류</b>는 <b>지출·수입 두 줄</b>로 나뉘어 있고, 각 줄의 <i>전체</i>는 그 구분 전체, 옆 칩들은 그 구분의 분류예요. 요약 3칸 아래 <b>분류별 금액</b> 줄은 그 달 전체의 분류별 합계와 건수를 지출(−)·수입(+)으로 모아 보여 주고, 분류를 누르면 그 분류로 바로 걸러요(세부 칩을 고르면 지출·수입 구분도 함께 맞춰져요). 본문 흰 카드 맨 위 <b>‹ 2026년 11월 › 이번 달</b>로 달을 옮기고 오른쪽에 <b>N건</b>, 아래에 상세 내역 목록이 <b>날짜 · 카테고리 · 시간 · 내역 · 금액 · 구분</b> 순으로 놓이며 행을 누르면 수정, <b>✎</b>·<b>✕</b>로 수정·삭제, 맨 아래에 합계 줄이 있어요. 일간 장부 열과 주간 장부 탭은 한 건을 <b>1줄 분류·수입/지출 · 2줄 시간·내역·금액 · 3줄 상세 내역</b> 카드로 보여 줘요. 한 달 지출(−)과 수입(+)을 달력으로 모아 보는 <b>장부 달력</b>은 <b>월간</b> 탭의 <b>장부</b> 색인에 있어요 — 날짜 숫자 오른쪽 위에 그날 하루 총액(−지출, +수입)이 알약으로 붙고, 칸 안에 그날 내역이 <b>분류 · 내역 · 금액</b>으로 전부 나오며(내역이 많으면 칸이 자동으로 높아짐), 날짜 칸을 누르면 그날 일간으로 넘어가요.</li>
+        <li><b>장부</b> — 콘텐츠 탭과 같은 모양으로 정리했어요. 맨 위 왼쪽에 <b>장부</b>와 전체 건수, 오른쪽에 <b>🏷️ 분류 관리</b>·<b>＋ 추가</b>가 있고, 누르면 <b>＋ 추가</b>가 날짜·구분(지출/수입)·분류·시간·구매내역·금액·상세 내역을 적는 창을 엽니다(수정도 같은 창). 그 아래 <b>총 지출·총 수입·잔액</b> 카드 3칸은 고른 달과 필터에 맞춰 다시 계산되고, <b>분류(전체·수입·지출)</b>와 <b>세부 분류</b>·<b>정렬(최신순·날짜순·높은금액순)</b> 칩으로 걸러 볼 수 있어요. <b>세부 분류</b>는 <b>지출·수입 두 줄</b>로 나뉘어 있고, 각 줄의 <i>전체</i>는 그 구분 전체, 옆 칩들은 그 구분의 분류예요. 본문은 <b>2단</b>이라 왼쪽 <b>상세 내역</b> 카드 옆에 <b>분류별 모아보기</b> 카드가 있고(좁은 화면은 아래로 쌓임), 이 카드가 그 달 전체의 분류별 금액을 <b>색 점 · 분류명 · 금액 · 진행 막대바 · N건 · N%</b>로 모아 보여 줘요(막대와 %는 그 달 지출 합계 기준, 수입은 막대 없이 금액·건수만 아래에). 분류를 누르면 그 분류로 바로 걸러지고(세부 칩을 고르면 지출·수입 구분도 함께 맞춰져요). 왼쪽 카드 맨 위 <b>‹ 2026년 11월 › 이번 달</b>로 달을 옮기고 오른쪽에 <b>N건</b>, 아래에 상세 내역 목록이 <b>날짜 · 카테고리 · 시간 · 내역 · 금액 · 구분</b> 순으로 놓이며 행을 누르면 수정, <b>✎</b>·<b>✕</b>로 수정·삭제, 맨 아래에 합계 줄이 있어요. 일간 장부 열과 주간 장부 탭은 한 건을 <b>1줄 분류·수입/지출 · 2줄 시간·내역·금액 · 3줄 상세 내역</b> 카드로 보여 줘요. 한 달 지출(−)과 수입(+)을 달력으로 모아 보는 <b>장부 달력</b>은 <b>월간</b> 탭의 <b>장부</b> 색인에 있어요 — 날짜 숫자 오른쪽 위에 그날 하루 총액(−지출, +수입)이 알약으로 붙고, 칸 안에 그날 내역이 <b>분류 · 내역 · 금액</b>으로 전부 나오며(내역이 많으면 칸이 자동으로 높아짐), 날짜 칸을 누르면 그날 일간으로 넘어가요.</li>
         <li><b>콘텐츠</b> — 이모티콘·스티커·속지처럼 만든 것마다 플랫폼과 진행 상태를 붙여 한곳에 모아요. 등록할 때 <b>제출일</b>과 <b>출시일</b>을 따로 적고(둘 중 하나만 적어도 저장돼요), 목록에는 제출일·출시일이 각각 나와요. 본문 카드 맨 위의 <b>달력 | 목록</b>으로 보기를 바꿔요(마지막에 고른 보기는 이 기기에 기억돼요). <b>목록</b>은 플랫폼·상태 배지와 이름·메모, 제출일·출시일, 단가·판매 건수, 누적 수익(이번 달)을 한 줄씩 표로 모아 여러 개를 한눈에 훑기 좋고, 줄 끝의 <b>＋</b>(수익 기록)·<b>▾</b>(수익 내역 펼치기)·<b>✎</b>·<b>✕</b>로 고치고 지워요(좁은 화면은 플랫폼·상태·수익 / 이름·버튼 / 날짜·단가·판매 세 줄로 접혀요). <b>달력</b>에서는 월 달력에서 제출일은 <b>제출</b>, 출시일은 <b>출시</b> 배지로 날짜 칸에 따로 모이고, 날짜 칸의 콘텐츠 배지를 누르면 수정, 초록 +금액을 누르면 그 수익 내역이 열려요. 목록의 <b>＋</b>(수익 기록)로 판매·정산 내역(날짜·건수·금액·메모)을 여러 건 쌓으면 <b>누적 수익</b>과 <b>총 판매 건수</b>가 바로 다시 계산되고, 위의 <b>총 누적 수익·이번 달 수익</b>과 플랫폼별 수익도 함께 따라가는데, <b>플랫폼별 수익</b>은 판매·출시 중인 콘텐츠에 이미 수익이 난 콘텐츠(판매중지 등)까지 함께 세요(기획·제작중·심사중처럼 팔지도 않고 수익도 없는 것은 개수에서 뺌). 수익 줄을 누르면 수정, ✕로 삭제됩니다. 플랫폼과 상태 목록은 옆의 <b>🏷️ 분류 관리</b>에서 직접 추가·삭제하고 ⋮⋮로 순서를 바꿔요. <b>단가</b>를 넣어 두면 <b>＋ 수익 기록</b>에서 판매 건수만 넣어도 수익이 <b>단가 × 판매 건수</b>로 자동으로 채워지고(수수료처럼 실제 금액이 다르면 금액만 직접 고쳐요), <b>달력</b>의 <b>빈 날짜 칸</b>을 누르면 그날을 제출일로 새 콘텐츠를 바로 열 수 있어요.</li>
         <li><b>일간 열</b> — <b>건강</b>은 위에서부터 몸무게 → 오늘의 한 줄 → 식단(시간·시간대·내용, 여러 줄 가능)을 적고, 아래 트래커 한 칸에 물·약·에너지·장건강(안감·정상·딱딱함·설사·혈변 중 하나, 누르면 선택·다시 누르면 해제)·기분(5단계)을 모아 둡니다. <b>작업·자기개발·일정·여가 시간</b>은 분류·상세 내역이 붙은 카드로 적어요(작업·자기개발·일정은 앞의 실행 여부 버튼으로 완료 상태도 남겨요). <b>장부</b>는 맨 위에 오늘 지출·오늘 수입과 이번 달 지출·수입 합계를 두고, 그 아래에서 수입/지출을 골라 시간·분류·내용·금액·상세 내역을 적어요. 기분 이모지는 월간 달력에도 표시됩니다.</li>
         <li><b>피드백</b> — <b>작업·자기개발·일정·장부·여가 시간</b> 열 맨 아래 칸에 그날의 회고를 적어요. 날짜마다 따로 저장되고, 화면을 넓게 보면 건강 열과 같은 높이까지 채워집니다.</li>
@@ -4974,10 +5021,10 @@ function entryRowHTML(e){
 }
 
 /* 장부 탭 — 콘텐츠 탭과 같은 구성:
-   헤더(장부 · 전체 건수 / 🏷️ 분류 관리 · ＋ 추가) → 요약 3칸 → 분류별 금액 줄 →
+   헤더(장부 · 전체 건수 / 🏷️ 분류 관리 · ＋ 추가) → 요약 3칸 →
    필터 칩(분류 · 지출 세부 · 수입 세부 · 정렬) →
-   흰 본문 카드(‹ 2026년 11월 › 이번 달 · N건 / 상세 내역 목록 · 합계).
-   요약·목록은 고른 달과 필터를 함께 본다. 데이터(S.ledger.entries)는 그대로다. */
+   본문 2단(‹ 2026년 11월 › 이번 달 · N건 / 상세 내역 목록 · 합계 | 분류별 모아보기).
+   요약·목록은 고른 달과 필터를 함께 보고, 분류별 모아보기는 그 달 전체를 본다. 데이터(S.ledger.entries)는 그대로다. */
 function renderLedger(){
   if(!$("#lRows")) return;
   var mt=monthText();
@@ -5020,19 +5067,33 @@ function renderLedger(){
   var catsExp=[], catsInc=[];
   S.ledgerCats.forEach(function(c){ (c.type==="income"?catsInc:catsExp).push(c); });
 
-  /* 분류별 금액 — 고른 달 전체(필터와 무관)의 분류별 합계·건수를 지출(−)·수입(+)으로.
-     누르면 그 분류(과 그 구분)로 걸러 보기. 이 달에 내역이 없는 분류는 뻐다. */
-  var sumHTML="";
-  catsExp.concat(catsInc).forEach(function(c){
-    var d=byCat[c.id]; if(!d) return;
-    var cInc=(c.type==="income"), amt=(cInc?d.inc:d.exp), n=(cInc?d.incN:d.expN);
-    if(!n) return;
-    sumHTML+='<button class="cp '+(cInc?"in":"exp")+(lFilter.cat===c.id?" on":"")+'" type="button" data-lfcat="'+c.id+'" data-lftype="'+c.type+'" style="--c:'+c.color+'" title="'+esc(c.name)+' — '+n+'건 · 눌러서 이 분류만 보기">'
-      +   '<i aria-hidden="true"></i><span>'+esc(c.name)+'</span>'
-      +   '<b>'+(cInc?"+":"−")+fmtWon(amt)+'</b><small>'+n+'건</small></button>';
-  });
-  var cs=$("#lCatSum");
-  if(cs) cs.innerHTML = sumHTML || '<span class="none">이 달 내역을 적으면 분류별 금액이 여기에 모여요.</span>';
+  /* 분류별 모아보기 — 고른 달 전체(필터와 무관)의 분류별 합계·건수를
+     색 점 · 분류명 · 금액 / 진행 막대바 / N건 · N% 한 묶음으로 모은다.
+     막대와 %는 그 달 지출 합계 기준(지출이 어떻게 나뉘었는지), 수입은 금액과 건수만 아래에 모은다.
+     누르면 그 분류로 걸러 보기. 이 달에 내역이 없는 분류는 뺀다. */
+  var monthExp=0;
+  list.forEach(function(e){ if(e.type!=="income") monthExp+=e.amount; });
+  function lcRowsHTML(type, cats){
+    var arr=cats.map(function(c){
+      var d=byCat[c.id]||{exp:0, inc:0, expN:0, incN:0};
+      var isInc=(type==="income");
+      return {c:c, amt:(isInc?d.inc:d.exp), n:(isInc?d.incN:d.expN)};
+    }).filter(function(x){ return x.n>0; });
+    if(!arr.length) return "";
+    arr.sort(function(a,b){ return b.amt-a.amt; });
+    var h="";
+    arr.forEach(function(x){
+      var pct = monthExp ? Math.round(x.amt/monthExp*100) : 0;
+      h+='<button class="lc '+(type==="income"?"in":"out")+(lFilter.cat===x.c.id?" on":"")+'" type="button" data-lfcat="'+x.c.id+'" data-lftype="'+x.c.type+'" style="--c:'+x.c.color+'" aria-pressed="'+(lFilter.cat===x.c.id?"true":"false")+'" title="'+esc(x.c.name)+' — '+x.n+'건'+(type==="income"?"":" · 지출의 "+pct+"%")+' · 눌러서 이 분류만 보기">'
+        +   '<span class="lc-top"><i aria-hidden="true"></i><span class="nm">'+esc(x.c.name)+'</span><b>'+(type==="income"?"+":"")+fmtWon(x.amt)+'</b></span>'
+        +   (type==="income" ? "" : '<span class="lc-bar"><span style="width:'+Math.max(2,Math.min(100,pct))+'%"></span></span>')
+        +   '<span class="lc-sub">'+x.n+'건'+(type==="income"?"":" · "+pct+"%")+'</span></button>';
+    });
+    return h;
+  }
+  var catHTML=lcRowsHTML("expense", catsExp)+lcRowsHTML("income", catsInc);
+  var cs=$("#lCats");
+  if(cs) cs.innerHTML = catHTML || '<div class="lc-none">이 달 내역을 적으면 분류별로 여기에 모여요.</div>';
 
   /* 필터 칩 — 분류(전체·수입·지출) · 지출 세부 · 수입 세부 · 정렬(최신·오래된·높은금액) */
   $("#lTypeChips").innerHTML=L_TYPES.map(function(t){
@@ -7713,7 +7774,7 @@ function bindEvents(){
     else if(lFilter.cat!=="all"){ var cl=lcat(lFilter.cat); if(!cl || cl.type!==lFilter.type) lFilter.cat="all"; }
     renderLedger();
   });
-  /* 세부 분류 칩 — 지출·수입 두 줄과 분류별 금액 줄이 같은 방식으로 동작한다.
+  /* 세부 분류 칩 — 지출·수입 두 줄과 분류별 모아보기 카드가 같은 방식으로 동작한다.
      세부를 고르면 그 분류의 구분(지출·수입)도 함께 고정해 빈 결과가 생기지 않는다. */
   function onLCatChip(e){
     var b=e.target.closest("[data-lfcat]"); if(!b) return;
@@ -7722,7 +7783,7 @@ function bindEvents(){
     lFilter.cat=b.dataset.lfcat;
     renderLedger();
   }
-  ["#lExpChips","#lIncChips","#lCatSum"].forEach(function(sel){
+  ["#lExpChips","#lIncChips","#lCats"].forEach(function(sel){
     var box=$(sel); if(box) box.addEventListener("click", onLCatChip);
   });
   $("#lSortChips").addEventListener("click", function(e){
