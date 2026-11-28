@@ -138,7 +138,7 @@ main{max-width:1560px;margin:0 auto;padding:18px 20px 48px}
 
 .lab{font-size:10px;letter-spacing:1.1px;font-weight:800;color:var(--ink-mute);text-transform:uppercase}
 .date-row{display:flex;align-items:center;gap:3px}
-.nav{width:26px;height:26px;border-radius:50%;border:1px solid var(--line);background:#fff;color:var(--ink-soft);display:grid;place-items:center;cursor:pointer;font-size:14px;line-height:1;touch-action:manipulation}
+.nav{width:26px;height:26px;border-radius:50%;border:1px solid var(--line);background:#fff;color:var(--ink-soft);display:grid;place-items:center;cursor:pointer;font-size:17px;font-weight:800;line-height:1;padding:0 0 1px;touch-action:manipulation}
 .nav:hover{background:#F5F9FF;border-color:var(--line-strong)}
 .date-big{border:0;background:transparent;padding:0 2px 1px;cursor:pointer;display:flex;align-items:baseline;gap:6px;touch-action:manipulation}
 .date-big .dnum{font-family:var(--serif);font-size:24px;font-weight:600;letter-spacing:1px;font-variant-numeric:tabular-nums;background:linear-gradient(180deg,transparent 62%,rgba(122,160,235,.45) 62%,rgba(122,160,235,.45) 94%,transparent 94%)}
@@ -857,14 +857,21 @@ html.wdnd-on,html.wdnd-on body{-webkit-user-select:none;user-select:none;cursor:
 .stat-cards.two{grid-template-columns:minmax(0,1fr);gap:8px;align-content:start}
 /* 할일 탭 — 작업·집중 업무를 2열 4칸(2쌍)으로 나란히 */
 .stat-cards.quad{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;align-content:start}
-.stat-cards.two .sc,.stat-cards.quad .sc{display:flex;align-items:baseline;justify-content:space-between;gap:10px;padding:10px 13px;background:linear-gradient(180deg,var(--tone,#EEF3FC),#fff 88%)}
-.stat-cards.two .sc span,.stat-cards.quad .sc span{flex:0 1 auto;min-width:0}
-.stat-cards.two .sc b,.stat-cards.quad .sc b{margin-top:0;font-size:16px;white-space:nowrap;color:var(--ti,var(--accent-deep))}
+/* 장부 탭 — 이번 달 지출·수입·순합계 3칸을 한 줄로 */
+.stat-cards.three{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;align-content:start}
+.stat-cards.two .sc,.stat-cards.quad .sc,.stat-cards.three .sc{display:flex;align-items:baseline;justify-content:space-between;gap:10px;padding:10px 13px;background:linear-gradient(180deg,var(--tone,#EEF3FC),#fff 88%)}
+.stat-cards.two .sc span,.stat-cards.quad .sc span,.stat-cards.three .sc span{flex:0 1 auto;min-width:0}
+.stat-cards.two .sc b,.stat-cards.quad .sc b,.stat-cards.three .sc b{margin-top:0;font-size:16px;white-space:nowrap;color:var(--ti,var(--accent-deep))}
+.stat-cards.three .sc span{font-size:10px;line-height:1.3}
+.stat-cards.three .sc b{font-size:15px}
 /* 4칸은 한 칸이 좀 좌우로 좁아 글자를 조금 줄인다 */
 .stat-cards.quad .sc span{font-size:10px;line-height:1.3}
 .stat-cards.quad .sc b{font-size:14.5px}
 /* 탭 통계는 분류 이름이 플랫폼 이름(예: 스마트스토어)까지 길어질 수 있어 이름 칸을 넓힌다 */
 .bars.tabview .bl .nm{width:82px}
+/* 장부 탭 — 막대 오른쪽 값이 금액(예: 123,000원)이라 값 칸을 넓히고 이름 칸은 줄인다 */
+.bars.moneyview .bl .nm{width:66px}
+.bars.moneyview .bl .tm{width:92px;font-size:10px}
 
 /* ---------- 월간 ---------- */
 .month-wrap{display:grid;gap:12px;max-width:1560px;margin:0 auto}
@@ -889,6 +896,8 @@ html.wdnd-on,html.wdnd-on body{-webkit-user-select:none;user-select:none;cursor:
 #viewMonth[data-mtab="tasks"] .mgrid-frame{--mf-a:#FEF8DE;--mf-b:#FDF0B8;--mf-sh:rgba(122,94,18,.38);--mf-gap:#F2E9C6}
 #viewMonth[data-mtab="study"] .mgrid-frame{--mf-a:#FEF4F7;--mf-b:#FCE9F0;--mf-sh:rgba(124,74,92,.34);--mf-gap:#F3E3E9}
 #viewMonth[data-mtab="leisure"] .mgrid-frame{--mf-a:#E1F8F4;--mf-b:#CFF0EA;--mf-sh:rgba(40,92,84,.34);--mf-gap:#DFEEEC}
+/* 장부 색인 — 장부 분류의 민트-그린(#3F8E5B) 계열로 물들인다 */
+#viewMonth[data-mtab="ledger"] .mgrid-frame{--mf-a:#EAF7EE;--mf-b:#D9EFE0;--mf-sh:rgba(46,104,70,.32);--mf-gap:#E2F0E6}
 /* 탭별 내용 — 그 분류의 항목을 줄임 없이 전부 펼친 목록 */
 #mCells .mcell .mi-list{display:flex;flex-direction:column;gap:2px;min-width:0;margin-top:1px}
 #mCells .mcell .mi{display:flex;align-items:flex-start;gap:4px;min-width:0;font-size:10.5px;line-height:1.3;color:var(--ink-soft);letter-spacing:-.1px}
@@ -948,6 +957,32 @@ html.wdnd-on,html.wdnd-on body{-webkit-user-select:none;user-select:none;cursor:
 .sum.balance b{color:var(--accent-deep)}
 .sum.balance b.neg{color:#B4544E}
 
+/* 상단 바 배치 — 왼쪽 날짜 영역이 상단 바 폭의 약 2/3를 쓰고, 오른쪽 목표·리뷰(장부는 합계 카드)가 나머지 1/3을 나눠 가진다.
+   넓은 화면에서만 적용하고, 그 아래(태블릿·폰)는 예전처럼 폭이 모자라면 줄바꿈되는 flex 배치를 그대로 둔다. */
+@media screen and (min-width:981px){
+  .week-top,.month-top{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);grid-template-rows:auto auto;gap:10px;align-items:stretch}
+  .week-top>.week-nav,.month-top>.month-nav{grid-column:1;grid-row:1 / span 2;justify-content:space-between}
+  .week-top>.goal-box{grid-column:2;grid-row:1}
+  .week-top>.review-box{grid-column:2;grid-row:2}
+  .month-top>.goal-box{grid-column:2;grid-row:1}
+  .month-top>.review-box{grid-column:2;grid-row:2}
+  /* 날짜·기간 라벨이 넓어진 칸 가운데에 오도록 */
+  .week-top>.week-nav .week-range,.month-top>.month-nav .month-label{flex:1 1 auto}
+  .led-head{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:10px;align-items:stretch}
+  .led-head>.month-nav{grid-column:1;justify-content:space-between}
+  .led-head>.month-nav .month-label{flex:1 1 auto}
+  .led-head>.sum-cards{grid-column:2;flex:none;gap:6px}
+  .led-head .sum{padding:8px 11px}
+  .led-head .sum b{font-size:17px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+}
+/* 981~1200px(아이패드 가로 등) — 오른쪽 칸이 좁아 금액이 잘리지 않게 날짜 영역을 3:2로 두고,
+   주간 리뷰는 라벨·별점과 한 줄 평을 두 줄로 접는다. */
+@media screen and (min-width:981px) and (max-width:1200px){
+  .led-head{grid-template-columns:minmax(0,3fr) minmax(0,2fr)}
+  .led-head .sum b{font-size:16px}
+  .week-top>.review-box{flex-wrap:wrap}
+  .week-top>.review-box input{flex:1 1 100%}
+}
 .quick-add{background:#fff;border:1px solid var(--line);border-radius:12px;padding:9px 11px}
 .qa-row{display:flex;flex-wrap:wrap;gap:7px;align-items:center}
 .qa-row input,.qa-row select{border:1px solid var(--line);border-radius:8px;padding:7px 9px;font-size:13px;background:#FBFDFF;outline:none;min-width:0;color:var(--ink)}
@@ -970,17 +1005,19 @@ html.wdnd-on,html.wdnd-on body{-webkit-user-select:none;user-select:none;cursor:
 
 .ledger-grid{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(0,1fr);gap:12px;align-items:start}
 
-/* ---------- 장부 달력 보기 ---------- */
-.lview-box{display:flex;align-items:center}
-.lseg-view button{font-size:11px;padding:4px 11px}
-.lcal{display:grid;gap:9px}
-.lcal-tip{margin:0;font-size:10.5px;line-height:1.55;color:var(--ink-mute)}
-.lcal-tip b{font-weight:800}
-.lcal-tip b.out{color:#A9504A}
-.lcal-tip b.in{color:#2F7F60}
-.lcal-frame{padding:9px}
-.lcal-cells{grid-auto-rows:minmax(92px,auto)}
-.lcell{padding:5px 6px 6px;gap:3px}
+/* ---------- 장부 달력 (월간 → 장부 색인) ----------
+   장부 탭에 있던 달력을 월간 색인 '장부' 탭으로 옮겼다. 달력 틀(#mCells · 1px 점선 격자)은
+   월간 그대로 두고 칸 안에만 그날 지출·수입 내역을 채운다. */
+.mlcal-tip[hidden]{display:none}
+.mlcal-tip{margin:-2px 2px 0;font-size:10.5px;line-height:1.55;color:var(--ink-mute)}
+.mlcal-tip b{font-weight:800}
+.mlcal-tip b.out{color:#A9504A}
+.mlcal-tip b.in{color:#2F7F60}
+/* 내역이 많은 날도 잘리지 않게 행 높이를 내용만큼(auto) 늘리고 칸의 넘침을 풀어 둔다 */
+#viewMonth[data-mtab="ledger"] #mCells{grid-auto-rows:minmax(104px,auto)}
+#viewMonth[data-mtab="ledger"] #mCells .mcell{overflow:visible}
+.lcell{gap:3px}
+#viewMonth[data-mtab="ledger"] #mCells .lcell{padding:6px 7px 7px}
 .lcell .mcell-head{justify-content:flex-start;gap:3px 5px;min-height:18px;flex-wrap:wrap}
 .lcell .lwd{display:none}
 /* 날짜 칸의 개별 내역 — 분류 · 내역 · 금액 (수입은 +초록, 지출은 -붉은색) */
@@ -992,29 +1029,29 @@ html.wdnd-on,html.wdnd-on body{-webkit-user-select:none;user-select:none;cursor:
 .lli .lc-memo.none{color:#BCCBDF}
 .lli .lc-amt{font-weight:800;color:#A9504A;white-space:nowrap;text-align:right}
 .lli.in .lc-amt{color:#2F7F60}
-/* 그날 하루 총 금액 — 날짜 숫자 오른쪽 위(예전 건수 자리)에 알약으로 */
+/* 그날 하루 총 금액 — 날짜 숫자 오른쪽 위에 알약으로 */
 .lsum{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:2px;margin-left:auto;min-width:0}
 .lsum span{font-family:var(--sans);font-size:9px;font-weight:800;letter-spacing:0;border-radius:999px;padding:0 5px;white-space:nowrap;font-variant-numeric:tabular-nums}
 .lsum .out{background:#FBEDEC;color:#A9504A}
 .lsum .in{background:#EAF5DC;color:#41631F}
 @media (max-width:720px){
-  /* 폰의 7칸 칸에는 분류·내역·금액을 넣어도 읽을 수 없어, 달력을 날짜별 목록으로 편다 */
-  .lcal-frame{padding:0;background:none;box-shadow:none;border-radius:0}
-  .lcal .mgrid{background:transparent;box-shadow:none;border-radius:0;overflow:visible}
-  .lcal .mdow{display:none}
-  .lcal-cells{display:block}
-  .lcal-cells .mcell.out{display:none}
-  .lcal .lcell{display:flex;flex-direction:column;margin:0 0 6px;padding:8px 10px;gap:4px;
-               border:1px solid var(--line);border-right:1px solid var(--line);border-radius:10px;background:var(--paper2)}
-  .lcal .lcell.sat,.lcal .lcell.sun{background:var(--paper2)}
-  .lcal .lcell.today{background:#F6F9FD;box-shadow:inset 0 0 0 2px var(--accent-ring)}
-  .lcal .lcell.empty{flex-direction:row;align-items:center;gap:6px;margin-bottom:0;padding:4px 10px;
-                     border:0;border-bottom:1px dashed var(--line-soft);border-radius:0;background:transparent}
-  .lcal .lcell.empty.today{background:#F6F9FD;box-shadow:none}
-  .lcal .lcell .dn{font-size:13.5px}
+  /* 폰의 7칸 칸에는 분류·내역·금액을 넣어도 읽을 수 없어, 장부 색인의 달력을 날짜별 목록으로 편다 */
+  .mlcal-tip{display:none}
+  #viewMonth[data-mtab="ledger"] .mdow{display:none}
+  #viewMonth[data-mtab="ledger"] #mCells{display:block;grid-auto-rows:none;background:transparent}
+  #viewMonth[data-mtab="ledger"] #mCells .mcell.out{display:none}
+  #viewMonth[data-mtab="ledger"] #mCells .lcell{display:flex;flex-direction:column;margin:0 0 6px;padding:8px 10px;gap:4px;
+               border:1px solid var(--line);border-radius:10px;background:var(--paper2)}
+  #viewMonth[data-mtab="ledger"] #mCells .lcell.sat,
+  #viewMonth[data-mtab="ledger"] #mCells .lcell.sun{background:var(--paper2)}
+  #viewMonth[data-mtab="ledger"] #mCells .lcell.today{background:#F6F9FD;box-shadow:inset 0 0 0 2px var(--accent-ring)}
+  #viewMonth[data-mtab="ledger"] #mCells .lcell.empty{flex-direction:row;align-items:center;gap:6px;margin-bottom:0;padding:4px 10px;
+               border:0;border-bottom:1px dashed var(--line-soft);border-radius:0;background:transparent}
+  #viewMonth[data-mtab="ledger"] #mCells .lcell.empty.today{background:#F6F9FD;box-shadow:none}
+  #viewMonth[data-mtab="ledger"] #mCells .lcell .dn{font-size:13.5px}
   .lcell .lwd{display:inline;font-style:normal;font-family:var(--sans);font-size:9.5px;font-weight:800;color:var(--ink-mute)}
-  .lcal .lcell.sun .lwd{color:#C8685E}
-  .lcal .lcell.sat .lwd{color:#5A82B8}
+  #viewMonth[data-mtab="ledger"] #mCells .lcell.sun .lwd{color:#C8685E}
+  #viewMonth[data-mtab="ledger"] #mCells .lcell.sat .lwd{color:#5A82B8}
   .lli{font-size:11px;grid-template-columns:auto minmax(0,1fr) auto;gap:6px;line-height:1.5}
   .lli .lc-cat i{width:6px;height:6px}
   .lsum span{font-size:10px;padding:1px 7px}
@@ -1210,6 +1247,10 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
   .stat-cards{grid-template-columns:repeat(2,minmax(0,1fr))}
   /* 좁은 화면에서는 4칸을 한 줄로 펼쳐 글자가 꺾이지 않게 */
   .stat-cards.quad{grid-template-columns:minmax(0,1fr)}
+  /* 장부 탭 3칸(지출·수입·순합계)도 한 줄로 펼친다 */
+  .stat-cards.three{grid-template-columns:minmax(0,1fr)}
+  .bars.moneyview .bl .nm{width:76px}
+  .bars.moneyview .bl .tm{width:84px}
   .dlg{padding:10px}
   .brand .btxt{display:none}
   .tab{padding:6px 11px;font-size:12px}
@@ -1869,11 +1910,11 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
       <div class="board">
         <div class="board-top">
           <div class="bdate">
-            <button class="nav" id="prevDay" aria-label="이전 날">←</button>
+            <button class="nav" id="prevDay" aria-label="이전 날">‹</button>
             <button class="date-big" id="dateBtn" title="날짜 선택">
               <span class="dnum" id="dateText">2026 / 11 / 19</span><span class="dow" id="dateDow">(목)</span>
             </button>
-            <button class="nav" id="nextDay" aria-label="다음 날">→</button>
+            <button class="nav" id="nextDay" aria-label="다음 날">›</button>
             <button class="mini" id="todayBtn">오늘</button>
             <input type="date" id="datePick" style="position:absolute;opacity:0;pointer-events:none;width:1px;height:1px" tabindex="-1" aria-hidden="true">
           </div>
@@ -2021,9 +2062,9 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
   <section class="view" id="viewWeek" hidden>
     <div class="week-top">
       <div class="week-nav no-print">
-        <button class="nav" id="wPrev" aria-label="이전 주">←</button>
+        <button class="nav" id="wPrev" aria-label="이전 주">‹</button>
         <div class="week-range"><b id="weekRange">11/16 – 11/22</b><span id="weekNo">2026 · 47주차</span></div>
-        <button class="nav" id="wNext" aria-label="다음 주">→</button>
+        <button class="nav" id="wNext" aria-label="다음 주">›</button>
         <button class="mini" id="wToday">이번 주</button>
       </div>
       <div class="goal-box">
@@ -2114,9 +2155,9 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
 
       <div class="month-top">
         <div class="month-nav no-print">
-          <button class="nav" id="mPrev" aria-label="이전 달">←</button>
+          <button class="nav" id="mPrev" aria-label="이전 달">‹</button>
           <div class="month-label"><b id="mLabel">2026년 11월</b><span id="mSub">기록 0일</span></div>
-          <button class="nav" id="mNext" aria-label="다음 달">→</button>
+          <button class="nav" id="mNext" aria-label="다음 달">›</button>
           <button class="mini" id="mThisMonth">이번 달</button>
         </div>
         <div class="goal-box">
@@ -2134,6 +2175,7 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
         <button class="wi" type="button" role="tab" data-mtab="tasks" aria-selected="false" tabindex="-1" style="--t:#FDF0B8;--ti:#8A6A12"><i></i>할일</button>
         <button class="wi" type="button" role="tab" data-mtab="study" aria-selected="false" tabindex="-1" style="--t:#FCE9F0;--ti:#9C4B63"><i></i>자기개발</button>
         <button class="wi" type="button" role="tab" data-mtab="leisure" aria-selected="false" tabindex="-1" style="--t:#CFF0EA;--ti:#2F7A6E"><i></i>여가</button>
+        <button class="wi" type="button" role="tab" data-mtab="ledger" aria-selected="false" tabindex="-1" style="--t:#DDF2E4;--ti:#3F8E5B"><i></i>장부</button>
       </div>
 
       <div class="mgrid-frame">
@@ -2144,6 +2186,8 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
           <div class="mcells" id="mCells" role="grid" aria-label="월간 달력"></div>
         </div>
       </div>
+
+      <p class="mlcal-tip no-print" id="mCalTip" hidden>날짜 숫자 오른쪽 위 알약이 그날 하루 총액이에요(지출 <b class="out">-금액</b>, 수입 <b class="in">+금액</b>). 칸에는 그날 내역이 <b>분류 · 내역 · 금액</b>으로 모두 나오고, 칸을 누르면 그날 일간으로 넘어가요.</p>
 
       <div class="mstats" id="monthStats">
         <div class="stat-cards" id="mStatCards"></div>
@@ -2159,21 +2203,15 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
 
       <div class="led-head">
         <div class="month-nav">
-          <button class="nav" id="lPrev" aria-label="이전 달">←</button>
+          <button class="nav" id="lPrev" aria-label="이전 달">‹</button>
           <div class="month-label"><b id="lMonth">2026년 11월</b><span id="lCount">0건</span></div>
-          <button class="nav" id="lNext" aria-label="다음 달">→</button>
+          <button class="nav" id="lNext" aria-label="다음 달">›</button>
           <button class="mini no-print" id="lToday">이번 달</button>
         </div>
         <div class="sum-cards">
           <div class="sum expense"><span>총 지출</span><b id="sumExpense">0원</b></div>
           <div class="sum income"><span>총 수입</span><b id="sumIncome">0원</b></div>
           <div class="sum balance"><span>잔액</span><b id="sumBalance">0원</b></div>
-        </div>
-        <div class="lview-box no-print">
-          <div class="seg lseg-view" id="lViewSeg" role="group" aria-label="장부 보기 전환">
-            <button type="button" data-lview="table" class="on" aria-pressed="true">표</button>
-            <button type="button" data-lview="cal" aria-pressed="false">달력</button>
-          </div>
         </div>
       </div>
 
@@ -2189,18 +2227,6 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
           <button class="btn primary qa-add" id="qaAdd">추가</button>
         </div>
         <textarea class="qa-detail" id="qaDetail" rows="3" maxlength="1000" placeholder="상세내역 (세부금액 포함, 여러 줄)" aria-label="상세내역"></textarea>
-      </div>
-
-      <div class="lcal" id="lCalBox" hidden>
-        <p class="lcal-tip">날짜 숫자 오른쪽 위에 하루 총액이 알약으로 붙어요(지출 <b class="out">-금액</b>, 수입 <b class="in">+금액</b>). 칸에는 그날 쓴·번 내역이 <b>분류 · 내역 · 금액</b>으로 모두 나오고, 칸을 누르면 그날 일간으로 넘어가요.</p>
-        <div class="mgrid-frame lcal-frame">
-          <div class="mgrid">
-            <div class="mdow" aria-hidden="true">
-              <span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span class="sat">토</span><span class="sun">일</span>
-            </div>
-            <div class="mcells lcal-cells" id="lCalCells" role="grid" aria-label="장부 월 달력"></div>
-          </div>
-        </div>
       </div>
 
       <div class="ledger-grid" id="lgrid">
@@ -2329,11 +2355,11 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
         <li><b>할 일</b> — 네모를 누를 때마다 <b>□ → ○ 완료 → △ 일부 → × 못함 → → 미룸</b> 순서로 바뀌어요.</li>
         <li><b>카드</b> — <b>작업·자기개발·일정·여가 시간</b> 열은 카드로 적어요. <b>작업·자기개발·일정</b> 카드는 위줄에서 상태와 분류(플랫폼·카테고리·일정 분류)를 고르고, <b>여가 시간</b> 카드는 상태 없이 분류만 골라요. 제목 아래 <b>상세 내역</b>에 여러 줄로 메모해요. 분류 목록은 카드의 <b>＋ 플랫폼/카테고리/분류 관리</b>나 카테고리 관리에서 직접 추가·이름 바꾸기·삭제할 수 있어요. 카드 위쪽 <b>⋮⋮</b>를 끌면 같은 열 안에서 카드 순서를 위아래로 바꿀 수 있어요(PC는 바로, 터치는 잠깐 꾹 누른 뒤).</li>
         <li><b>주간</b> — 일간에서 칠하고 적은 내용이 그대로 모이고, 주간에서 고쳐도 일간에 바로 반영돼요. 주간 화면 위쪽 형광펜도 그대로 쓸 수 있어요(PC 0.15초 · 터치 0.18초 꾹). 주간 위쪽 <b>할 일</b> 탭은 상태·분류 태그·제목·상세 내역이 붙은 카드로(끌어서 날짜 이동, 같은 날 안에서는 끌어 순서 바꾸기, 맨 아래 <b>작/일/자</b>로 분류 골라 빠른 추가), <b>건강</b> 탭은 식단을 시간·시간대와 내용 카드로, <b>여가시간</b> 탭은 카테고리 배지·제목·상세 내역 카드로 모아 보여 줘요.</li>
-        <li><b>장부</b> — 날짜·분류·시간·내용·금액·수입/지출을 적고 상세 내역을 여러 줄로 남겨요. 총 지출·총 수입·잔액과 <b>분류별 모아보기</b>가 자동으로 정리되고, 분류를 누르면 그 내역만 필터링됩니다. 일간 장부 열과 주간 장부 탭은 한 건을 <b>1줄 분류·수입/지출 · 2줄 시간·내역·금액 · 3줄 상세 내역</b> 카드로 보여 줘요. 위의 <b>표 | 달력</b>으로 보기를 바꾸면 한 달 지출(−)과 수입(+)을 달력 한 장으로 모아 보고, 날짜 숫자 오른쪽 위에 그날 하루 총액(−지출, +수입)이 알약으로 붙고, 칸 안에 그날 내역이 <b>분류 · 내역 · 금액</b>으로 전부 나와요(내역이 많으면 칸이 자동으로 높아짐). 날짜 칸을 누르면 그날 일간으로 넘어가요.</li>
+        <li><b>장부</b> — 날짜·분류·시간·내용·금액·수입/지출을 적고 상세 내역을 여러 줄로 남겨요. 위에 <b>총 지출·총 수입·잔액</b> 카드와 빠른 입력, 아래에 <b>상세 내역 목록</b>과 <b>분류별 모아보기</b>만 있어요(분류를 누르면 그 내역만 필터링). 일간 장부 열과 주간 장부 탭은 한 건을 <b>1줄 분류·수입/지출 · 2줄 시간·내역·금액 · 3줄 상세 내역</b> 카드로 보여 줘요. 한 달 지출(−)과 수입(+)을 달력으로 모아 보는 <b>장부 달력</b>은 <b>월간</b> 탭의 <b>장부</b> 색인으로 옮겼어요 — 날짜 숫자 오른쪽 위에 그날 하루 총액(−지출, +수입)이 알약으로 붙고, 칸 안에 그날 내역이 <b>분류 · 내역 · 금액</b>으로 전부 나오며(내역이 많으면 칸이 자동으로 높아짐), 날짜 칸을 누르면 그날 일간으로 넘어가요.</li>
         <li><b>콘텐츠</b> — 이모티콘·스티커·속지처럼 만든 것마다 플랫폼과 진행 상태를 붙여 한곳에 모아요. 등록할 때 <b>제출일</b>과 <b>출시일</b>을 따로 적고(둘 중 하나만 적어도 저장돼요), 목록에는 제출일·출시일이 각각 나와요. 본문 카드 맨 위의 <b>달력 | 목록</b>으로 보기를 바꿔요(마지막에 고른 보기는 이 기기에 기억돼요). <b>목록</b>은 플랫폼·상태 배지와 이름·메모, 제출일·출시일, 단가·판매 건수, 누적 수익(이번 달)을 한 줄씩 표로 모아 여러 개를 한눈에 훑기 좋고, 줄 끝의 <b>＋</b>(수익 기록)·<b>▾</b>(수익 내역 펼치기)·<b>✎</b>·<b>✕</b>로 고치고 지워요(좁은 화면은 플랫폼·상태·수익 / 이름·버튼 / 날짜·단가·판매 세 줄로 접혀요). <b>달력</b>에서는 월 달력에서 제출일은 <b>제출</b>, 출시일은 <b>출시</b> 배지로 날짜 칸에 따로 모이고, 날짜 칸의 콘텐츠 배지를 누르면 수정, 초록 +금액을 누르면 그 수익 내역이 열려요. 목록의 <b>＋</b>(수익 기록)로 판매·정산 내역(날짜·건수·금액·메모)을 여러 건 쌓으면 <b>누적 수익</b>과 <b>총 판매 건수</b>가 바로 다시 계산되고, 위의 <b>총 누적 수익·이번 달 수익</b>과 플랫폼별 수익도 함께 따라가는데, <b>플랫폼별 수익</b>은 판매·출시 중인 콘텐츠에 이미 수익이 난 콘텐츠(판매중지 등)까지 함께 세요(기획·제작중·심사중처럼 팔지도 않고 수익도 없는 것은 개수에서 뺌). 수익 줄을 누르면 수정, ✕로 삭제됩니다. 플랫폼과 상태 목록은 옆의 <b>🏷️ 분류 관리</b>에서 직접 추가·삭제하고 ⋮⋮로 순서를 바꿔요. <b>단가</b>를 넣어 두면 <b>＋ 수익 기록</b>에서 판매 건수만 넣어도 수익이 <b>단가 × 판매 건수</b>로 자동으로 채워지고(수수료처럼 실제 금액이 다르면 금액만 직접 고쳐요), <b>달력</b>의 <b>빈 날짜 칸</b>을 누르면 그날을 제출일로 새 콘텐츠를 바로 열 수 있어요.</li>
         <li><b>일간 열</b> — <b>건강</b>은 위에서부터 몸무게 → 오늘의 한 줄 → 식단(시간·시간대·내용, 여러 줄 가능)을 적고, 아래 트래커 한 칸에 물·약·에너지·장건강(안감·정상·딱딱함·설사·혈변 중 하나, 누르면 선택·다시 누르면 해제)·기분(5단계)을 모아 둡니다. <b>작업·자기개발·일정·여가 시간</b>은 분류·상세 내역이 붙은 카드로 적어요(작업·자기개발·일정은 앞의 실행 여부 버튼으로 완료 상태도 남겨요). <b>장부</b>는 맨 위에 오늘 지출·오늘 수입과 이번 달 지출·수입 합계를 두고, 그 아래에서 수입/지출을 골라 시간·분류·내용·금액·상세 내역을 적어요. 기분 이모지는 월간 달력에도 표시됩니다.</li>
         <li><b>피드백</b> — <b>작업·자기개발·일정·장부·여가 시간</b> 열 맨 아래 칸에 그날의 회고를 적어요. 날짜마다 따로 저장되고, 화면을 넓게 보면 건강 열과 같은 높이까지 채워집니다.</li>
-        <li><b>월간</b> — 한 달을 달력 한 장으로 모아 봐요. 날짜를 누르면 그날 일간으로 바로 넘어가고, <b>이달의 목표</b>·<b>한 줄 리뷰</b>는 아래 통계와 함께 자동 저장돼요.</li>
+        <li><b>월간</b> — 한 달을 달력 한 장으로 모아 봐요. 위 색인 탭(<b>전체 · 할일 · 자기개발 · 여가 · 장부</b>)으로 그 분류만 펼쳐 보거나 <b>장부 달력</b>으로 바꿔 보고, 아래 통계도 고른 탭에 맞춰 바뀌어요(<b>장부</b>는 이번 달 지출·수입·순합계와 분류별 지출 합계). 날짜를 누르면 그날 일간으로 바로 넘어가고, <b>이달의 목표</b>·<b>한 줄 리뷰</b>는 아래 통계와 함께 자동 저장돼요.</li>
         <li><b>카테고리 관리</b> — 위쪽 <b>카테고리</b> 버튼에서 형광펜·장부 분류·<b>작업 플랫폼</b>·<b>콘텐츠 플랫폼</b>·<b>콘텐츠 상태</b>·<b>일정 분류</b>·<b>자기개발 카테고리</b>·<b>여가 카테고리</b>·<b>식단 시간대</b>·약 종류를 직접 추가하거나 지울 수 있어요. 각 줄 왼쪽 <b>⋮⋮</b>를 위아래로 끌면 순서가 바뀌고(마우스·터치·애플펜슬 모두), 바뀐 순서는 카드의 분류 선택 목록에도 그대로 나와요. 콘텐츠 플랫폼·상태는 <b>콘텐츠</b> 탭의 <b>🏷️ 분류 관리</b> 버튼으로도 바로 열 수 있어요.</li>
         <li><b>저장</b> — 모든 변경은 이 브라우저에 자동 저장돼요. <b>Google 로그인</b>하면 다른 기기와 자동으로 이어지고, 로그아웃해도 이 기기의 기록은 그대로 남아요. 같은 로그인으로 <b>Google Drive 자동 백업</b>도 함께 켜져서 내 드라이브에 백업 파일이 쌓이고, AI가 그 파일을 읽어 아침 브리핑·일정 정리에 반영할 수 있어요.</li>
       </ul>
@@ -2827,7 +2853,7 @@ function normalize(o){
   }
   var st=o.settings||{};
   s.settings.mode = st.mode==="focus" ? "focus" : "all";
-  s.settings.monthTab = (st.monthTab==="tasks"||st.monthTab==="study"||st.monthTab==="leisure") ? st.monthTab : "all";
+  s.settings.monthTab = (st.monthTab==="tasks"||st.monthTab==="study"||st.monthTab==="leisure"||st.monthTab==="ledger") ? st.monthTab : "all";
   s.settings.dday = {label:(st.dday&&st.dday.label)||"", date:(st.dday&&st.dday.date)||""};
   s.settings.helpSeen = !!st.helpSeen;
   s.ledger={entries:[]};
@@ -4470,9 +4496,9 @@ function monthTotals(key){
           focusAvg: focusDays? Math.round(focus/focusDays):0};
 }
 
-/* ---------- 월간 인덱스 탭 (전체 · 할일 · 자기개발 · 여가) ----------
+/* ---------- 월간 인덱스 탭 (전체 · 할일 · 자기개발 · 여가 · 장부) ----------
    선택한 탭은 S.settings.monthTab 에 저장되어 새로고침 후에도 유지된다. */
-var MONTH_TABS=["all","tasks","study","leisure"];
+var MONTH_TABS=["all","tasks","study","leisure","ledger"];
 var MONTH_ITEM_COLOR={home:"#EC9E58", work:"#E3C24E", study:"#EC8FA8", leisure:"#5FB3A5"};
 var MONTH_ITEM_NAME={home:"일정", work:"작업", study:"자기개발", leisure:"여가"};
 function monthTaskKind(t){ var k=t.list; return (k==="home"||k==="study"||k==="leisure")?k:"work"; }
@@ -4483,15 +4509,22 @@ function monthTabKey(){
 /* 인쇄는 탭과 상관없이 달 전체 기록을 찍는다(종이에서는 탭을 고를 수 없으므로 예전과 같은 결과). */
 var printMonthAll=false;
 function syncMonthTabs(){
-  var k=monthTabKey();
+  var uiK=monthTabKey();
+  /* 인쇄 중에는 종이에 탭을 고를 수 없어 달 전체(all)로 찍는다 — 프레임 톤·칸 규칙도 all로 맞춘다 */
+  var k=printMonthAll ? "all" : uiK;
   $$("#monthIndex .wi").forEach(function(b){
-    var on=(b.dataset.mtab===k);
+    var on=(b.dataset.mtab===uiK);
     b.classList.toggle("on", on);
     b.setAttribute("aria-selected", on?"true":"false");
     b.tabIndex = on?0:-1;
   });
   var vm=$("#viewMonth");
   if(vm) vm.setAttribute("data-mtab", k);
+  /* 장부 색인에서만 달력 위 안내(하루 총액 알약·칸 누르면 일간)를 보여 준다 */
+  var tip=$("#mCalTip");
+  if(tip) tip.hidden=(k!=="ledger");
+  var cells=$("#mCells");
+  if(cells) cells.setAttribute("aria-label", k==="ledger"?"월간 장부 달력":"월간 달력");
 }
 function setMonthTab(k){
   if(MONTH_TABS.indexOf(k)<0) k="all";
@@ -4536,6 +4569,13 @@ function renderMonth(){
 
   var html="";
   var mtab = printMonthAll ? "all" : monthTabKey();
+  /* 장부 색인 — 월간 달력 틀(#mCells · 점선 격자) 그대로 그날 지출·수입 달력을 채우고,
+     아래 통계는 이번 달 장부 요약으로 바꾼다. */
+  if(mtab==="ledger"){
+    renderMonthLedger();
+    renderMonthStats(monthTotals(curMon));
+    return;
+  }
   for(var i=0;i<lead;i++) html+='<div class="mcell out" aria-hidden="true"></div>';
   for(var d=1;d<=dim;d++){
     var date=curMon+"-"+pad(d);
@@ -4653,7 +4693,8 @@ function renderMonth(){
 var MONTH_TAB_TONE={
   tasks:  {t:"#FDF0B8", ti:"#8A6A12", bar:{home:"#EFA96A", work:"#EBCB5A"}},
   study:  {t:"#FCE9F0", ti:"#9C4B63", bar:{study:"#EC8FA8"}},
-  leisure:{t:"#CFF0EA", ti:"#2F7A6E", bar:{leisure:"#5FB3A5"}}
+  leisure:{t:"#CFF0EA", ti:"#2F7A6E", bar:{leisure:"#5FB3A5"}},
+  ledger: {t:"#DDF2E4", ti:"#3F8E5B", bar:{}}
 };
 /* 탭별 '집중 시간'에 합산할 형광펜 카테고리 — 기본 DEF_CATS ID + 이름 키워드
    실제 이름(작업 · 자기개발 · 일정 · 운동 · 근무 · 잠 · 여가 · 이동)을 먼저 보고,
@@ -4671,11 +4712,12 @@ var MONTH_TASKS_TIME_SPLIT=[
   {label:"작업", ids:["work"],  keys:["작업"]},
   {label:"일정", ids:["event"], keys:["일정"]}
 ];
-var MONTH_TAB_BAR_TITLE={tasks:"할일 분류별 집계 (실행)", study:"자기개발 분류별 집계 (실행)", leisure:"여가 분류별 집계"};
+var MONTH_TAB_BAR_TITLE={tasks:"할일 분류별 집계 (실행)", study:"자기개발 분류별 집계 (실행)", leisure:"여가 분류별 집계", ledger:"분류별 지출 합계"};
 var MONTH_TAB_EMPTY={
   tasks:  "이번 달에 실행한 할 일이 아직 없어요. 일간에서 ○·△로 표시해 보세요.",
   study:  "이번 달에 실행한 자기개발이 아직 없어요. 일간에서 ○·△로 표시해 보세요.",
-  leisure:"이번 달에 기록한 여가가 아직 없어요. 여가 시간 카드에 적어 보세요."
+  leisure:"이번 달에 기록한 여가가 아직 없어요. 여가 시간 카드에 적어 보세요.",
+  ledger: "이번 달 장부 기록이 아직 없어요. 장부 탭에서 첫 내역을 적어 보세요."
 };
 function normCatName(s){ return String(s==null?"":s).replace(/[\s·ㆍ.,\/_\-\(\)]/g,"").toLowerCase(); }
 /* 할 일 카드의 list(home/work/study/leisure) → 월간 인덱스 탭 키 */
@@ -4753,9 +4795,12 @@ function renderMonthStats(mt){
   var tab = printMonthAll ? "all" : monthTabKey();
   var isTab = !!MONTH_TAB_TONE[tab];
   var isTasks = (tab==="tasks");
-  cards.classList.toggle("two", isTab && !isTasks);
+  var isLedger = (tab==="ledger");
+  cards.classList.toggle("two", isTab && !isTasks && !isLedger);
   cards.classList.toggle("quad", isTasks);
+  cards.classList.toggle("three", isLedger);
   bars.classList.toggle("tabview", isTab);
+  bars.classList.toggle("moneyview", isLedger);
 
   if(isTab){
     var tone=MONTH_TAB_TONE[tab];
@@ -4770,10 +4815,37 @@ function renderMonthStats(mt){
         return tabCard(s.label+" · 기록한 날 · 평균", sp.days+"일 · "+hmText(sp.avg))
              + tabCard(s.label+" 시간 합계", hmText(sp.min));
       }).join("");
+    }else if(isLedger){
+      /* 장부 탭 — 이번 달 지출·수입과 순합계(수입 − 지출) */
+      var lt=ledgerMonthTotals(curMon);
+      var balTxt=(lt.bal<0?"−":"+")+fmtWon(Math.abs(lt.bal));
+      cards.innerHTML = tabCard("이번 달 지출", '<span style="color:#A9504A">'+fmtWon(lt.exp)+"</span>")
+                      + tabCard("이번 달 수입", '<span style="color:#2F7F60">'+fmtWon(lt.inc)+"</span>")
+                      + tabCard("순합계 (수입 − 지출)", '<span style="color:'+(lt.bal<0?"#A9504A":"#2F7F60")+'">'+balTxt+"</span>");
     }else{
       var tf=monthTabFocus(tab);
       cards.innerHTML = tabCard("기록한 날 · 하루 평균", tf.days+"일 · "+hmText(tf.avg))
                       + tabCard(MONTH_TAB_TIME_MATCH[tab].label, hmText(tf.min));
+    }
+
+    /* 장부 탭 — 분류별 지출 합계(금액) 막대. 수입은 위 카드에만 보여 준다. */
+    if(isLedger){
+      var lt2=ledgerMonthTotals(curMon);
+      var arrL=S.ledgerCats.filter(function(c){ return c.type==="expense" && (lt2.by[c.id]||0)>0; });
+      arrL.sort(function(a,b){ return (lt2.by[b.id]||0)-(lt2.by[a.id]||0); });
+      var bhL="";
+      if(arrL.length){
+        var maxL=lt2.by[arrL[0].id]||0;
+        arrL.forEach(function(c){
+          var mm=lt2.by[c.id]||0;
+          var w=Math.max(3, Math.round(mm/maxL*100));
+          bhL+='<div class="bl"><span class="nm">'+esc(c.name)+'</span><span class="track"><span class="fill" style="width:'+w+'%;--c:'+c.color+'"></span></span><span class="tm">'+fmtWon(mm)+'</span></div>';
+        });
+      }else{
+        bhL='<div class="empty">'+esc(MONTH_TAB_EMPTY.ledger)+'</div>';
+      }
+      bars.innerHTML='<div class="lab" style="margin-bottom:6px">'+esc(MONTH_TAB_BAR_TITLE.ledger)+'</div>'+bhL;
+      return;
     }
 
     var rows=monthTabCounts(tab);
@@ -4820,7 +4892,6 @@ function renderMonthStats(mt){
    6-2. 장부
    ============================================================ */
 var curMonth = todayISO().slice(0,7);
-var lView = "table";   /* 장부 보기: table(표) | cal(달력) */
 var ledgerFilter = null;
 var qaType = "expense";
 var moneyType = "expense";
@@ -4834,6 +4905,17 @@ function entries(){
 function monthEntries(){
   var p=curMonth+"-";
   return entries().filter(function(e){ return e.date && e.date.indexOf(p)===0; });
+}
+/* 한 달 장부 합계 — 월간 색인 '장부' 탭의 달력·통계에 쓴다(장부 탭 합계와 같은 계산). */
+function ledgerMonthTotals(key){
+  var pre=key+"-", exp=0, inc=0, n=0, incCnt=0, by={}, cnt={};
+  entries().forEach(function(e){
+    if(!e.date || e.date.indexOf(pre)!==0) return;
+    n++;
+    if(e.type==="income"){ inc+=e.amount; incCnt++; }
+    else { exp+=e.amount; by[e.cat]=(by[e.cat]||0)+e.amount; cnt[e.cat]=(cnt[e.cat]||0)+1; }
+  });
+  return {exp:exp, inc:inc, bal:inc-exp, n:n, incCnt:incCnt, by:by, cnt:cnt};
 }
 function fmtWon(n){ return Math.round(n||0).toLocaleString("ko-KR")+"원"; }
 function fmtNum(n){ return Math.round(n||0).toLocaleString("ko-KR"); }
@@ -4899,17 +4981,7 @@ function renderLedger(){
   bEl.classList.toggle("neg", bal<0);
   $("#lCount").textContent=list.length+"건";
 
-  /* 표 | 달력 보기 전환 */
-  var vseg=$("#lViewSeg");
-  if(vseg) $$("button",vseg).forEach(function(b){
-    var on=b.dataset.lview===lView;
-    b.classList.toggle("on",on);
-    b.setAttribute("aria-pressed", on?"true":"false");
-  });
-  var lcal=$("#lCalBox"), lg=$("#lgrid");
-  if(lcal) lcal.hidden=(lView!=="cal");
-  if(lg) lg.hidden=(lView==="cal");
-  if(lView==="cal"){ renderLedgerCalendar(); return; }
+  /* 달력 보기는 월간 색인의 '장부' 탭으로 옮겼다 — 이 탭은 요약 카드 + 목록형만 남긴다. */
 
   var fEl=$("#lFilter");
   if(ledgerFilter){
@@ -4953,19 +5025,21 @@ function renderLedger(){
   $("#lCats").innerHTML = catHTML || '<div class="lc-none">이번 달 기록이 아직 없어요.</div>';
 }
 
-/* ---------- 장부 월 달력 ----------
+/* ---------- 장부 월 달력 (월간 색인의 '장부' 탭) ----------
    날짜 칸에 그날의 지출·수입 내역을 분류 · 내역 · 금액으로 하나도 빠짐없이 나열하고,
    날짜 숫자 오른쪽 위에 그날 하루 총액(지출 -금액, 수입 +금액)을 알약으로 붙인다.
-   칸은 높이가 내용만큼 늘어나서(자동) 내역이 많아도 잘리지 않고, 칸을 누르면 그날 일간으로 넘어간다. */
-function renderLedgerCalendar(){
-  var box=$("#lCalCells");
+   칸은 높이가 내용만큼 늘어나서(자동) 내역이 많아도 잘리지 않고, 칸을 누르면 그날 일간으로 넘어간다.
+   월간 화면에서는 월간 달력 틀(#mCells)에 그대로 그리므로 box·mon을 받아 쓴다. */
+function renderLedgerCalendar(box, mon){
   if(!box) return;
-  var p=String(curMonth).split("-").map(Number), y=p[0], m=p[1];
+  mon = mon || curMonth;
+  var p=String(mon).split("-").map(Number), y=p[0], m=p[1];
   var dim=new Date(y,m,0,12).getDate();
   var lead=(new Date(y,m-1,1,12).getDay()+6)%7;
   var today=todayISO();
+  var pre=mon+"-";
   var byD={};
-  monthEntries().forEach(function(e){
+  entries().filter(function(e){ return e.date && e.date.indexOf(pre)===0; }).forEach(function(e){
     var d=byD[e.date]||(byD[e.date]={exp:0, inc:0, n:0, items:[]});
     if(e.type==="income") d.inc+=e.amount; else d.exp+=e.amount;
     d.n++; d.items.push(e);
@@ -4973,7 +5047,7 @@ function renderLedgerCalendar(){
   var html="";
   for(var i=0;i<lead;i++) html+='<div class="mcell out" aria-hidden="true"></div>';
   for(var d=1;d<=dim;d++){
-    var date=curMonth+"-"+pad(d);
+    var date=mon+"-"+pad(d);
     var wd=new Date(y,m-1,d,12).getDay();
     var rec=byD[date], has=!!(rec && rec.n);
     var cls="mcell lcell"+(wd===0?" sun":wd===6?" sat":"")+(date===today?" today":"")+(has?"":" empty");
@@ -5018,6 +5092,15 @@ function renderLedgerCalendar(){
   var fill=(7-((lead+dim)%7))%7;
   for(var j=0;j<fill;j++) html+='<div class="mcell out" aria-hidden="true"></div>';
   box.innerHTML=html;
+}
+
+/* 월간 → 장부 색인 — 월간 달력 틀(#mCells)에 장부 달력을 그리고,
+   상단 부제는 그 달의 지출·수입으로 바꾼다(통계는 renderMonthStats가 담당). */
+function renderMonthLedger(){
+  var mt=ledgerMonthTotals(curMon);
+  renderLedgerCalendar($("#mCells"), curMon);
+  var sub=$("#mSub");
+  if(sub) sub.textContent="지출 "+fmtWon(mt.exp)+" · 수입 "+fmtWon(mt.inc);
 }
 
 function setEntryType(type){
@@ -5890,7 +5973,7 @@ function syncCatViews(o){
   renderPalette();
   refreshSums();
   if(view==="week") renderWeek();
-  if(o.ledger) renderLedger();
+  if(o.ledger){ renderLedger(); if(view==="month") renderMonth(); }
   if(o.health) renderHealth();
   renderTaskList("work"); renderTaskList("study"); renderTaskList("home"); renderTaskList("leisure");
   scheduleSave();
@@ -7532,11 +7615,16 @@ function bindEvents(){
   });
 
   $("#mCells").addEventListener("click", function(e){
+    /* 장부 색인의 달력 칸은 data-lday를 쓴다 */
+    var ld=e.target.closest("[data-lday]");
+    if(ld){ openDay(ld.dataset.lday); return; }
     var c=e.target.closest(".mcell[data-date]");
     if(c) openDay(c.dataset.date);
   });
   $("#mCells").addEventListener("keydown", function(e){
     if(e.key!=="Enter" && e.key!==" " && e.key!=="Spacebar") return;
+    var ld=e.target.closest("[data-lday]");
+    if(ld){ e.preventDefault(); openDay(ld.dataset.lday); return; }
     var c=e.target.closest(".mcell[data-date]");
     if(c){ e.preventDefault(); openDay(c.dataset.date); }
   });
@@ -7545,23 +7633,6 @@ function bindEvents(){
   $("#lPrev").addEventListener("click", function(){ curMonth=shiftMonth(curMonth,-1); renderLedger(); });
   $("#lNext").addEventListener("click", function(){ curMonth=shiftMonth(curMonth,1); renderLedger(); });
   $("#lToday").addEventListener("click", function(){ curMonth=todayISO().slice(0,7); renderLedger(); });
-  var lseg=$("#lViewSeg");
-  if(lseg) lseg.addEventListener("click", function(e){
-    var b=e.target.closest("[data-lview]");
-    if(!b) return;
-    lView=(b.dataset.lview==="cal")?"cal":"table";
-    renderLedger();
-  });
-  var lcc=$("#lCalCells");
-  if(lcc) lcc.addEventListener("click", function(e){
-    var c=e.target.closest("[data-lday]");
-    if(c) openDay(c.dataset.lday);
-  });
-  if(lcc) lcc.addEventListener("keydown", function(e){
-    if(e.key!=="Enter" && e.key!==" " && e.key!=="Spacebar") return;
-    var c=e.target.closest("[data-lday]");
-    if(c){ e.preventDefault(); openDay(c.dataset.lday); }
-  });
   $("#qaType").addEventListener("click", function(e){
     var b=e.target.closest("button"); if(!b) return;
     qaType=b.dataset.type;
