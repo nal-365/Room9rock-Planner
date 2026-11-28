@@ -941,25 +941,26 @@ html.wdnd-on,html.wdnd-on body{-webkit-user-select:none;user-select:none;cursor:
 .mstats{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:12px}
 .sc-wide b{font-size:14px;padding-top:4px}
 
-/* ---------- 장부 ---------- */
-.ledger-wrap{display:grid;gap:12px;max-width:1280px;margin:0 auto}
-.led-head{display:flex;flex-wrap:wrap;align-items:stretch;gap:10px}
+/* ---------- 장부 ----------
+   콘텐츠 탭과 같은 결로 다시 짰다: 헤더(장부 · 전체 건수 / 🏷️ 분류 관리 · ＋ 추가) → 요약 3칸 →
+   필터 칩(분류 · 세부 분류 · 정렬) → 흰 본문 카드(월 이동 · N건 / 상세 내역 목록).
+   장부 달력은 월간 색인의 '장부' 탭에 그대로 있고, 데이터(Firebase·Drive 백업) 스키마도 그대로다. */
+.ledger-wrap{display:grid;gap:10px;max-width:1280px;margin:0 auto}
 .month-nav{display:flex;align-items:center;gap:6px;background:#fff;border:1px solid var(--line);border-radius:11px;padding:6px 9px}
 .month-label{text-align:center;min-width:116px;line-height:1.15}
 .month-label b{font-family:var(--serif);font-size:16px;font-variant-numeric:tabular-nums;letter-spacing:.2px}
 .month-label span{display:block;font-size:10px;color:var(--ink-mute);font-weight:700}
 /* 날짜 이동 묶음 안에서 '이번 주/이번 달'만 살짝 떼어 두어 화살표·날짜와 구분 */
 .week-nav>.mini,.month-nav>.mini{margin-left:3px}
-.sum-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;flex:1 1 440px}
-.sum{background:#fff;border:1px solid var(--line);border-radius:11px;padding:9px 13px}
-.sum span{display:block;font-size:10px;font-weight:800;letter-spacing:.5px;color:var(--ink-mute)}
-.sum b{display:block;margin-top:2px;font-size:20px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.4px}
-.sum.expense b{color:#B4544E}
-.sum.income b{color:#2F7F60}
-.sum.balance b{color:var(--accent-deep)}
-.sum.balance b.neg{color:#B4544E}
+/* 요약 3칸 — 콘텐츠 탭 .csum을 그대로 쓰고, 장부는 지출(붉은)·수입(초록)·잔액(파랑, 음수는 붉은) 색만 더한다 */
+.csum.out b{color:#B4544E}
+.csum.bal b{color:var(--accent-deep)}
+.csum.bal b.neg{color:#B4544E}
+/* 필터 칩 안의 장부 분류 색 점 */
+.fchip .fdot{display:inline-block;width:7px;height:7px;margin-right:5px;border-radius:2px;background:var(--c);box-shadow:inset 0 0 0 1px rgba(0,0,0,.05)}
+#lCatBtn{font-size:11.5px;padding:5px 9px}
 
-/* 상단 바 배치 — 왼쪽 날짜 영역이 상단 바 폭의 약 2/3를 쓰고, 오른쪽 목표·리뷰(장부는 합계 카드)가 나머지 1/3을 나눠 가진다.
+/* 상단 바 배치 — 왼쪽 날짜 영역이 상단 바 폭의 약 2/3를 쓰고, 오른쪽 목표·리뷰가 나머지 1/3을 나눠 가진다.
    넓은 화면에서만 적용하고, 그 아래(태블릿·폰)는 예전처럼 폭이 모자라면 줄바꿈되는 flex 배치를 그대로 둔다. */
 @media screen and (min-width:981px){
   .week-top,.month-top{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);grid-template-rows:auto auto;gap:10px;align-items:stretch}
@@ -971,42 +972,23 @@ html.wdnd-on,html.wdnd-on body{-webkit-user-select:none;user-select:none;cursor:
   .month-top>.goal-box{grid-column:2;grid-row:1}
   .month-top>.review-box{grid-column:2;grid-row:2}
   /* 날짜·기간 라벨은 내용 폭만큼만(칸이 넓어져도 화살표 사이 간격은 그대로) */
-  .week-top>.week-nav .week-range,.month-top>.month-nav .month-label,.led-head>.month-nav .month-label{flex:0 0 auto}
-  .led-head{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:10px;align-items:stretch}
-  .led-head>.month-nav{grid-column:1;justify-content:center;gap:9px}
-  .led-head>.sum-cards{grid-column:2;flex:none;gap:6px}
-  .led-head .sum{padding:8px 11px}
-  .led-head .sum b{font-size:17px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .week-top>.week-nav .week-range,.month-top>.month-nav .month-label{flex:0 0 auto}
 }
-/* 981~1200px(아이패드 가로 등) — 오른쪽 칸이 좁아 금액이 잘리지 않게 날짜 영역을 3:2로 두고,
-   주간 리뷰는 라벨·별점과 한 줄 평을 두 줄로 접는다. */
+/* 981~1200px(아이패드 가로 등) — 오른쪽 칸이 좁아 금액이 잘리지 않게 주간 리뷰를 두 줄로 접는다. */
 @media screen and (min-width:981px) and (max-width:1200px){
-  .led-head{grid-template-columns:minmax(0,3fr) minmax(0,2fr)}
-  .led-head .sum b{font-size:16px}
   .week-top>.review-box{flex-wrap:wrap}
   .week-top>.review-box input{flex:1 1 100%}
 }
-.quick-add{background:#fff;border:1px solid var(--line);border-radius:12px;padding:9px 11px}
-.qa-row{display:flex;flex-wrap:wrap;gap:7px;align-items:center}
-.qa-row input,.qa-row select{border:1px solid var(--line);border-radius:8px;padding:7px 9px;font-size:13px;background:#FBFDFF;outline:none;min-width:0;color:var(--ink)}
-.qa-row input:focus,.qa-row select:focus{border-color:var(--accent-ring)}
-.qa-date{flex:0 0 132px}
-.qa-seg{flex:0 0 auto}
-.qa-cat{flex:1 1 118px;max-width:170px}
-.qa-memo{flex:2 1 170px}
-.qa-amount{flex:0 1 112px;text-align:right;font-variant-numeric:tabular-nums;font-weight:700}
-.qa-row .won{font-size:11.5px;color:var(--ink-mute);margin-left:-3px}
-.qa-add{flex:0 0 auto}
-.qa-time{flex:0 0 74px;text-align:center}
-.qa-detail-btn{border:1px dashed var(--line-strong);background:transparent;border-radius:7px;padding:4px 8px;font-size:11px;font-weight:700;color:var(--ink-mute);cursor:pointer;margin-top:7px}
-.qa-detail-btn:hover{background:#F8FBFF;color:var(--ink-soft)}
-.qa-detail{display:block;width:100%;margin-top:6px;border:1px solid var(--line);border-radius:8px;padding:7px 9px;font:inherit;font-size:12.5px;line-height:1.55;background:#FBFDFF;outline:none;resize:vertical;min-height:52px;color:var(--ink)}
-.qa-detail:focus{border-color:var(--accent-ring)}
 .btn.primary{background:var(--accent);border-color:var(--accent-ring);color:var(--accent-ink)}
 .btn.primary:hover{background:var(--accent-hover);border-color:var(--accent-hover);color:var(--accent-ink)}
 .btn.danger{color:#B4544E;border-color:#EBCBC8;background:#FFF6F5}
 
-.ledger-grid{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(0,1fr);gap:12px;align-items:start}
+/* 장부 본문 흰 카드 안의 상세 내역 표 — 콘텐츠 목록(.clist)과 같은 행 밀도·버튼 결.
+   넓은 화면은 7칸(날짜 · 구분 · 카테고리 · 시간 · 내역 · 금액 · 수정/삭제),
+   좁은 화면은 한 건을 두 줄 카드로 접는다. */
+.led-board .cboard-head{margin-bottom:9px}
+.led-board .ccount{font-variant-numeric:tabular-nums}
+.ledger-table-card{--lt-cols:58px 50px minmax(0,.62fr) 46px minmax(0,1.5fr) 98px 54px;min-width:0}
 
 /* ---------- 장부 달력 (월간 → 장부 색인) ----------
    장부 탭에 있던 달력을 월간 색인 '장부' 탭으로 옮겼다. 달력 틀(#mCells · 1px 점선 격자)은
@@ -1059,18 +1041,15 @@ html.wdnd-on,html.wdnd-on body{-webkit-user-select:none;user-select:none;cursor:
   .lli .lc-cat i{width:6px;height:6px}
   .lsum span{font-size:10px;padding:1px 7px}
 }
-.ledger-table-card{--lt-cols:74px minmax(0,.55fr) 50px minmax(0,1.45fr) 100px 74px;background:var(--paper2);border:1px solid var(--line);border-radius:12px;padding:12px 14px;min-width:0}
-.lt-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:4px;min-height:22px}
-.filter-chip{border:1px solid var(--accent-line);background:var(--accent-soft);color:var(--accent-deep);font-size:10.5px;font-weight:800;border-radius:999px;padding:3px 9px;cursor:pointer}
-.lt-row{display:grid;grid-template-columns:var(--lt-cols,74px minmax(0,.55fr) 50px minmax(0,1.45fr) 100px 74px);column-gap:8px;align-items:center;padding:7px 2px 8px;border-bottom:1px dashed var(--line);cursor:pointer;font-size:12.5px;min-width:0}
+.ledger-table-card{min-width:0}
+.lt-row{display:grid;grid-template-columns:var(--lt-cols);column-gap:8px;align-items:center;padding:5px 2px 6px;border-top:1px solid var(--line-soft);cursor:pointer;font-size:12.5px;min-width:0}
+#lRows>.lt-row:first-child{border-top:0}
 .lt-row>*{min-width:0}
-.lt-row:hover{background:#F7FAFF}
-.lt-row.lt-headrow{border-bottom:1px solid var(--line-strong);color:var(--ink-mute);font-size:9.5px;font-weight:800;letter-spacing:.7px;cursor:default;padding:2px 2px 6px}
-.lt-row.lt-headrow .c-num{text-align:right;letter-spacing:0}
-.lt-row.lt-headrow .c-typeh{text-align:left;letter-spacing:0}
-.lt-row.lt-headrow .c-typeh{font-size:8.5px;white-space:nowrap}
+.lt-row:hover{background:#F9FBFF}
+.lt-row.lt-headrow{border-top:0;border-bottom:1px solid var(--line);color:#9FB2CD;font-size:9.5px;font-weight:800;letter-spacing:.5px;cursor:default;padding:2px 2px 6px}
+.lt-row.lt-headrow .c-num{text-align:right;letter-spacing:.2px}
 .lt-row.lt-headrow:hover{background:transparent}
-.lt-detail{grid-column:4 / -1;margin-top:3px;padding-left:1px;font-size:11.5px;line-height:1.55;color:var(--ink-soft);white-space:pre-wrap;word-break:break-word}
+.lt-detail{grid-column:5 / -1;margin-top:2px;padding-left:1px;font-size:11.5px;line-height:1.55;color:var(--ink-soft);white-space:pre-wrap;word-break:break-word}
 .c-time{color:var(--accent-deep);font-weight:800;font-size:11px;font-variant-numeric:tabular-nums;white-space:nowrap}
 .c-time.none{color:#B3C2D9;font-weight:700}
 .c-date{color:var(--ink-soft);font-variant-numeric:tabular-nums;white-space:nowrap;font-size:11.5px}
@@ -1078,7 +1057,7 @@ html.wdnd-on,html.wdnd-on body{-webkit-user-select:none;user-select:none;cursor:
 .c-type{display:inline-flex;align-items:center;gap:4px;font-size:11.5px;color:var(--ink-soft);white-space:nowrap}
 .c-type i{width:7px;height:7px;border-radius:50%;background:#DBA9A4;flex:none}
 .c-type.income i{background:#8ECFB2}
-.c-type-cell{display:flex;align-items:center;gap:2px;min-width:0}
+.c-type-cell{display:flex;align-items:center;min-width:0}
 .c-cat{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--ink-soft);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .c-cat i{width:9px;height:9px;border-radius:2.5px;background:var(--c);flex:none}
 .c-memo{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink)}
@@ -1086,27 +1065,17 @@ html.wdnd-on,html.wdnd-on body{-webkit-user-select:none;user-select:none;cursor:
 .c-amt.exp{color:#A9504A}
 .c-amt.inc{color:#2F7F60}
 .c-num{text-align:right}
-.c-del{flex:none;margin-left:auto;border:0;background:transparent;color:#B3C2D9;font-size:14px;cursor:pointer;border-radius:5px;opacity:0;padding:0;line-height:1;height:20px;width:14px}
-.lt-row:hover .c-del{opacity:1}
-.c-del:hover{background:#FBEDEC;color:#AE4A45}
-.lt-empty{display:none;text-align:center;font-size:12px;color:#A9BAD3;padding:26px 0}
-.lt-empty.on{display:block}
+/* 행 오른쪽 수정·삭제 — 콘텐츠 목록의 .cl-ico와 같은 결 */
+.c-acts{display:flex;align-items:center;justify-content:flex-end;gap:1px;min-width:0}
+.c-ico{border:0;background:transparent;color:#AAB8CE;font-size:12px;line-height:1;padding:4px 3px;border-radius:6px;cursor:pointer;touch-action:manipulation}
+.c-ico:hover{background:#EDF2FC;color:var(--ink-soft)}
+.c-ico.del:hover{background:#FBEDEC;color:#AE4A45}
+.lt-empty{display:none}
+.lt-empty.on{display:block;padding:2px 0 6px}
+.lt-empty .cont-empty{padding:24px 14px 26px}
 .lt-foot{display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--line-strong);margin-top:2px;padding:8px 2px 2px;font-weight:800;font-size:12px;color:var(--ink-soft)}
-.lt-foot b{font-size:14px;color:var(--ink);font-variant-numeric:tabular-nums}
+.lt-foot b{font-size:13.5px;color:var(--ink);font-variant-numeric:tabular-nums}
 
-.ledger-side{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 13px;min-width:0}
-.ledger-side .lab{display:block;margin-bottom:6px}
-.lc{display:block;width:100%;border:0;background:transparent;padding:7px 5px;border-radius:8px;cursor:pointer;text-align:left}
-.lc:hover{background:#F7FAFF}
-.lc.on{background:var(--accent-soft);box-shadow:inset 0 0 0 1px var(--accent-line)}
-.lc-top{display:flex;align-items:center;gap:6px;font-size:12px}
-.lc-top i{width:9px;height:9px;border-radius:2.5px;flex:none;background:var(--c)}
-.lc-top .nm{flex:1;color:var(--ink-soft);font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.lc-top b{font-variant-numeric:tabular-nums;color:var(--ink);font-size:12px}
-.lc-bar{display:block;height:6px;border-radius:4px;background:#EDF2FC;margin:5px 0 3px;overflow:hidden}
-.lc-bar span{display:block;height:100%;border-radius:4px;background:var(--c)}
-.lc-sub{font-size:10px;color:var(--ink-mute)}
-.lc-none{font-size:11.5px;color:#A9BAD3;padding:8px 4px}
 .print-only{display:none}
 
 /* ---------- 토스트 / 다이얼로그 ---------- */
@@ -1182,8 +1151,6 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
   main{padding:14px 14px 116px}
   .cat{width:70px}
   .cat .nm{font-size:9.5px}
-  .ledger-grid{grid-template-columns:1fr}
-  .sum-cards{flex:1 1 100%}
 }
 @media (max-width:720px){
   .bar-in{padding:7px 10px;gap:6px 8px;flex-wrap:wrap}
@@ -1257,31 +1224,35 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
   .dlg{padding:10px}
   .brand .btxt{display:none}
   .tab{padding:6px 11px;font-size:12px}
-  .qa-date{flex:1 1 42%;order:1}
-  .qa-seg{order:2}
-  .qa-cat{flex:1 1 42%;order:3;max-width:none}
-  .qa-memo{flex:1 1 100%;order:4}
-  .qa-amount{flex:1 1 60px;max-width:150px;order:5}
-  .qa-row .won{order:5}
-  .qa-add{order:6;flex:0 0 62px}
-  .sum b{font-size:17px}
-  .lt-row{font-size:11px;column-gap:5px;padding:6px 1px 7px}
-  .ledger-table-card{--lt-cols:44px minmax(0,.8fr) 34px minmax(0,1.2fr) 64px 44px;padding:10px 10px}
-  .lt-row.lt-headrow{font-size:9px;letter-spacing:.3px;padding:2px 1px 5px}
-  .lt-row.lt-headrow .c-typeh{font-size:7.5px;letter-spacing:0}
-  .c-date{font-size:11px}
+  /* 장부 — 좁은 화면은 한 건을 두 줄 카드로 접는다(1줄 날짜·구분·분류·금액 / 2줄 시간·내역·수정삭제) */
+  .led-board .cboard-head{display:flex;flex-wrap:nowrap;gap:8px;align-items:center;margin-bottom:8px}
+  .led-board .cboard-mid{flex:1;order:0;grid-column:auto;justify-content:space-between;margin:0}
+  .led-board .ccount{flex:none;margin-left:0;justify-self:auto}
+  .ledger-table-card{--lt-cols:auto}
+  .lt-row{grid-template-columns:auto auto minmax(0,1fr) auto;
+          grid-template-areas:"date type cat amt" "time memo memo acts";
+          row-gap:2px;column-gap:6px;padding:8px 10px;font-size:11px;
+          border:1px solid var(--line);border-radius:10px;background:var(--paper2)}
+  #lRows>.lt-row{margin-bottom:6px}
+  #lRows>.lt-row:last-child{margin-bottom:0}
+  .lt-row:hover{background:var(--paper2)}
+  .lt-row.lt-headrow{display:none}
+  .c-date{grid-area:date;font-size:11px}
   .c-date .c-dow{display:none}
-  .c-time{font-size:10px}
-  .c-time.none{font-size:9px}
-  .c-cat{font-size:11px;gap:4px}
+  .c-type-cell{grid-area:type}
+  .c-cat{grid-area:cat;font-size:11px;gap:4px}
   .c-cat i{width:7px;height:7px}
-  .c-memo{white-space:normal;line-height:1.35;word-break:keep-all;overflow-wrap:anywhere}
-  .c-amt{font-size:11px}
+  .c-time{grid-area:time;font-size:10px}
+  .c-time.none{font-size:9px}
+  .c-memo{grid-area:memo;white-space:nowrap;line-height:1.35}
+  .c-amt{grid-area:amt;font-size:11.5px}
+  .c-acts{grid-area:acts;gap:0}
+  .c-ico{font-size:12.5px;padding:4px 4px}
   .c-type{font-size:10px;gap:3px}
   .c-type i{width:6px;height:6px}
-  .c-del{width:12px;font-size:13px;opacity:.5}
-  .lt-detail{font-size:11px;grid-column:4 / -1}
-  .ledger-table-card{padding:10px 10px}
+  .lt-detail{grid-column:1 / -1;font-size:11px;margin-top:1px}
+  .lt-foot{font-size:11.5px;padding:8px 0 2px}
+  .lt-foot b{font-size:12.5px}
 }
 @media (max-width:420px){
   .cat{min-width:54px}
@@ -1349,24 +1320,21 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
   .print-only{display:block}
   .print-head{font-size:13pt;font-weight:800;margin-bottom:4mm;font-family:var(--serif)}
   .ledger-wrap{gap:4mm;max-width:none}
-  .led-head{gap:3mm}
-  .sum-cards{grid-template-columns:repeat(3,1fr);gap:2mm}
-  .sum{padding:1.5mm 2.5mm;border-radius:2mm}
-  .sum b{font-size:12pt}
-  .sum span{font-size:7pt}
-  .month-nav{display:none !important}
-  .month-label b{font-size:11pt}
-  .quick-add{display:none !important}
-  .ledger-grid{grid-template-columns:1fr;gap:5mm}
-  .ledger-table-card,.ledger-side{border:1px solid #DDD;border-radius:0;padding:2mm 3mm}
-  .lt-row{display:grid;font-size:8pt;column-gap:2mm;padding:1.4mm 0;border-bottom:1px solid #EEE}
-  .ledger-table-card{--lt-cols:17mm 26mm 11mm minmax(0,1fr) 22mm 18mm}
-  .lt-row.lt-headrow{font-size:6.5pt;padding-bottom:1.2mm}
-  .lt-row.lt-headrow .c-typeh{font-size:5.8pt}
+  /* 장부 — 헤더·필터·월 이동은 화면용이라 빼고, 요약 3칸과 상세 내역만 종이에 담는다 */
+  #viewLedger .cont-head .ttl b{font-size:11pt}
+  #viewLedger .cont-head .ttl span{display:none}
+  #viewLedger .cont-sums{grid-template-columns:repeat(3,1fr);gap:2mm}
+  #viewLedger .csum{padding:1.5mm 2.5mm;border-radius:2mm}
+  #viewLedger .csum>span{font-size:7pt}
+  #viewLedger .csum b{font-size:12pt}
+  #viewLedger .csum em{font-size:6.5pt}
+  #viewLedger .cboard{box-shadow:none;border:0;border-radius:0;padding:0}
+  #viewLedger .ledger-table-card{border:1px solid #DDD;border-radius:0;padding:2mm 3mm}
+  .lt-row{display:grid;font-size:8pt;column-gap:2mm;padding:1.4mm 0;border-top:1px solid #EEE}
+  .ledger-table-card{--lt-cols:15mm 9mm 24mm 10mm minmax(0,1fr) 20mm}
+  .lt-row.lt-headrow{font-size:6.5pt;padding-bottom:1.2mm;border-top:0}
   .lt-detail{font-size:7pt;margin-top:1mm}
-  .c-del{display:none}
-  .lc{padding:1mm 0}
-  .lc-top{font-size:7.5pt}.lc-sub{font-size:6pt}
+  .c-acts{display:none !important}
   .entry-form,.dlg,.toast{display:none !important}
   html,body{background:#fff !important}
   body{-webkit-print-color-adjust:exact;print-color-adjust:exact}
@@ -1452,7 +1420,7 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
   body[data-print="daily"] .fb-lab{font-size:4.6pt;letter-spacing:.4pt}
   body[data-print="daily"] .fb-in{font-size:6pt;line-height:1.65;min-height:8mm;padding-top:0;overflow:hidden;background-image:none}
   body[data-print="daily"] .bm{font-size:5.6pt;padding:0 1mm}
-  .task .del,.c-del{display:none !important}
+  .task .del,.c-acts{display:none !important}
   .wstats{display:none !important}
   .week-pane{padding-top:0}
   .week-pane .wcol,
@@ -2204,53 +2172,62 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
     <div class="ledger-wrap">
       <div class="print-only print-head">방구석 작업실 · <span id="lPrintMonth">2026년 11월</span> 장부</div>
 
-      <div class="led-head">
-        <div class="month-nav">
-          <button class="nav" id="lPrev" aria-label="이전 달">‹</button>
-          <div class="month-label"><b id="lMonth">2026년 11월</b><span id="lCount">0건</span></div>
-          <button class="nav" id="lNext" aria-label="다음 달">›</button>
-          <button class="mini no-print" id="lToday">이번 달</button>
-        </div>
-        <div class="sum-cards">
-          <div class="sum expense"><span>총 지출</span><b id="sumExpense">0원</b></div>
-          <div class="sum income"><span>총 수입</span><b id="sumIncome">0원</b></div>
-          <div class="sum balance"><span>잔액</span><b id="sumBalance">0원</b></div>
+      <!-- 최상단 헤더 — 콘텐츠 탭과 같은 구조: 왼쪽 장부·전체 건수, 오른쪽 🏷️ 분류 관리 · ＋ 추가 -->
+      <div class="cont-head">
+        <div class="ttl"><b>장부</b><span id="lSub">전체 0건</span></div>
+        <div class="cont-tools no-print">
+          <button class="btn ghost" id="lCatBtn" title="장부 분류를 추가·이름 바꾸기·순서 바꾸기">🏷️ 분류 관리</button>
+          <button class="btn primary" id="lAddBtn">＋ 추가</button>
         </div>
       </div>
 
-      <div class="quick-add no-print">
-        <div class="qa-row">
-          <input type="date" class="qa-date" id="qaDate" aria-label="날짜">
-          <span class="seg qa-seg" id="qaType"><button data-type="expense" class="on">지출</button><button data-type="income">수입</button></span>
-          <select class="qa-cat" id="qaCat" aria-label="분류"></select>
-          <input class="qa-time" id="qaTime" maxlength="5" placeholder="시간" aria-label="구매시간">
-          <input class="qa-memo" id="qaMemo" maxlength="60" placeholder="구매내역 (예: 아이스 아메리카노)" aria-label="구매내역">
-          <input class="qa-amount" id="qaAmount" inputmode="numeric" placeholder="0" aria-label="총금액">
-          <span class="won">원</span>
-          <button class="btn primary qa-add" id="qaAdd">추가</button>
+      <!-- 요약 3칸 — 고른 달(과 아래 필터) 기준 -->
+      <div class="cont-sums">
+        <div class="csum out">
+          <span>총 지출</span>
+          <b id="sumExpense">0원</b>
+          <em id="sumExpenseSub">지출 0건</em>
         </div>
-        <textarea class="qa-detail" id="qaDetail" rows="3" maxlength="1000" placeholder="상세내역 (세부금액 포함, 여러 줄)" aria-label="상세내역"></textarea>
+        <div class="csum money">
+          <span>총 수입</span>
+          <b id="sumIncome">0원</b>
+          <em id="sumIncomeSub">수입 0건</em>
+        </div>
+        <div class="csum bal">
+          <span>잔액</span>
+          <b id="sumBalance">0원</b>
+          <em id="sumBalanceSub">수입 − 지출</em>
+        </div>
       </div>
 
-      <div class="ledger-grid" id="lgrid">
-        <div class="ledger-table-card">
-          <div class="lt-head">
-            <span class="lab">상세 내역</span>
-            <button class="filter-chip" id="lFilter" hidden></button>
+      <!-- 필터 칩 — 콘텐츠 탭 필터 행과 같은 결: 분류 · 세부 분류 · 정렬 -->
+      <div class="cont-filt no-print" id="lFiltBox">
+        <div class="cf"><span class="lab">분류</span><div class="cf-chips" id="lTypeChips"></div></div>
+        <div class="cf"><span class="lab">세부</span><div class="cf-chips" id="lCatChips"></div></div>
+        <div class="cf"><span class="lab">정렬</span><div class="cf-chips" id="lSortChips"></div></div>
+      </div>
+
+      <!-- 본문 흰 카드 — 위: 월 이동 · 오른쪽 건수 / 아래: 상세 내역 목록(합계 줄) -->
+      <section class="cboard led-board" aria-label="장부 내역">
+        <div class="cboard-head">
+          <div class="cboard-mid no-print" id="lMonthNav">
+            <button type="button" class="mnav" id="lPrev" aria-label="이전 달">‹</button>
+            <b class="mon-lab" id="lMonth" aria-live="polite">2026년 11월</b>
+            <button type="button" class="mnav" id="lNext" aria-label="다음 달">›</button>
+            <button type="button" class="ctoday" id="lToday">이번 달</button>
           </div>
+          <span class="ccount no-print" id="lCount">0건</span>
+        </div>
+
+        <div class="ledger-table-card">
           <div class="lt-row lt-headrow">
-            <span>날짜</span><span>카테고리</span><span>시간</span><span>내역</span><span class="c-num">금액</span><span class="c-typeh">지출/수입</span>
+            <span>날짜</span><span>구분</span><span>카테고리</span><span>시간</span><span>내역</span><span class="c-num">금액</span><span></span>
           </div>
           <div id="lRows"></div>
-          <div class="lt-empty" id="lEmpty">아직 기록이 없어요. 위에서 첫 내역을 적어 보세요.</div>
+          <div class="lt-empty" id="lEmpty"></div>
           <div class="lt-foot"><span>합계</span><b id="lTotal">0원</b></div>
         </div>
-
-        <aside class="ledger-side">
-          <span class="lab">분류별 모아보기</span>
-          <div id="lCats"></div>
-        </aside>
-      </div>
+      </section>
     </div>
   </section>
 
@@ -2332,8 +2309,8 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
 
 <div class="dlg" id="entryDlg" hidden>
   <div class="dlg-bg" data-eclose="1"></div>
-  <div class="dlg-card" role="dialog" aria-modal="true" aria-label="내역 수정" style="width:min(430px,100%)">
-    <div class="dlg-head"><strong>내역 수정</strong><button class="x" data-eclose="1" aria-label="닫기">✕</button></div>
+  <div class="dlg-card" role="dialog" aria-modal="true" aria-label="장부 내역" id="entryCard" style="width:min(430px,100%)">
+    <div class="dlg-head"><strong id="eDlgTitle">장부 내역 추가</strong><button class="x" data-eclose="1" aria-label="닫기">✕</button></div>
     <div class="dlg-body entry-form">
       <label class="f"><span>날짜</span><input type="date" id="eDate"></label>
       <label class="f"><span>구매시간</span><input id="eTime" maxlength="5" placeholder="HH:MM (선택)"></label>
@@ -2358,7 +2335,7 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
         <li><b>할 일</b> — 네모를 누를 때마다 <b>□ → ○ 완료 → △ 일부 → × 못함 → → 미룸</b> 순서로 바뀌어요.</li>
         <li><b>카드</b> — <b>작업·자기개발·일정·여가 시간</b> 열은 카드로 적어요. <b>작업·자기개발·일정</b> 카드는 위줄에서 상태와 분류(플랫폼·카테고리·일정 분류)를 고르고, <b>여가 시간</b> 카드는 상태 없이 분류만 골라요. 제목 아래 <b>상세 내역</b>에 여러 줄로 메모해요. 분류 목록은 카드의 <b>＋ 플랫폼/카테고리/분류 관리</b>나 카테고리 관리에서 직접 추가·이름 바꾸기·삭제할 수 있어요. 카드 위쪽 <b>⋮⋮</b>를 끌면 같은 열 안에서 카드 순서를 위아래로 바꿀 수 있어요(PC는 바로, 터치는 잠깐 꾹 누른 뒤).</li>
         <li><b>주간</b> — 일간에서 칠하고 적은 내용이 그대로 모이고, 주간에서 고쳐도 일간에 바로 반영돼요. 주간 화면 위쪽 형광펜도 그대로 쓸 수 있어요(PC 0.15초 · 터치 0.18초 꾹). 주간 위쪽 <b>할 일</b> 탭은 상태·분류 태그·제목·상세 내역이 붙은 카드로(끌어서 날짜 이동, 같은 날 안에서는 끌어 순서 바꾸기, 맨 아래 <b>작/일/자</b>로 분류 골라 빠른 추가), <b>건강</b> 탭은 식단을 시간·시간대와 내용 카드로, <b>여가시간</b> 탭은 카테고리 배지·제목·상세 내역 카드로 모아 보여 줘요.</li>
-        <li><b>장부</b> — 날짜·분류·시간·내용·금액·수입/지출을 적고 상세 내역을 여러 줄로 남겨요. 위에 <b>총 지출·총 수입·잔액</b> 카드와 빠른 입력, 아래에 <b>상세 내역 목록</b>과 <b>분류별 모아보기</b>만 있어요(분류를 누르면 그 내역만 필터링). 일간 장부 열과 주간 장부 탭은 한 건을 <b>1줄 분류·수입/지출 · 2줄 시간·내역·금액 · 3줄 상세 내역</b> 카드로 보여 줘요. 한 달 지출(−)과 수입(+)을 달력으로 모아 보는 <b>장부 달력</b>은 <b>월간</b> 탭의 <b>장부</b> 색인으로 옮겼어요 — 날짜 숫자 오른쪽 위에 그날 하루 총액(−지출, +수입)이 알약으로 붙고, 칸 안에 그날 내역이 <b>분류 · 내역 · 금액</b>으로 전부 나오며(내역이 많으면 칸이 자동으로 높아짐), 날짜 칸을 누르면 그날 일간으로 넘어가요.</li>
+        <li><b>장부</b> — 콘텐츠 탭과 같은 모양으로 정리했어요. 맨 위 왼쪽에 <b>장부</b>와 전체 건수, 오른쪽에 <b>🏷️ 분류 관리</b>·<b>＋ 추가</b>가 있고, 누르면 <b>＋ 추가</b>가 날짜·구분(지출/수입)·분류·시간·구매내역·금액·상세 내역을 적는 창을 엽니다(수정도 같은 창). 그 아래 <b>총 지출·총 수입·잔액</b> 카드 3칸은 고른 달과 필터에 맞춰 다시 계산되고, <b>분류(전체·수입·지출)</b>·<b>세부 분류</b>·<b>정렬(최신순·오래된순·높은금액순)</b> 칩으로 걸러 볼 수 있어요. 본문 흰 카드 맨 위 <b>‹ 2026년 11월 › 이번 달</b>로 달을 옮기고 오른쪽에 <b>N건</b>, 아래에 상세 내역 목록이 <b>날짜 · 구분 · 카테고리 · 시간 · 내역 · 금액</b> 순으로 놓이며 행을 누르면 수정, <b>✎</b>·<b>✕</b>로 수정·삭제, 맨 아래에 합계 줄이 있어요. 일간 장부 열과 주간 장부 탭은 한 건을 <b>1줄 분류·수입/지출 · 2줄 시간·내역·금액 · 3줄 상세 내역</b> 카드로 보여 줘요. 한 달 지출(−)과 수입(+)을 달력으로 모아 보는 <b>장부 달력</b>은 <b>월간</b> 탭의 <b>장부</b> 색인에 있어요 — 날짜 숫자 오른쪽 위에 그날 하루 총액(−지출, +수입)이 알약으로 붙고, 칸 안에 그날 내역이 <b>분류 · 내역 · 금액</b>으로 전부 나오며(내역이 많으면 칸이 자동으로 높아짐), 날짜 칸을 누르면 그날 일간으로 넘어가요.</li>
         <li><b>콘텐츠</b> — 이모티콘·스티커·속지처럼 만든 것마다 플랫폼과 진행 상태를 붙여 한곳에 모아요. 등록할 때 <b>제출일</b>과 <b>출시일</b>을 따로 적고(둘 중 하나만 적어도 저장돼요), 목록에는 제출일·출시일이 각각 나와요. 본문 카드 맨 위의 <b>달력 | 목록</b>으로 보기를 바꿔요(마지막에 고른 보기는 이 기기에 기억돼요). <b>목록</b>은 플랫폼·상태 배지와 이름·메모, 제출일·출시일, 단가·판매 건수, 누적 수익(이번 달)을 한 줄씩 표로 모아 여러 개를 한눈에 훑기 좋고, 줄 끝의 <b>＋</b>(수익 기록)·<b>▾</b>(수익 내역 펼치기)·<b>✎</b>·<b>✕</b>로 고치고 지워요(좁은 화면은 플랫폼·상태·수익 / 이름·버튼 / 날짜·단가·판매 세 줄로 접혀요). <b>달력</b>에서는 월 달력에서 제출일은 <b>제출</b>, 출시일은 <b>출시</b> 배지로 날짜 칸에 따로 모이고, 날짜 칸의 콘텐츠 배지를 누르면 수정, 초록 +금액을 누르면 그 수익 내역이 열려요. 목록의 <b>＋</b>(수익 기록)로 판매·정산 내역(날짜·건수·금액·메모)을 여러 건 쌓으면 <b>누적 수익</b>과 <b>총 판매 건수</b>가 바로 다시 계산되고, 위의 <b>총 누적 수익·이번 달 수익</b>과 플랫폼별 수익도 함께 따라가는데, <b>플랫폼별 수익</b>은 판매·출시 중인 콘텐츠에 이미 수익이 난 콘텐츠(판매중지 등)까지 함께 세요(기획·제작중·심사중처럼 팔지도 않고 수익도 없는 것은 개수에서 뺌). 수익 줄을 누르면 수정, ✕로 삭제됩니다. 플랫폼과 상태 목록은 옆의 <b>🏷️ 분류 관리</b>에서 직접 추가·삭제하고 ⋮⋮로 순서를 바꿔요. <b>단가</b>를 넣어 두면 <b>＋ 수익 기록</b>에서 판매 건수만 넣어도 수익이 <b>단가 × 판매 건수</b>로 자동으로 채워지고(수수료처럼 실제 금액이 다르면 금액만 직접 고쳐요), <b>달력</b>의 <b>빈 날짜 칸</b>을 누르면 그날을 제출일로 새 콘텐츠를 바로 열 수 있어요.</li>
         <li><b>일간 열</b> — <b>건강</b>은 위에서부터 몸무게 → 오늘의 한 줄 → 식단(시간·시간대·내용, 여러 줄 가능)을 적고, 아래 트래커 한 칸에 물·약·에너지·장건강(안감·정상·딱딱함·설사·혈변 중 하나, 누르면 선택·다시 누르면 해제)·기분(5단계)을 모아 둡니다. <b>작업·자기개발·일정·여가 시간</b>은 분류·상세 내역이 붙은 카드로 적어요(작업·자기개발·일정은 앞의 실행 여부 버튼으로 완료 상태도 남겨요). <b>장부</b>는 맨 위에 오늘 지출·오늘 수입과 이번 달 지출·수입 합계를 두고, 그 아래에서 수입/지출을 골라 시간·분류·내용·금액·상세 내역을 적어요. 기분 이모지는 월간 달력에도 표시됩니다.</li>
         <li><b>피드백</b> — <b>작업·자기개발·일정·장부·여가 시간</b> 열 맨 아래 칸에 그날의 회고를 적어요. 날짜마다 따로 저장되고, 화면을 넓게 보면 건강 열과 같은 높이까지 채워집니다.</li>
@@ -4895,8 +4872,12 @@ function renderMonthStats(mt){
    6-2. 장부
    ============================================================ */
 var curMonth = todayISO().slice(0,7);
-var ledgerFilter = null;
-var qaType = "expense";
+/* 장부 탭 필터 — 콘텐츠 탭 cFilter와 같은 결(분류 · 세부 분류 · 정렬). 화면 상태만 기억한다 */
+var lFilter = {type:"all", cat:"all", sort:"recent"};
+var L_TYPES = [["all","전체"],["income","수입"],["expense","지출"]];
+var L_SORTS = [["recent","최신순","최근 날짜부터"],
+               ["date","오래된순","오래된 날짜부터"],
+               ["amount","높은금액순","금액이 큰 내역부터"]];
 var moneyType = "expense";
 var editingId = null;
 
@@ -4929,11 +4910,18 @@ function shiftMonth(m, delta){
   return d.getFullYear()+"-"+pad(d.getMonth()+1);
 }
 function monthText(){ var p=curMonth.split("-").map(Number); return p[0]+"년 "+p[1]+"월"; }
-function syncQaDate(){
-  var q=$("#qaDate"); if(!q) return;
-  if(!q.value || q.value.slice(0,7)!==curMonth){
-    q.value = (todayISO().slice(0,7)===curMonth) ? todayISO() : curMonth+"-01";
-  }
+/* 필터에 맞는 내역인지 — 분류(전체·수입·지출)와 세부 분류를 함께 본다 */
+function lMatch(e){
+  if(lFilter.type!=="all" && e.type!==lFilter.type) return false;
+  if(lFilter.cat!=="all" && e.cat!==lFilter.cat) return false;
+  return true;
+}
+/* 정렬 — 최신순·오래된순은 날짜(같은 날은 입력 시각), 높은금액순은 금액 큰 것부터 */
+function lSortRows(a,b){
+  if(lFilter.sort==="amount" && (b.amount||0)!==(a.amount||0)) return (b.amount||0)-(a.amount||0);
+  if(a.date!==b.date) return lFilter.sort==="date" ? (a.date<b.date?-1:1) : (a.date<b.date?1:-1);
+  var at=Number(a.ts)||0, bt=Number(b.ts)||0;
+  return lFilter.sort==="date" ? at-bt : bt-at;
 }
 function fillCatSelect(sel, type, value){
   if(!sel) return;
@@ -4948,84 +4936,95 @@ function entryRowHTML(e){
   var dt=parseISO(e.date);
   var isInc=(e.type==="income");
   var det=String(e.detail||"").replace(/\s+$/,"");
-  // 월간 장부 열 순서: 날짜 | 카테고리 | 시간 | 내역 | 금액 | 지출/수입구분
+  // 열 순서: 날짜 | 구분 | 카테고리 | 시간 | 내역 | 금액 | 수정·삭제
   return '<div class="lt-row" data-id="'+e.id+'" tabindex="0">'
     + '<span class="c-date">'+(dt.getMonth()+1)+"/"+dt.getDate()+'<i class="c-dow">('+DOW_KO[dt.getDay()]+')</i></span>'
+    + '<span class="c-type-cell"><span class="c-type'+(isInc?" income":"")+'"><i></i>'+(isInc?"수입":"지출")+'</span></span>'
     + '<span class="c-cat" style="--c:'+c.color+'"><i></i>'+esc(c.name)+'</span>'
     + '<span class="c-time'+(e.time?'':' none')+'">'+esc(e.time||"--:--")+'</span>'
     + '<span class="c-memo">'+esc(e.memo || c.name)+'</span>'
     + '<span class="c-amt '+(isInc?"inc":"exp")+'">'+(isInc?"+":"−")+fmtWon(e.amount)+'</span>'
-    + '<span class="c-type-cell">'
-    +   '<span class="c-type'+(isInc?" income":"")+'"><i></i>'+(isInc?"수입":"지출")+'</span>'
-    +   '<button class="c-del" data-del="'+e.id+'" aria-label="삭제" title="삭제">×</button>'
+    + '<span class="c-acts">'
+    +   '<button class="c-ico" type="button" data-edit="'+e.id+'" aria-label="수정" title="수정">✎</button>'
+    +   '<button class="c-ico del" type="button" data-del="'+e.id+'" aria-label="삭제" title="삭제">✕</button>'
     + '</span>'
     + (det?'<div class="lt-detail">'+esc(det)+'</div>':"")
     + '</div>';
 }
+
+/* 장부 탭 — 콘텐츠 탭과 같은 구성:
+   헤더(장부 · 전체 건수 / 🏷️ 분류 관리 · ＋ 추가) → 요약 3칸 → 필터 칩(분류 · 세부 분류 · 정렬) →
+   흰 본문 카드(‹ 2026년 11월 › 이번 달 · N건 / 상세 내역 목록 · 합계).
+   요약·목록은 고른 달과 필터를 함께 본다. 데이터(S.ledger.entries)는 그대로다. */
 function renderLedger(){
   if(!$("#lRows")) return;
   var mt=monthText();
   $("#lMonth").textContent=mt;
   $("#lPrintMonth").textContent=mt;
-  syncQaDate();
-  fillCatSelect($("#qaCat"), qaType, $("#qaCat").value);
-  $$("#qaType button").forEach(function(b){ b.classList.toggle("on", b.dataset.type===qaType); });
+  $("#lSub").textContent="전체 "+entries().length+"건";
+
+  /* 고른 분류(전체·수입·지출)에 맞는 장부 분류만 세부 칩으로 깐다.
+     분류를 지웠거나 구분이 바뀌었으면 세부 필터를 전체로 돌려놓는다. */
+  if(lFilter.cat!=="all"){
+    var fcl=lcat(lFilter.cat);
+    if(!fcl || (lFilter.type!=="all" && fcl.type!==lFilter.type)) lFilter.cat="all";
+  }
+  if(L_SORTS.map(function(s){ return s[0]; }).indexOf(lFilter.sort)<0) lFilter.sort="recent";
 
   var list=monthEntries();
-  var exp=0, inc=0, by={}, cnt={}, incCnt=0;
+  var cntType={all:list.length, income:0, expense:0}, cntCat={};
   list.forEach(function(e){
-    if(e.type==="income"){ inc+=e.amount; incCnt++; }
-    else { exp+=e.amount; by[e.cat]=(by[e.cat]||0)+e.amount; cnt[e.cat]=(cnt[e.cat]||0)+1; }
+    if(e.type==="income") cntType.income++; else cntType.expense++;
+    cntCat[e.cat]=(cntCat[e.cat]||0)+1;
+  });
+
+  var rows=list.filter(lMatch).sort(lSortRows);
+  var exp=0, inc=0, expN=0, incN=0;
+  rows.forEach(function(e){
+    if(e.type==="income"){ inc+=e.amount; incN++; }
+    else { exp+=e.amount; expN++; }
   });
   $("#sumExpense").textContent=fmtWon(exp);
   $("#sumIncome").textContent=fmtWon(inc);
   var bal=inc-exp, bEl=$("#sumBalance");
   bEl.textContent=(bal<0?"-":"")+fmtWon(Math.abs(bal));
   bEl.classList.toggle("neg", bal<0);
-  $("#lCount").textContent=list.length+"건";
+  $("#sumExpenseSub").textContent="지출 "+expN+"건";
+  $("#sumIncomeSub").textContent="수입 "+incN+"건";
+  $("#sumBalanceSub").textContent=(lFilter.type!=="all"||lFilter.cat!=="all") ? "필터 적용 · 수입 − 지출" : "수입 − 지출";
 
-  /* 달력 보기는 월간 색인의 '장부' 탭으로 옮겼다 — 이 탭은 요약 카드 + 목록형만 남긴다. */
+  /* 필터 칩 — 분류(전체·수입·지출) · 세부 분류(전체 + 장부 분류) · 정렬(최신·오래된·높은금액) */
+  $("#lTypeChips").innerHTML=L_TYPES.map(function(t){
+    return '<button class="fchip'+(lFilter.type===t[0]?" on":"")+'" type="button" data-ltype="'+t[0]+'" aria-pressed="'+(lFilter.type===t[0]?"true":"false")+'">'+t[1]+'<small>'+cntType[t[0]]+'</small></button>';
+  }).join("");
 
-  var fEl=$("#lFilter");
-  if(ledgerFilter){
-    fEl.hidden=false;
-    fEl.textContent=(ledgerFilter==="__income"?"수입 전체":lcatName(ledgerFilter))+" ✕";
-  }else{ fEl.hidden=true; }
+  var catHTML='<button class="fchip'+(lFilter.cat==="all"?" on":"")+'" type="button" data-lfcat="all" aria-pressed="'+(lFilter.cat==="all"?"true":"false")+'">전체<small>'+cntType[lFilter.type]+'</small></button>';
+  S.ledgerCats.forEach(function(c){
+    if(lFilter.type!=="all" && c.type!==lFilter.type) return;
+    catHTML+='<button class="fchip'+(lFilter.cat===c.id?" on":"")+'" type="button" data-lfcat="'+c.id+'" aria-pressed="'+(lFilter.cat===c.id?"true":"false")+'" title="'+esc(c.name)+' 내역만 보기"><i class="fdot" style="--c:'+c.color+'"></i>'+esc(c.name)+'<small>'+(cntCat[c.id]||0)+'</small></button>';
+  });
+  $("#lCatChips").innerHTML=catHTML;
 
-  var rows=list.slice();
-  if(ledgerFilter){
-    rows=rows.filter(function(e){
-      return ledgerFilter==="__income" ? e.type==="income" : (e.type!=="income" && e.cat===ledgerFilter);
-    });
-  }
-  rows.sort(function(a,b){ return a.date===b.date ? (a.ts-b.ts) : (a.date<b.date?-1:1); });
+  $("#lSortChips").innerHTML=L_SORTS.map(function(s){
+    return '<button class="fchip'+(lFilter.sort===s[0]?" on":"")+'" type="button" data-lsort="'+s[0]+'" title="'+esc(s[2])+'" aria-pressed="'+(lFilter.sort===s[0]?"true":"false")+'">'+s[1]+'</button>';
+  }).join("");
+
+  /* 상세 내역 목록 — 행을 누르면 수정, ✎ 수정 · ✕ 삭제 */
   $("#lRows").innerHTML=rows.map(entryRowHTML).join("");
   var emptyEl=$("#lEmpty");
-  emptyEl.classList.toggle("on", rows.length===0);
-  emptyEl.textContent = list.length===0 ? "아직 기록이 없어요. 위에서 첫 내역을 적어 보세요." : "이 분류에는 기록이 없어요.";
-
-  var shownExp=0, shownInc=0;
-  rows.forEach(function(e){ if(e.type==="income") shownInc+=e.amount; else shownExp+=e.amount; });
-  $("#lTotal").textContent = (shownInc>0 && shownExp===0) ? fmtWon(shownInc) : fmtWon(shownExp);
-
-  var arr=S.ledgerCats.filter(function(c){ return c.type==="expense"; })
-    .map(function(c){ return {c:c, m:by[c.id]||0, n:cnt[c.id]||0}; })
-    .filter(function(x){ return x.m>0; });
-  arr.sort(function(a,b){ return b.m-a.m; });
-  var catHTML="";
-  arr.forEach(function(x){
-    var pct = exp ? Math.round(x.m/exp*100) : 0;
-    catHTML+='<button class="lc'+(ledgerFilter===x.c.id?" on":"")+'" data-cat="'+x.c.id+'" style="--c:'+x.c.color+'" title="'+esc(x.c.name)+' 내역만 보기">'
-      + '<span class="lc-top"><i></i><span class="nm">'+esc(x.c.name)+'</span><b>'+fmtWon(x.m)+'</b></span>'
-      + '<span class="lc-bar"><span style="width:'+Math.max(2,pct)+'%"></span></span>'
-      + '<span class="lc-sub">'+x.n+'건 · '+pct+'%</span></button>';
-  });
-  if(inc>0){
-    catHTML+='<button class="lc'+(ledgerFilter==="__income"?" on":"")+'" data-cat="__income" style="--c:#A9DCC4;margin-top:4px" title="수입 내역만 보기">'
-      + '<span class="lc-top"><i></i><span class="nm">수입 전체</span><b>'+fmtWon(inc)+'</b></span>'
-      + '<span class="lc-sub">'+incCnt+'건</span></button>';
+  if(rows.length){
+    emptyEl.classList.remove("on");
+    emptyEl.innerHTML="";
+  }else{
+    emptyEl.classList.add("on");
+    emptyEl.innerHTML = list.length===0
+      ? '<div class="cont-empty"><b>이 달 장부 기록이 없어요.</b>오른쪽 위 <b>＋ 추가</b>로 첫 내역을 적어 보세요.<br><button class="btn primary" type="button" data-ladd="1">＋ 첫 내역 적기</button></div>'
+      : '<div class="cont-empty"><b>이 필터에 맞는 내역이 없어요.</b>위 필터를 <b>전체</b>로 바꾸거나 ＋ 추가로 새 내역을 적어 보세요.</div>';
   }
-  $("#lCats").innerHTML = catHTML || '<div class="lc-none">이번 달 기록이 아직 없어요.</div>';
+
+  $("#lTotal").textContent = (exp>0 && inc>0) ? ("지출 "+fmtWon(exp)+" · 수입 "+fmtWon(inc))
+    : (inc>0 ? ("수입 "+fmtWon(inc)) : (exp>0 ? ("지출 "+fmtWon(exp)) : "0원"));
+  $("#lCount").textContent = (rows.length===list.length) ? (list.length+"건") : (rows.length+"건 / 전체 "+list.length+"건");
 }
 
 /* ---------- 장부 월 달력 (월간 색인의 '장부' 탭) ----------
@@ -5110,11 +5109,30 @@ function setEntryType(type){
   $$("#eType button").forEach(function(b){ b.classList.toggle("on", b.dataset.type===type); });
   fillCatSelect($("#eCat"), type);
 }
+/* ＋ 추가 — 새 장부 내역. 고른 달(이번 달이면 오늘)을 날짜로, 지금 보고 있는 분류(지출/수입)를 구분으로 깐다.
+   수정과 같은 모달(#entryDlg)을 쓰고, 새로 적을 때는 삭제 버튼을 숨긴다. */
+function openEntryNew(){
+  var date=(todayISO().slice(0,7)===curMonth) ? todayISO() : curMonth+"-01";
+  var type=(lFilter.type==="income") ? "income" : "expense";
+  editingId=null;
+  $("#eDlgTitle").textContent="장부 내역 추가";
+  $("#eDate").value=date;
+  $("#eTime").value="";
+  $("#eMemo").value="";
+  $("#eDetail").value="";
+  $("#eAmount").value="";
+  setEntryType(type);
+  if(lFilter.cat!=="all"){ var fcl=lcat(lFilter.cat); if(fcl && fcl.type===type) $("#eCat").value=fcl.id; }
+  $("#eDelete").hidden=true;
+  $("#entryDlg").hidden=false;
+  setTimeout(function(){ $("#eAmount").focus(); },30);
+}
 function openEntry(id){
   var e=null, arr=entries();
   for(var i=0;i<arr.length;i++) if(arr[i].id===id) e=arr[i];
   if(!e) return;
   editingId=id;
+  $("#eDlgTitle").textContent="내역 수정";
   $("#eDate").value=e.date;
   $("#eTime").value=e.time||"";
   $("#eMemo").value=e.memo||"";
@@ -5122,14 +5140,13 @@ function openEntry(id){
   $("#eAmount").value=fmtNum(e.amount);
   setEntryType(e.type);
   fillCatSelect($("#eCat"), e.type, e.cat);
+  $("#eDelete").hidden=false;
   $("#entryDlg").hidden=false;
   setTimeout(function(){ $("#eMemo").focus(); },30);
 }
 function closeEntry(){ $("#entryDlg").hidden=true; editingId=null; }
+/* 저장 — editingId가 있으면 그 내역을 고치고, 없으면 새 내역을 넣는다(추가·수정 공용) */
 function saveEntry(){
-  var arr=entries(), e=null;
-  for(var i=0;i<arr.length;i++) if(arr[i].id===editingId) e=arr[i];
-  if(!e){ closeEntry(); return; }
   var date=$("#eDate").value;
   var amount=parseInt(digitsOnly($("#eAmount").value),10);
   if(!date){ toast("날짜를 골라 주세요"); return; }
@@ -5137,12 +5154,20 @@ function saveEntry(){
   var type=$("#eType button.on").dataset.type;
   var catId=$("#eCat").value;
   if(!lcat(catId) || lcat(catId).type!==type){ var fc=firstLCat(type); catId=fc?fc.id:catId; }
-  e.date=date; e.type=type; e.cat=catId; e.memo=$("#eMemo").value.trim(); e.amount=amount;
-  var et=String($("#eTime").value||"").trim();
-  e.time=/^\d{1,2}:\d{2}$/.test(et)?et:"";
-  e.detail=String($("#eDetail").value||"").slice(0,1000);
+  var memo=$("#eMemo").value.trim();
+  var time=normalizeTime($("#eTime").value);
+  var detail=String($("#eDetail").value||"").slice(0,1000);
+  var arr=entries(), e=null;
+  for(var i=0;i<arr.length;i++) if(arr[i].id===editingId) e=arr[i];
   if(date.slice(0,7)!==curMonth) curMonth=date.slice(0,7);
-  closeEntry(); renderLedger(); renderMoney(); scheduleSave(); toast("내역을 수정했어요");
+  if(e){
+    e.date=date; e.type=type; e.cat=catId; e.memo=memo; e.amount=amount; e.time=time; e.detail=detail;
+    closeEntry(); renderLedger(); renderMoney(); scheduleSave(); toast("내역을 수정했어요");
+  }else{
+    arr.push({id:uid(), date:date, type:type, cat:catId, memo:memo, amount:amount, ts:Date.now(), time:time, detail:detail});
+    closeEntry(); renderLedger(); renderMoney(); scheduleSave();
+    toast((type==="income"?"+":"-")+fmtWon(amount)+" 기록했어요");
+  }
 }
 function deleteEntry(id){
   var arr=entries(), i=-1;
@@ -5172,21 +5197,7 @@ function addMoneyQuick(){
   renderMoney(); renderLedger(); scheduleSave();
   toast((moneyType==="income"?"+":"-")+fmtWon(amt)+" 기록했어요");
 }
-function addEntryFromQuick(){
-  var date=$("#qaDate").value || todayISO();
-  var amount=parseInt(digitsOnly($("#qaAmount").value),10);
-  var memo=$("#qaMemo").value.trim();
-  var catId=$("#qaCat").value;
-  if(!amount || amount<=0){ toast("금액을 입력해 주세요"); $("#qaAmount").focus(); return; }
-  if(!lcat(catId) || lcat(catId).type!==qaType){ var fc2=firstLCat(qaType); catId=fc2?fc2.id:catId; }
-  var monthChanged = date.slice(0,7)!==curMonth;
-  if(monthChanged) curMonth=date.slice(0,7);
-  entries().push({id:uid(), date:date, type:qaType, cat:catId, memo:memo, amount:amount, ts:Date.now(), time:normalizeTime($("#qaTime").value), detail:String($("#qaDetail").value||"").slice(0,1000)});
-  $("#qaMemo").value=""; $("#qaAmount").value=""; $("#qaTime").value=""; $("#qaDetail").value="";
-  renderLedger(); renderMoney(); scheduleSave();
-  $("#qaMemo").focus();
-  toast(fmtWon(amount)+" 기록했어요");
-}
+
 
 /* ============================================================
    6-2-B. 콘텐츠 (콘텐츠별 수익 관리)
@@ -6014,6 +6025,15 @@ function openCatDlg(focus){
       if(el){ try{ el.focus({preventScroll:true}); }catch(e){} }
     },40);
   }
+  /* 장부 탭의 🏷️ 분류 관리 — 장부 분류 묶음으로 바로 내려가 새 분류 이름칸에 초점 */
+  if(focus==="ledger"){
+    setTimeout(function(){
+      var sec=$('#catBody .csec[data-lcatsec]');
+      if(sec){ try{ sec.scrollIntoView({block:"start"}); }catch(e){} }
+      var el=$("#lcName");
+      if(el){ try{ el.focus({preventScroll:true}); }catch(e){} }
+    },40);
+  }
 }
 function closeCatDlg(){ cdndReset(); $("#catDlg").hidden=true; }
 
@@ -6144,9 +6164,9 @@ function renderCatDlg(){
     +     '<button class="btn primary" id="pcAdd">추가</button>'
     +   '</div>'
     + '</div>'
-    + '<div class="csec">'
+    + '<div class="csec" data-lcatsec="1">'
     +   '<div class="hd"><b>장부 분류</b><span>지출 '+expN+' · 수입 '+incN+'</span></div>'
-    +   '<p class="hint">일간 보드와 장부 탭에서 쓰는 분류예요. 지워도 그동안 적은 내역은 옮길 분류를 골라 그대로 살릴 수 있어요.</p>'
+    +   '<p class="hint">일간 보드와 장부 탭에서 쓰는 분류예요. 장부 탭의 <b>🏷️ 분류 관리</b>에서도 바로 열 수 있고, 지워도 그동안 적은 내역은 옮길 분류를 골라 그대로 살릴 수 있어요.</p>'
     +   lcs
     +   '<div class="cadd two">'
     +     '<input type="color" id="lcColor" value="'+CAT_PALETTE[(S.ledgerCats.length+3)%CAT_PALETTE.length]+'" aria-label="새 분류 색">'
@@ -6281,7 +6301,6 @@ function addLedgerCat(name, type, color){
   if(S.ledgerCats.length>=24){ toast("분류는 24개까지 만들 수 있어요"); return; }
   var id=freeId("l"+uid().slice(-5), takenLCatIds());
   S.ledgerCats.push({id:id, name:name.slice(0,12), type:(type==="income"?"income":"expense"), color:color||"#DCE5F4"});
-  fillCatSelect($("#qaCat"), qaType, $("#qaCat").value);
   fillCatSelect($("#mCat"), "expense", $("#mCat").value);
   syncCatViews({ledger:true}); renderCatDlg();
   var f=$("#lcName"); if(f) f.focus();
@@ -6290,8 +6309,7 @@ function addLedgerCat(name, type, color){
 function applyLedgerDelete(id, moveTo){
   if(moveTo) entries().forEach(function(e){ if(e.cat===id) e.cat=moveTo; });
   S.ledgerCats=S.ledgerCats.filter(function(c){ return c.id!==id; });
-  if(ledgerFilter===id) ledgerFilter=null;
-  fillCatSelect($("#qaCat"), qaType, $("#qaCat").value);
+  if(lFilter.cat===id) lFilter.cat="all";
   fillCatSelect($("#mCat"), "expense", $("#mCat").value);
   syncCatViews({ledger:true});
   renderCatDlg();
@@ -7454,7 +7472,7 @@ function bindEvents(){
     if(!b) return;
     setMoneyType(b.dataset.type);
   });
-  ["#mTime","#qaTime","#eTime"].forEach(function(sel){
+  ["#mTime","#eTime"].forEach(function(sel){
     var el=$(sel); if(!el) return;
     el.addEventListener("blur", function(){ var v=normalizeTime(el.value); if(v) el.value=v; });
   });
@@ -7636,28 +7654,32 @@ function bindEvents(){
   $("#lPrev").addEventListener("click", function(){ curMonth=shiftMonth(curMonth,-1); renderLedger(); });
   $("#lNext").addEventListener("click", function(){ curMonth=shiftMonth(curMonth,1); renderLedger(); });
   $("#lToday").addEventListener("click", function(){ curMonth=todayISO().slice(0,7); renderLedger(); });
-  $("#qaType").addEventListener("click", function(e){
-    var b=e.target.closest("button"); if(!b) return;
-    qaType=b.dataset.type;
-    fillCatSelect($("#qaCat"), qaType);
-    $$("#qaType button").forEach(function(x){ x.classList.toggle("on", x.dataset.type===qaType); });
-  });
-  $("#qaAmount").addEventListener("input", function(e){
-    var d=digitsOnly(e.target.value);
-    e.target.value = d ? fmtNum(parseInt(d,10)) : "";
-  });
-  $("#qaAmount").addEventListener("keydown", function(e){ if(e.key==="Enter"){ e.preventDefault(); addEntryFromQuick(); } });
-  $("#qaMemo").addEventListener("keydown", function(e){ if(e.key==="Enter"){ e.preventDefault(); $("#qaAmount").focus(); } });
-  $("#qaAdd").addEventListener("click", addEntryFromQuick);
-  $("#lFilter").addEventListener("click", function(){ ledgerFilter=null; renderLedger(); });
-  $("#lCats").addEventListener("click", function(e){
-    var b=e.target.closest(".lc"); if(!b) return;
-    ledgerFilter=(ledgerFilter===b.dataset.cat)?null:b.dataset.cat;
+  $("#lAddBtn").addEventListener("click", openEntryNew);
+  $("#lCatBtn").addEventListener("click", function(){ openCatDlg("ledger"); });
+  $("#lTypeChips").addEventListener("click", function(e){
+    var b=e.target.closest("[data-ltype]"); if(!b) return;
+    lFilter.type=b.dataset.ltype;
+    if(lFilter.cat!=="all"){ var cl=lcat(lFilter.cat); if(lFilter.type!=="all" && (!cl || cl.type!==lFilter.type)) lFilter.cat="all"; }
     renderLedger();
+  });
+  $("#lCatChips").addEventListener("click", function(e){
+    var b=e.target.closest("[data-lfcat]"); if(!b) return;
+    lFilter.cat=b.dataset.lfcat;
+    renderLedger();
+  });
+  $("#lSortChips").addEventListener("click", function(e){
+    var b=e.target.closest("[data-lsort]"); if(!b) return;
+    lFilter.sort=b.dataset.lsort;
+    renderLedger();
+  });
+  $("#lEmpty").addEventListener("click", function(e){
+    if(e.target.closest("[data-ladd]")) openEntryNew();
   });
   $("#lRows").addEventListener("click", function(e){
     var d=e.target.closest("[data-del]");
     if(d){ e.stopPropagation(); deleteEntry(d.dataset.del); return; }
+    var ed=e.target.closest("[data-edit]");
+    if(ed){ e.stopPropagation(); openEntry(ed.dataset.edit); return; }
     var row=e.target.closest(".lt-row");
     if(row && row.dataset.id) openEntry(row.dataset.id);
   });
