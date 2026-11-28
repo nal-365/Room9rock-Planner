@@ -948,6 +948,8 @@ html.wdnd-on,html.wdnd-on body{-webkit-user-select:none;user-select:none;cursor:
 .month-label{text-align:center;min-width:116px;line-height:1.15}
 .month-label b{font-family:var(--serif);font-size:16px;font-variant-numeric:tabular-nums;letter-spacing:.2px}
 .month-label span{display:block;font-size:10px;color:var(--ink-mute);font-weight:700}
+/* 날짜 이동 묶음 안에서 '이번 주/이번 달'만 살짝 떼어 두어 화살표·날짜와 구분 */
+.week-nav>.mini,.month-nav>.mini{margin-left:3px}
 .sum-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;flex:1 1 440px}
 .sum{background:#fff;border:1px solid var(--line);border-radius:11px;padding:9px 13px}
 .sum span{display:block;font-size:10px;font-weight:800;letter-spacing:.5px;color:var(--ink-mute)}
@@ -961,16 +963,17 @@ html.wdnd-on,html.wdnd-on body{-webkit-user-select:none;user-select:none;cursor:
    넓은 화면에서만 적용하고, 그 아래(태블릿·폰)는 예전처럼 폭이 모자라면 줄바꿈되는 flex 배치를 그대로 둔다. */
 @media screen and (min-width:981px){
   .week-top,.month-top{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);grid-template-rows:auto auto;gap:10px;align-items:stretch}
-  .week-top>.week-nav,.month-top>.month-nav{grid-column:1;grid-row:1 / span 2;justify-content:space-between}
+  /* 날짜 이동 묶음(‹ 날짜 › 이번 주/달)은 넓어진 칸의 가운데에 적당한 간격으로 모은다 — 콘텐츠 탭 달력 머리말과 같은 결.
+     라벨이 늘어나 화살표가 양 끝으로 밀리지 않도록 라벨 폭은 내용만큼만 두고, 묶음 전체를 가운데 정렬한다. */
+  .week-top>.week-nav,.month-top>.month-nav{grid-column:1;grid-row:1 / span 2;justify-content:center;gap:9px}
   .week-top>.goal-box{grid-column:2;grid-row:1}
   .week-top>.review-box{grid-column:2;grid-row:2}
   .month-top>.goal-box{grid-column:2;grid-row:1}
   .month-top>.review-box{grid-column:2;grid-row:2}
-  /* 날짜·기간 라벨이 넓어진 칸 가운데에 오도록 */
-  .week-top>.week-nav .week-range,.month-top>.month-nav .month-label{flex:1 1 auto}
+  /* 날짜·기간 라벨은 내용 폭만큼만(칸이 넓어져도 화살표 사이 간격은 그대로) */
+  .week-top>.week-nav .week-range,.month-top>.month-nav .month-label,.led-head>.month-nav .month-label{flex:0 0 auto}
   .led-head{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:10px;align-items:stretch}
-  .led-head>.month-nav{grid-column:1;justify-content:space-between}
-  .led-head>.month-nav .month-label{flex:1 1 auto}
+  .led-head>.month-nav{grid-column:1;justify-content:center;gap:9px}
   .led-head>.sum-cards{grid-column:2;flex:none;gap:6px}
   .led-head .sum{padding:8px 11px}
   .led-head .sum b{font-size:17px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -1212,11 +1215,11 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
   .task .del{opacity:.55}
   .week-top{gap:7px}
   .goal-box,.review-box{flex:1 1 100%}
-  .week-nav{width:100%;justify-content:space-between}
-  .week-range{flex:1}
+  .week-nav{width:100%;justify-content:center;gap:8px}
+  .week-range{flex:0 0 auto}
   .week-cols{grid-template-columns:repeat(7,124px)}
-  .month-nav{width:100%;justify-content:space-between}
-  .month-label{flex:1}
+  .month-nav{width:100%;justify-content:center;gap:8px}
+  .month-label{flex:0 0 auto}
   .month-wrap{gap:9px}
   .mgrid-frame{padding:6px;border-radius:12px}
   .mcells{grid-auto-rows:minmax(70px,auto)}
