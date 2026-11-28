@@ -1075,6 +1075,8 @@ html.wdnd-on,html.wdnd-on body{-webkit-user-select:none;user-select:none;cursor:
 .ledger-table-card.empty .lt-headrow,.ledger-table-card.empty .lt-foot{display:none}
 .lt-empty.on{display:block;padding:2px 0 6px}
 .lt-empty .cont-empty{padding:24px 14px 26px}
+/* 안내 문장 안의 강조는 블록이 되는 b 대신 인라인 k로 */
+.lt-empty .cont-empty .k{font-style:normal;font-weight:800;color:var(--ink-soft)}
 .lt-foot{display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--line-strong);margin-top:2px;padding:8px 2px 2px;font-weight:800;font-size:12px;color:var(--ink-soft)}
 .lt-foot b{font-size:13.5px;color:var(--ink);font-variant-numeric:tabular-nums}
 
@@ -5021,8 +5023,8 @@ function renderLedger(){
   }else{
     emptyEl.classList.add("on");
     emptyEl.innerHTML = list.length===0
-      ? '<div class="cont-empty"><b>이 달 장부 기록이 없어요.</b>오른쪽 위 <b>＋ 추가</b>로 첫 내역을 적어 보세요.<br><button class="btn primary" type="button" data-ladd="1">＋ 첫 내역 적기</button></div>'
-      : '<div class="cont-empty"><b>이 필터에 맞는 내역이 없어요.</b>위 필터를 <b>전체</b>로 바꾸거나 ＋ 추가로 새 내역을 적어 보세요.</div>';
+      ? '<div class="cont-empty"><b>이 달 장부 기록이 없어요.</b>오른쪽 위 <i class="k">＋ 추가</i>로 첫 내역을 적어 보세요.<br><button class="btn primary" type="button" data-ladd="1">＋ 첫 내역 적기</button></div>'
+      : '<div class="cont-empty"><b>이 필터에 맞는 내역이 없어요.</b>위 필터를 전체로 바꾸거나 ＋ 추가로 새 내역을 적어 보세요.</div>';
   }
 
   $("#lTotal").textContent = (exp>0 && inc>0) ? ("지출 "+fmtWon(exp)+" · 수입 "+fmtWon(inc))
