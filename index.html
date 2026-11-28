@@ -1324,21 +1324,25 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
   .print-only{display:block}
   .print-head{font-size:13pt;font-weight:800;margin-bottom:4mm;font-family:var(--serif)}
   .ledger-wrap{gap:4mm;max-width:none}
-  /* 장부 — 헤더·필터·월 이동은 화면용이라 빼고, 요약 3칸과 상세 내역만 종이에 담는다 */
-  #viewLedger .cont-head .ttl b{font-size:11pt}
-  #viewLedger .cont-head .ttl span{display:none}
-  #viewLedger .cont-sums{grid-template-columns:repeat(3,1fr);gap:2mm}
-  #viewLedger .csum{padding:1.5mm 2.5mm;border-radius:2mm}
+  /* 장부 — 헤더·필터·월 이동은 화면용이라 빼고, 요약 3칸과 상세 내역만 종이에 담는다.
+     인쇄 폭이 좁아 폰 규칙(≤720px)의 카드형 배치가 함께 걸리므로 #viewLedger로 더 세게 잡고 되돌린다 */
+  #viewLedger .cont-head{display:none !important}
+  #viewLedger .cont-sums{grid-template-columns:repeat(3,minmax(0,1fr));gap:2mm}
+  #viewLedger .csum{grid-column:auto;padding:1.5mm 2.5mm;border-radius:2mm}
   #viewLedger .csum>span{font-size:7pt}
   #viewLedger .csum b{font-size:12pt}
   #viewLedger .csum em{font-size:6.5pt}
   #viewLedger .cboard{box-shadow:none;border:0;border-radius:0;padding:0}
-  #viewLedger .ledger-table-card{border:1px solid #DDD;border-radius:0;padding:2mm 3mm}
-  .lt-row{display:grid;font-size:8pt;column-gap:2mm;padding:1.4mm 0;border-top:1px solid #EEE}
-  .ledger-table-card{--lt-cols:15mm 9mm 24mm 10mm minmax(0,1fr) 20mm}
-  .lt-row.lt-headrow{font-size:6.5pt;padding-bottom:1.2mm;border-top:0}
-  .lt-detail{font-size:7pt;margin-top:1mm}
-  .c-acts{display:none !important}
+  #viewLedger .ledger-table-card{border:1px solid #DDD;border-radius:0;padding:2mm 3mm;--lt-cols:15mm 9mm 24mm 10mm minmax(0,1fr) 20mm}
+  #viewLedger .lt-row{display:grid;grid-template-columns:var(--lt-cols);grid-template-areas:none;column-gap:2mm;
+    margin:0;padding:1.4mm 0;border:0;border-top:1px solid #EEE;border-radius:0;background:transparent;font-size:8pt}
+  #viewLedger #lRows>.lt-row:first-child{border-top:0}
+  #viewLedger .lt-row>*{grid-area:auto}
+  #viewLedger .lt-row.lt-headrow{display:grid;font-size:6.5pt;padding-bottom:1.2mm;border-top:0;border-bottom:1px solid #DDD}
+  #viewLedger .lt-detail{grid-column:5/-1;font-size:7pt;margin-top:1mm}
+  #viewLedger .c-acts{display:none !important}
+  #viewLedger .lt-foot{display:flex;font-size:8pt;margin-top:1mm;padding:1.2mm 0}
+  #viewLedger .c-date .c-dow{display:inline}
   .entry-form,.dlg,.toast{display:none !important}
   html,body{background:#fff !important}
   body{-webkit-print-color-adjust:exact;print-color-adjust:exact}
