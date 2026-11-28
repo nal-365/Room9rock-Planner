@@ -1100,6 +1100,10 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
 .entry-form .row{display:flex;gap:7px;margin-top:4px}
 .entry-form .row .btn{flex:1;justify-content:center;padding:8px}
 .entry-form .cfine{margin:-2px 0 2px;padding-left:70px;font-size:10.5px;line-height:1.5;color:var(--ink-mute)}
+/* 단가 × 판매 자동 계산 줄 — 등록·수정과 수익 기록 모달에서 계산 결과를 바로 보여 준다 */
+.entry-form .cfine.money{margin:0 0 1px;padding:7px 10px;border-radius:8px;background:var(--accent-soft);border:1px solid var(--accent-line);color:var(--accent-deep);font-size:11px;font-weight:700;line-height:1.55}
+.entry-form .cfine.money b{color:var(--ok);font-weight:800;font-variant-numeric:tabular-nums}
+.entry-form .cfine.money small{font-weight:700;color:var(--ink-mute);font-size:10.5px}
 .fine{font-size:10.5px;color:var(--ink-mute);line-height:1.5;margin:9px 0 0}
 #resetNames{margin-top:9px;font-size:11px;padding:5px 9px}
 
@@ -1609,16 +1613,16 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
 /* 목록 보기 — 콘텐츠를 한 줄씩 훑는 표. 넓은 화면은 8칸 표, 좁은 화면은 두 줄 행으로 접힌다 */
 .clist{background:var(--paper2);border:1px solid var(--line);border-radius:12px;overflow:hidden}
 .clist.is-empty{border:0;background:transparent;overflow:visible}
-.clhead,.clrow{display:grid;grid-template-columns:74px 58px minmax(0,1fr) 74px 74px 84px 108px 110px;gap:8px;align-items:center}
-.clhead{padding:6px 11px;background:#FBF7EE;border-bottom:1px solid var(--line);font-size:9.5px;font-weight:800;letter-spacing:.5px;color:#B3A897;line-height:1.4}
+.clhead,.clrow{display:grid;grid-template-columns:78px 62px minmax(0,1fr) 82px 82px 96px 110px 112px;gap:8px;align-items:center}
+.clhead{padding:6px 12px;background:#FBF7EE;border-bottom:1px solid var(--line);font-size:9.5px;font-weight:800;letter-spacing:.5px;color:#B3A897;line-height:1.4}
 .clhead span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .clhead .h-acts{text-align:right}
-.clrow{padding:7px 11px;border-top:1px solid var(--line-soft);font-size:12px;color:var(--ink-soft);min-width:0}
+.clrow{padding:5px 12px;border-top:1px solid var(--line-soft);font-size:12px;color:var(--ink-soft);min-width:0}
 .cl-name{min-width:0}
 .clitem:first-child .clrow{border-top:0}
 .clitem>.clrow:hover{background:#FBF8F1}
 .clrow.open{background:#FFFCF6}
-.cl-nm{display:block;min-width:0;font-size:13px;font-weight:700;line-height:1.3;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cl-nm{display:block;min-width:0;font-size:12.5px;font-weight:700;line-height:1.3;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .cl-memo{display:block;min-width:0;margin-top:1px;font-size:10.5px;line-height:1.35;color:var(--ink-mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .cl-memo a{color:var(--accent-deep);font-weight:700;text-decoration:none}
 .cl-memo a:hover{text-decoration:underline}
@@ -1626,10 +1630,10 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
 .cl-d.none{color:#BFB5A4}
 /* 넓은 화면에서는 표 머리가 이름표를 대신하므로, 좁은 화면에서만 이름표를 드러낸다 */
 .cl-k{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
-.cl-sale{position:relative;display:flex;flex-direction:column;min-width:0;line-height:1.35;white-space:nowrap;font-variant-numeric:tabular-nums}
+.cl-sale{position:relative;display:flex;flex-direction:column;min-width:0;line-height:1.25;white-space:nowrap;font-variant-numeric:tabular-nums}
 .cl-sale b{font-size:11.5px;font-weight:800;color:var(--ink-soft)}
 .cl-sale b.none{color:#BFB5A4;font-weight:700}
-.cl-sale small{font-size:10px;font-weight:700;color:var(--ink-mute)}
+.cl-sale small{font-size:9.5px;font-weight:700;color:var(--ink-mute)}
 .cl-money{position:relative;display:flex;flex-direction:column;align-items:flex-end;min-width:0;line-height:1.3;text-align:right;font-variant-numeric:tabular-nums}
 .cl-money b{max-width:100%;font-size:13.5px;font-weight:800;letter-spacing:-.2px;color:#2F7F60;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .cl-money.zero b{color:#BFB5A4;font-weight:700}
@@ -1658,14 +1662,30 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
 .cp-badge.orphan,.st-badge.orphan{background:#F3EEE4;color:#8B8070;box-shadow:inset 0 0 0 1px #DCD3C4}
 .fchip.orphan{color:#9A8F7E;border-style:dashed}
 
-/* 콘텐츠 월 달력 — 월간 탭 달력(.mcell/.mdow)의 결을 그대로 이어 쓴다 */
+/* 콘텐츠 월 달력 — 배포용 캘린더처럼 흰 카드 위 1px 점선 격자.
+   월간 탭의 금속 프레임(그라데이션·두꺼운 여백)은 여기서만 걷어내고, 칸·칩·금액의 결은 그대로 이어 쓴다 */
 .ccal{display:grid;gap:9px}
 .ccal-top{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
 .ccal-tip{margin:0;font-size:10.5px;line-height:1.55;color:var(--ink-mute)}
 .ccal-tip b{color:var(--ink-soft);font-weight:800}
-.ccal-frame{padding:9px}
+.ccal-frame{padding:0}
+.ccal .mgrid-frame{padding:0;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 1px 3px rgba(120,100,62,.07);overflow:hidden}
+.ccal .mgrid{background:#fff;border-radius:0;box-shadow:none}
+.ccal .mdow{background:#FBF7EE;border-bottom:1px solid var(--line);column-gap:0}
+.ccal .mdow span{background:transparent;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ccal .mcell{border-right:1px dashed #E7DFCF;border-bottom:1px dashed #E7DFCF;background:#fff}
+.ccal .mcell.sat,.ccal .mcell.sun{background:#fff}
+.ccal .mcell:hover{background:#FDFAF3}
+.ccal .mcell.out,.ccal .mcell.out:hover{background:#FBF8F1}
+.ccal .mcell.today{background:#FDFAF3;box-shadow:inset 0 0 0 2px var(--accent-ring)}
+.ccal .mcell.today .dn{background:var(--accent);color:var(--accent-ink);border-radius:6px;padding:0 5px;line-height:1.35}
+.ccal-cells>.mcell:nth-last-child(-n+7){border-bottom:0}
 .ccal-cells{grid-auto-rows:minmax(120px,auto)}
 .ccell{padding:5px 6px 7px;gap:3px}
+/* 빈 날짜 칸을 누르면 그날 제출일로 새 콘텐츠 — 마우스를 올리면 ＋가 살짝 보여 준다 */
+.ccell .cc-add{margin-left:auto;font-style:normal;font-size:11.5px;line-height:1;color:#CBBC9F;opacity:0;transition:opacity .14s;pointer-events:none}
+.ccell .cc-add::after{content:"＋"}
+.ccell:hover .cc-add,.ccell:focus-within .cc-add{opacity:1}
 .ccell .mcell-head .cc-dot{width:7px;height:7px;border-radius:50%;background:#A9DCC4;box-shadow:inset 0 0 0 1px rgba(0,0,0,.06)}
 .ccell .cc-chips{display:flex;flex-direction:column;gap:2px;min-width:0}
 .cchip{display:flex;align-items:flex-start;gap:3px;max-width:100%;border:0;border-radius:5px;padding:2px 5px;background:var(--c);color:#4A4438;font-size:10px;font-weight:800;line-height:1.4;text-align:left;white-space:normal;overflow-wrap:anywhere;cursor:pointer;box-shadow:inset 0 0 0 1px rgba(0,0,0,.04);touch-action:manipulation;font-family:var(--sans)}
@@ -1674,7 +1694,9 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
 .cchip.rel{background:var(--c)}
 .cchip .ck{flex:none;border-radius:3px;padding:0 3px;margin-top:1px;font-size:8.5px;line-height:1.5;letter-spacing:0;font-weight:800;background:rgba(255,255,255,.66);color:#6B6353}
 .cchip.sub .ck{background:var(--c);color:#4A4438}
-.cchip .nm{flex:1 1 auto;min-width:0;white-space:normal;word-break:keep-all;overflow-wrap:anywhere}
+.cchip .nm{flex:1 1 auto;min-width:0;white-space:normal;word-break:keep-all;overflow-wrap:anywhere;
+  /* 칸이 좁아도 배지가 여러 줄로 자라지 않게 두 줄에서 자른다(전체 이름은 title 툴팁으로) */
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .cchip:hover{box-shadow:inset 0 0 0 1px rgba(0,0,0,.16)}
 .ccell .cc-revs{display:flex;flex-direction:column;gap:1px;min-width:0}
 .crev{display:flex;align-items:flex-start;gap:3px;min-width:0;border:0;background:transparent;padding:0;font-size:10px;line-height:1.4;color:#2F7F60;text-align:left;cursor:pointer;touch-action:manipulation}
@@ -1707,8 +1729,9 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
   .cc-meta{gap:2px 8px}
   .cont-head{gap:7px}
   .cont-tools{gap:5px}
-  .ccal-tip{display:none}
-  .ccal-frame{padding:6px}
+  .ccal-tip{display:block;flex:1 1 100%;min-width:0;font-size:9.5px;line-height:1.5}
+  .ccal-frame{padding:0}
+  .ccal .mgrid-frame{border-radius:11px}
   .ccal-cells{grid-auto-rows:minmax(108px,auto)}
   .ccell{padding:3px 3px 5px;gap:2px}
   .cchip{flex-direction:column;align-items:stretch;gap:1px;font-size:8px;padding:2px 3px;border-radius:4px;line-height:1.35}
@@ -1726,8 +1749,9 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
   .clist{display:grid;gap:6px;border:0;background:transparent;overflow:visible}
   .clhead{display:none}
   .clitem{background:var(--paper2);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+  /* 배포용 목록과 같은 3줄 — 1줄 플랫폼·상태·누적 수익 / 2줄 이름·버튼 / 3줄 제출·출시·단가·판매 */
   .clrow{grid-template-columns:auto auto minmax(0,1fr) auto;
-         grid-template-areas:"plat stat name money" "sub rel sale acts";
+         grid-template-areas:"plat stat rev rev" "name name name acts" "sub rel sale sale";
          padding:8px 10px;gap:3px 6px;border-top:0}
   .clitem:first-child .clrow{border-top:0}
   .cl-plat{grid-area:plat}
@@ -1736,7 +1760,7 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
   .cl-d.sub{grid-area:sub}
   .cl-d.rel{grid-area:rel}
   .cl-sale{grid-area:sale;flex-direction:row;align-items:baseline;gap:4px}
-  .cl-money{grid-area:money}
+  .cl-money{grid-area:rev}
   .cl-acts{grid-area:acts}
   .cl-nm{font-size:12.5px}
   .cl-k{position:static;width:auto;height:auto;margin:0 3px 0 0;overflow:visible;clip:auto;font-size:9.5px;font-weight:800;letter-spacing:.2px;color:#B3A897}
@@ -1757,6 +1781,7 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
 @media print{
   .cont-head .btn,.cc-acts,.cc-foot,.cplat,.cont-filt,.ccal-top,.cseg-view,#cCatBtn{display:none !important}
   .ccal-frame{padding:0;background:none;box-shadow:none}
+  .cc-add{display:none !important}
   .ccell{break-inside:avoid-page}
   .cont-wrap{gap:4mm;max-width:none}
   .cont-sums{gap:2mm}
@@ -2264,7 +2289,7 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
             <button class="nav" id="ccNext" aria-label="다음 달">→</button>
             <button class="mini" id="ccToday" title="이번 달로 이동">오늘</button>
           </div>
-          <p class="ccal-tip">날짜 칸의 <b>제출·출시 배지</b>를 누르면 수정, 초록 <b>+금액</b>을 누르면 그 수익 내역이 열려요.</p>
+          <p class="ccal-tip">칩을 누르면 수정 · <b>빈 날짜 칸</b>을 누르면 그날 제출일로 새 콘텐츠 · 초록 <b>+금액</b>을 누르면 그 수익 내역이 열려요.</p>
         </div>
         <div class="mgrid-frame ccal-frame">
           <div class="mgrid">
@@ -2310,7 +2335,7 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
         <li><b>카드</b> — <b>작업·자기개발·일정·여가 시간</b> 열은 카드로 적어요. <b>작업·자기개발·일정</b> 카드는 위줄에서 상태와 분류(플랫폼·카테고리·일정 분류)를 고르고, <b>여가 시간</b> 카드는 상태 없이 분류만 골라요. 제목 아래 <b>상세 내역</b>에 여러 줄로 메모해요. 분류 목록은 카드의 <b>＋ 플랫폼/카테고리/분류 관리</b>나 카테고리 관리에서 직접 추가·이름 바꾸기·삭제할 수 있어요. 카드 위쪽 <b>⋮⋮</b>를 끌면 같은 열 안에서 카드 순서를 위아래로 바꿀 수 있어요(PC는 바로, 터치는 잠깐 꾹 누른 뒤).</li>
         <li><b>주간</b> — 일간에서 칠하고 적은 내용이 그대로 모이고, 주간에서 고쳐도 일간에 바로 반영돼요. 주간 화면 위쪽 형광펜도 그대로 쓸 수 있어요(PC 0.15초 · 터치 0.18초 꾹). 주간 위쪽 <b>할 일</b> 탭은 상태·분류 태그·제목·상세 내역이 붙은 카드로(끌어서 날짜 이동, 같은 날 안에서는 끌어 순서 바꾸기, 맨 아래 <b>작/일/자</b>로 분류 골라 빠른 추가), <b>건강</b> 탭은 식단을 시간·시간대와 내용 카드로, <b>여가시간</b> 탭은 카테고리 배지·제목·상세 내역 카드로 모아 보여 줘요.</li>
         <li><b>장부</b> — 날짜·분류·시간·내용·금액·수입/지출을 적고 상세 내역을 여러 줄로 남겨요. 총 지출·총 수입·잔액과 <b>분류별 모아보기</b>가 자동으로 정리되고, 분류를 누르면 그 내역만 필터링됩니다. 일간 장부 열과 주간 장부 탭은 한 건을 <b>1줄 분류·수입/지출 · 2줄 시간·내역·금액 · 3줄 상세 내역</b> 카드로 보여 줘요. 위의 <b>표 | 달력</b>으로 보기를 바꾸면 한 달 지출(−)과 수입(+)을 달력 한 장으로 모아 보고, 날짜 숫자 오른쪽 위에 그날 하루 총액(−지출, +수입)이 알약으로 붙고, 칸 안에 그날 내역이 <b>분류 · 내역 · 금액</b>으로 전부 나와요(내역이 많으면 칸이 자동으로 높아짐). 날짜 칸을 누르면 그날 일간으로 넘어가요.</li>
-        <li><b>콘텐츠</b> — 이모티콘·스티커·속지처럼 만든 것마다 플랫폼과 진행 상태를 붙여 카드로 모아요. 등록할 때 <b>제출일</b>과 <b>출시일</b>을 따로 적고(둘 중 하나만 적어도 저장돼요), 카드에는 <b>제출 2026.11.19 · 출시 —</b>처럼 각각 나와요. 위의 <b>카드 | 목록 | 달력</b>으로 보기를 바꿔요(마지막에 고른 보기는 이 기기에 기억돼요). <b>목록</b>은 플랫폼·상태 배지와 이름·메모, 제출일·출시일, 단가·판매 건수, 누적 수익(이번 달)을 한 줄씩 표로 모아 여러 개를 한눈에 훑기 좋고, 줄 끝의 <b>＋</b>(수익 기록)·<b>▾</b>(수익 내역 펼치기)·<b>✎</b>·<b>✕</b>로 카드에서 하던 일을 그대로 해요(좁은 화면은 두 줄로 접혀요). <b>달력</b>에서는 월 달력에서 제출일은 <b>제출</b>, 출시일은 <b>출시</b> 배지로 날짜 칸에 따로 모이고, 날짜 칸의 콘텐츠 배지를 누르면 수정, 초록 +금액을 누르면 그 수익 내역이 열려요. 카드의 <b>＋ 수익 기록</b>으로 판매·정산 내역(날짜·건수·금액·메모)을 여러 건 쌓으면 <b>누적 수익</b>과 <b>총 판매 건수</b>가 바로 다시 계산되고, 위의 <b>총 누적 수익·이번 달 수익</b>과 플랫폼별 수익도 함께 따라가는데, <b>플랫폼별 수익</b>은 판매·출시 중인 콘텐츠에 이미 수익이 난 콘텐츠(판매중지 등)까지 함께 세요(기획·제작중·심사중처럼 팔지도 않고 수익도 없는 것은 개수에서 뺌). 수익 줄을 누르면 수정, ✕로 삭제됩니다. 플랫폼과 상태 목록은 옆의 <b>🏷️ 분류 관리</b>에서 직접 추가·삭제하고 ⋮⋮로 순서를 바꿔요.</li>
+        <li><b>콘텐츠</b> — 이모티콘·스티커·속지처럼 만든 것마다 플랫폼과 진행 상태를 붙여 카드로 모아요. 등록할 때 <b>제출일</b>과 <b>출시일</b>을 따로 적고(둘 중 하나만 적어도 저장돼요), 카드에는 <b>제출 2026.11.19 · 출시 —</b>처럼 각각 나와요. 위의 <b>카드 | 목록 | 달력</b>으로 보기를 바꿔요(마지막에 고른 보기는 이 기기에 기억돼요). <b>목록</b>은 플랫폼·상태 배지와 이름·메모, 제출일·출시일, 단가·판매 건수, 누적 수익(이번 달)을 한 줄씩 표로 모아 여러 개를 한눈에 훑기 좋고, 줄 끝의 <b>＋</b>(수익 기록)·<b>▾</b>(수익 내역 펼치기)·<b>✎</b>·<b>✕</b>로 카드에서 하던 일을 그대로 해요(좁은 화면은 플랫폼·상태·수익 / 이름·버튼 / 날짜·단가·판매 세 줄로 접혀요). <b>달력</b>에서는 월 달력에서 제출일은 <b>제출</b>, 출시일은 <b>출시</b> 배지로 날짜 칸에 따로 모이고, 날짜 칸의 콘텐츠 배지를 누르면 수정, 초록 +금액을 누르면 그 수익 내역이 열려요. 카드의 <b>＋ 수익 기록</b>으로 판매·정산 내역(날짜·건수·금액·메모)을 여러 건 쌓으면 <b>누적 수익</b>과 <b>총 판매 건수</b>가 바로 다시 계산되고, 위의 <b>총 누적 수익·이번 달 수익</b>과 플랫폼별 수익도 함께 따라가는데, <b>플랫폼별 수익</b>은 판매·출시 중인 콘텐츠에 이미 수익이 난 콘텐츠(판매중지 등)까지 함께 세요(기획·제작중·심사중처럼 팔지도 않고 수익도 없는 것은 개수에서 뺌). 수익 줄을 누르면 수정, ✕로 삭제됩니다. 플랫폼과 상태 목록은 옆의 <b>🏷️ 분류 관리</b>에서 직접 추가·삭제하고 ⋮⋮로 순서를 바꿔요. <b>단가</b>를 넣어 두면 <b>＋ 수익 기록</b>에서 판매 건수만 넣어도 수익이 <b>단가 × 판매 건수</b>로 자동으로 채워지고(수수료처럼 실제 금액이 다르면 금액만 직접 고쳐요), <b>달력</b>의 <b>빈 날짜 칸</b>을 누르면 그날을 제출일로 새 콘텐츠를 바로 열 수 있어요.</li>
         <li><b>일간 열</b> — <b>건강</b>은 위에서부터 몸무게 → 오늘의 한 줄 → 식단(시간·시간대·내용, 여러 줄 가능)을 적고, 아래 트래커 한 칸에 물·약·에너지·장건강(안감·정상·딱딱함·설사·혈변 중 하나, 누르면 선택·다시 누르면 해제)·기분(5단계)을 모아 둡니다. <b>작업·자기개발·일정·여가 시간</b>은 분류·상세 내역이 붙은 카드로 적어요(작업·자기개발·일정은 앞의 실행 여부 버튼으로 완료 상태도 남겨요). <b>장부</b>는 맨 위에 오늘 지출·오늘 수입과 이번 달 지출·수입 합계를 두고, 그 아래에서 수입/지출을 골라 시간·분류·내용·금액·상세 내역을 적어요. 기분 이모지는 월간 달력에도 표시됩니다.</li>
         <li><b>피드백</b> — <b>작업·자기개발·일정·장부·여가 시간</b> 열 맨 아래 칸에 그날의 회고를 적어요. 날짜마다 따로 저장되고, 화면을 넓게 보면 건강 열과 같은 높이까지 채워집니다.</li>
         <li><b>월간</b> — 한 달을 달력 한 장으로 모아 봐요. 날짜를 누르면 그날 일간으로 바로 넘어가고, <b>이달의 목표</b>·<b>한 줄 리뷰</b>는 아래 통계와 함께 자동 저장돼요.</li>
@@ -2368,6 +2393,7 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
       <label class="f"><span>출시일</span><input type="date" id="cRelease" aria-label="출시일"></label>
       <p class="cfine">제출일과 출시일은 따로 적어요. 둘 중 하나만 적어도 저장돼요.</p>
       <label class="f"><span>단가 (원)</span><input id="cPrice" inputmode="numeric" placeholder="0" aria-label="단가"></label>
+      <p class="cfine money" id="cMoney">단가를 넣으면 수익이 <b>단가 × 판매 건수</b>로 자동 계산돼요.</p>
       <label class="f"><span>링크</span><input id="cUrl" inputmode="url" maxlength="300" placeholder="https:// (선택)" aria-label="링크 URL"></label>
       <label class="f" style="align-items:start"><span style="padding-top:7px">메모</span><textarea id="cMemo" rows="3" maxlength="500" placeholder="메모 (선택)" aria-label="메모"></textarea></label>
       <div class="row"><button class="btn danger" id="cDelete" hidden>삭제</button><button class="btn primary" id="cSave">저장</button></div>
@@ -2383,6 +2409,7 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
       <label class="f"><span>날짜</span><input type="date" id="sDate" aria-label="날짜"></label>
       <label class="f"><span>판매 건수</span><input id="sQty" inputmode="numeric" value="1" aria-label="판매 건수"></label>
       <label class="f"><span>수익 (원)</span><input id="sAmount" inputmode="numeric" placeholder="0" aria-label="수익 금액"></label>
+      <p class="cfine money" id="sCalc">단가 × 판매 건수로 수익을 채워 드려요.</p>
       <label class="f"><span>메모</span><input id="sMemo" maxlength="60" placeholder="예: 11월 정산, 단건 판매" aria-label="메모"></label>
       <div class="row"><button class="btn danger" id="sDelete" hidden>삭제</button><button class="btn primary" id="sSave">저장</button></div>
     </div>
@@ -2888,11 +2915,14 @@ function normalize(o){
           if(!v || typeof v!=="object") return;
           var sid=String(v.id||"").replace(/[^a-zA-Z0-9_-]/g,"").slice(0,24) || uid();
           if(seenS[sid]) return;
-          var amt=Math.round(Number(v.amount));
-          if(!isFinite(amt) || amt<=0) return;
           var qty=Math.round(Number(v.qty));
           if(!isFinite(qty) || qty<1) qty=1;
           if(qty>9999) qty=9999;
+          var amt=Math.round(Number(v.amount));
+          if(!isFinite(amt) || amt<0) amt=0;
+          /* 금액 없이 건수만 있는 기록은 단가 × 건수로 채운다 — 손으로 적은 금액은 그대로 둔다 */
+          if(!amt && price>0) amt=price*qty;
+          if(!amt) return;
           seenS[sid]=1;
           sales.push({
             id:sid,
@@ -5088,6 +5118,7 @@ var cOpen = {};            /* 수익 내역을 펼친 콘텐츠 id */
 var editingC = null;       /* 수정 중인 콘텐츠 id */
 var editingS = null;       /* 수정 중인 수익 내역 id */
 var revContentId = null;   /* 수익을 달고 있는 콘텐츠 id */
+var sAutoAmt = null;       /* 단가 × 건수로 자동으로 채운 금액 — 손으로 고치면 null */
 
 function contentsArr(){ if(!Array.isArray(S.contents)) S.contents=[]; return S.contents; }
 function contentById(id){ var a=contentsArr(); for(var i=0;i<a.length;i++) if(a[i].id===id) return a[i]; return null; }
@@ -5226,14 +5257,22 @@ var C_SORTS=[["recent","최신순","제출일이 최근인 콘텐츠부터"],
              ["date","날짜순","제출일이 오래된 콘텐츠부터"],
              ["revenue","수익 높은순","누적 수익이 큰 콘텐츠부터"]];
 
-/* 콘텐츠 하나의 총 판매 건수·누적 수익·이번 달 수익 — 수익 내역이 바뀌면 매번 다시 센다 */
+/* 콘텐츠 하나의 총 판매 건수·누적 수익·이번 달 수익 — 수익 내역이 바뀌면 매번 다시 센다.
+   금액은 그 내역에 적힌 값을 그대로 쓰고(정산·수수료가 반영된 금액도 있어서),
+   금액 없이 건수만 있는 기록만 단가 × 건수로 채워 계산한다 — 기존에 손으로 적은 수익은 건드리지 않는다. */
+function saleAmount(c, s){
+  var a=Math.round(Number(s && s.amount)); if(!isFinite(a) || a<0) a=0;
+  if(!a) a=(Number(c && c.price)||0)*(Number(s && s.qty)||0);
+  return a;
+}
 function contentTotals(c){
-  var rev=0, qty=0, mRev=0, mk=todayISO().slice(0,7);
+  var rev=0, qty=0, mRev=0, mk=todayISO().slice(0,7), price=Number(c && c.price)||0;
   ((c && c.sales) || []).forEach(function(s){
-    rev+=s.amount; qty+=s.qty;
-    if(String(s.date||"").slice(0,7)===mk) mRev+=s.amount;
+    var a=saleAmount(c,s);
+    rev+=a; qty+=(Number(s.qty)||0);
+    if(String(s.date||"").slice(0,7)===mk) mRev+=a;
   });
-  return {rev:rev, qty:qty, mRev:mRev};
+  return {rev:rev, qty:qty, mRev:mRev, est:price*qty};
 }
 /* 판매·출시 중인 상태인지 — 이름에 판매·출시·공개·서비스가 들어가면 '판매로 셈'.
    기본 목록의 '판매중'은 물론, 사용자가 직접 만든 '출시'·'판매 시작' 같은 상태도 포함한다 */
@@ -5418,19 +5457,23 @@ function renderContentsCalendar(){
   var rows=contentRows();
   var byC={}, byS={}, dayRev={}, dayQty={}, seenN={}, dateN=0, revM=0;
   rows.forEach(function(c){
-    /* 날짜 칸에는 제출일과 출시일을 따로 담는다 — 같은 날 둘 다면 배지도 둘 */
+    /* 날짜 칸에는 제출일과 출시일을 담는다 — 같은 날 둘 다면 배지 하나에 ‘제출·출시’로 합친다 */
     [["submit",c.submitDate],["release",c.releaseDate]].forEach(function(pr){
       var d=String(pr[1]||"");
       if(!/^\d{4}-\d{2}-\d{2}$/.test(d) || d.slice(0,7)!==curCalMon) return;
-      (byC[d]||(byC[d]=[])).push({c:c, kind:pr[0]});
+      var arr=byC[d]||(byC[d]=[]), hit=null;
+      for(var i=0;i<arr.length;i++) if(arr[i].c.id===c.id){ hit=arr[i]; break; }
+      if(hit){ if(hit.kinds.indexOf(pr[0])<0) hit.kinds.push(pr[0]); }
+      else arr.push({c:c, kinds:[pr[0]]});
       if(!seenN[c.id]){ seenN[c.id]=1; dateN++; }
     });
     ((c && c.sales)||[]).forEach(function(s){
       if(String(s.date||"").slice(0,7)!==curCalMon) return;
+      var amt=saleAmount(c,s);
       (byS[s.date]||(byS[s.date]=[])).push({c:c, s:s});
-      dayRev[s.date]=(dayRev[s.date]||0)+s.amount;
+      dayRev[s.date]=(dayRev[s.date]||0)+amt;
       dayQty[s.date]=(dayQty[s.date]||0)+1;
-      revM+=s.amount;
+      revM+=amt;
     });
   });
   var sub=$("#ccSub");
@@ -5442,28 +5485,37 @@ function renderContentsCalendar(){
     var date=curCalMon+"-"+pad(d);
     var wd=new Date(y,m-1,d,12).getDay();
     var cs=byC[date]||[], ss=byS[date]||[];
+    /* 출시 배지를 먼저, 그다음 이름순 — 배포용 캘린더와 같은 순서 */
+    cs.sort(function(a,b){
+      var ar=a.kinds.indexOf("release")>=0?0:1, br=b.kinds.indexOf("release")>=0?0:1;
+      if(ar!==br) return ar-br;
+      return String(a.c.name).localeCompare(String(b.c.name),"ko");
+    });
     var cls="mcell ccell"+(wd===0?" sun":wd===6?" sat":"")+(date===today?" today":"");
     var tip=[y+"년 "+m+"월 "+d+"일"];
-    if(cs.length) tip.push(cs.map(function(it){ return (it.kind==="release"?"출시":"제출")+" "+it.c.name; }).join(", "));
-    if(ss.length) tip.push("수익: "+ss.map(function(x){ return x.c.name+" +"+fmtWon(x.s.amount); }).join(", "));
-    var cell='<div class="'+cls+'" data-ccday="'+date+'" role="gridcell" aria-label="'+esc(tip.join(" / "))+'">';
+    if(cs.length) tip.push(cs.map(function(it){ return it.c.name+"("+it.kinds.map(function(k){ return k==="release"?"출시":"제출"; }).join("·")+")"; }).join(", "));
+    if(ss.length) tip.push("수익: "+ss.map(function(x){ return x.c.name+" +"+fmtWon(saleAmount(x.c,x.s)); }).join(", "));
+    var cell='<div class="'+cls+'" data-ccday="'+date+'" role="gridcell" aria-label="'+esc(tip.join(" / ")+' — 빈 곳을 누르면 이 날짜 제출일로 새 콘텐츠')+'" title="'+esc(tip.join(" · ")+' — 빈 곳을 누르면 이 날짜로 새 콘텐츠')+'">';
     cell+='<div class="mcell-head"><span class="dn">'+d+'</span>'
         + (ss.length?'<span class="cc-dot" aria-hidden="true" title="이날 수익 '+dayQty[date]+'건"></span>':'')
+        + '<i class="cc-add" aria-hidden="true"></i>'
         + '</div>';
     if(cs.length){
       cell+='<div class="cc-chips">';
       cs.forEach(function(it){
-        var c=it.c, isRel=(it.kind==="release");
-        cell+='<button class="cchip '+(isRel?"rel":"sub")+'" type="button" data-cedit="'+esc(c.id)+'" style="--c:'+cPlatColor(c.platform)+'" title="'+esc((isRel?"출시":"제출")+" · "+(c.platform||"플랫폼 없음")+" · "+c.name)+'">'
-          +   '<span class="ck">'+(isRel?"출시":"제출")+'</span><span class="nm">'+esc(c.name)+'</span></button>';
+        var c=it.c;
+        var isRel=it.kinds.indexOf("release")>=0;
+        var label=(isRel && it.kinds.indexOf("submit")>=0) ? "제출·출시" : (isRel?"출시":"제출");
+        cell+='<button class="cchip '+(isRel?"rel":"sub")+'" type="button" data-cedit="'+esc(c.id)+'" style="--c:'+cPlatColor(c.platform)+'" title="'+esc(label+" · "+(c.platform||"플랫폼 없음")+" · "+(c.status||"상태 없음")+" · "+c.name)+'">'
+          +   '<span class="ck">'+label+'</span><span class="nm">'+esc(c.name)+'</span></button>';
       });
       cell+='</div>';
     }
     if(ss.length){
       cell+='<div class="cc-revs">';
       ss.forEach(function(x){
-        cell+='<button class="crev" type="button" data-ccrev="'+esc(x.c.id)+'|'+esc(x.s.id)+'" title="'+esc(x.c.name+" · "+(x.s.memo||x.s.date))+'">'
-          +   '<span class="nm">'+esc(x.c.name)+'</span><b>+'+fmtWon(x.s.amount)+'</b></button>';
+        cell+='<button class="crev" type="button" data-ccrev="'+esc(x.c.id)+'|'+esc(x.s.id)+'" title="'+esc(x.c.name+" · "+(x.s.memo||x.s.date)+" · "+x.s.qty+"건")+'">'
+          +   '<span class="nm">'+esc(x.c.name)+'</span><b>+'+fmtWon(saleAmount(x.c,x.s))+'</b></button>';
       });
       cell+='</div>';
     }
@@ -5486,14 +5538,16 @@ function contentSalesHTML(c){
     return (Number(b.ts)||0)-(Number(a.ts)||0);
   });
   return sales.length ? sales.map(function(s){
-    return '<div class="cs-row" data-cid="'+esc(c.id)+'" data-sedit="'+esc(s.id)+'" title=" 눌러서 수정">'
+    return '<div class="cs-row" data-cid="'+esc(c.id)+'" data-sedit="'+esc(s.id)+'" title="수익 '+fmtWon(saleAmount(c,s))+' · '+s.qty+'건 · 눌러서 수정">'
       +   '<span class="d">'+(s.date?esc(s.date.replace(/-/g,".")):"—")+'</span>'
       +   '<span class="q">'+s.qty+'건</span>'
       +   '<span class="mm">'+esc(s.memo||"")+'</span>'
-      +   '<span class="a">'+fmtWon(s.amount)+'</span>'
+      +   '<span class="a">'+fmtWon(saleAmount(c,s))+'</span>'
       +   '<button class="cs-del" type="button" data-cid="'+esc(c.id)+'" data-sdel="'+esc(s.id)+'" aria-label="수익 내역 삭제" title="수익 내역 삭제">✕</button>'
       + '</div>';
-  }).join("") : '<div class="cs-none">아직 수익 기록이 없어요. <b>＋ 수익 기록</b>으로 첫 판매를 남겨 보세요.</div>';
+  }).join("") : (c.price>0
+    ? '<div class="cs-none">아직 수익 기록이 없어요. <b>＋ 수익 기록</b>에서 판매 건수를 넣으면 단가 '+fmtWon(c.price)+' × 건수로 수익이 채워져요.</div>'
+    : '<div class="cs-none">아직 수익 기록이 없어요. <b>＋ 수익 기록</b>으로 첫 판매를 남겨 보세요.</div>');
 }
 function contentsEmptyHTML(nAll){
   return nAll
@@ -5521,8 +5575,8 @@ function contentRowHTML(c){
     +   '<div class="cl-name"><span class="cl-nm" title="'+esc(c.name)+'">'+esc(c.name)+'</span>'+memoLine+'</div>'
     +   '<div class="cl-d sub'+(c.submitDate?"":" none")+'"><i class="cl-k">제출</i>'+cDayTxt(c.submitDate)+'</div>'
     +   '<div class="cl-d rel'+(c.releaseDate?"":" none")+'"><i class="cl-k">출시</i>'+cDayTxt(c.releaseDate)+'</div>'
-    +   '<div class="cl-sale" title="단가 '+(c.price>0?fmtWon(c.price):"—")+' · 판매 '+t.qty+'건"><i class="cl-k">단가</i><b'+(c.price>0?"":" class=\"none\"")+'>'+(c.price>0?fmtWon(c.price):"—")+'</b><small>'+t.qty+'건</small></div>'
-    +   '<div class="cl-money'+(t.rev>0?"":" zero")+'" title="누적 수익 '+fmtWon(t.rev)+'"><i class="cl-k">누적 수익</i><b>'+fmtWon(t.rev)+'</b>'
+    +   '<div class="cl-sale" title="'+(c.price>0?('단가 '+fmtWon(c.price)+' × 판매 '+t.qty+'건 = '+fmtWon(c.price*t.qty)):('단가 없음 · 판매 '+t.qty+'건'))+'"><i class="cl-k">단가</i><b'+(c.price>0?"":" class=\"none\"")+'>'+(c.price>0?fmtWon(c.price):"—")+'</b><small>'+((c.price>0&&t.qty>0)?"× ":"")+t.qty+'건</small></div>'
+    +   '<div class="cl-money'+(t.rev>0?"":" zero")+'" title="누적 수익 '+fmtWon(t.rev)+(c.price>0&&t.qty?' · 단가 '+fmtWon(c.price)+' × '+t.qty+'건 = '+fmtWon(t.est):'')+'"><i class="cl-k">누적 수익</i><b>'+fmtWon(t.rev)+'</b>'
     +     (t.mRev>0?'<small>이번 달 '+fmtWon(t.mRev)+'</small>':'')+'</div>'
     +   '<div class="cl-acts">'
     +     '<button class="cl-btn plus" type="button" data-crevadd="'+id+'" title="수익 기록 추가" aria-label="'+esc(c.name)+' 수익 기록 추가">＋</button>'
@@ -5542,7 +5596,7 @@ function contentCardHTML(c){
     meta+='<span class="mt'+(c.submitDate?"":" none")+'" title="'+(c.submitDate?"제출일":"제출일 없음")+'"><i>제출</i>'+cDayTxt(c.submitDate)+'</span>';
     meta+='<span class="mt'+(c.releaseDate?"":" none")+'" title="'+(c.releaseDate?"출시일":"출시일 없음")+'"><i>출시</i>'+cDayTxt(c.releaseDate)+'</span>';
   }
-  if(c.price>0) meta+='<span class="mt"><i>단가</i>'+fmtWon(c.price)+'</span>';
+  if(c.price>0) meta+='<span class="mt" title="'+esc('단가 '+fmtWon(c.price)+' × 판매 '+t.qty+'건 = '+fmtWon(c.price*t.qty))+'"><i>단가</i>'+fmtWon(c.price)+'</span>';
   meta+='<span class="mt"><i>판매</i>'+t.qty+'건</span>';
 
   var open=!!cOpen[c.id];
@@ -5558,7 +5612,7 @@ function contentCardHTML(c){
     +     '<button class="cc-act del" type="button" data-cdel="'+esc(c.id)+'" title="삭제" aria-label="콘텐츠 삭제">✕</button></div>'
     + '</div>'
     + '<div class="cc-meta">'+meta+'</div>'
-    + '<div class="cc-money'+(t.rev>0?"":" zero")+'"><i>누적 수익</i><b>'+fmtWon(t.rev)+'</b>'
+    + '<div class="cc-money'+(t.rev>0?"":" zero")+'" title="누적 수익 '+fmtWon(t.rev)+(c.price>0&&t.qty?' · 단가 '+fmtWon(c.price)+' × '+t.qty+'건 = '+fmtWon(t.est):'')+'"><i>누적 수익</i><b>'+fmtWon(t.rev)+'</b>'
     +   (t.mRev>0?'<span class="mth">이번 달 '+fmtWon(t.mRev)+'</span>':'')+'</div>'
     + (c.memo?'<p class="cc-memo">'+esc(c.memo)+'</p>':'')
     + (c.url?'<a class="cc-link" href="'+esc(c.url)+'" target="_blank" rel="noopener noreferrer" title="'+esc(c.url)+'">🔗 '+esc(c.url.replace(/^https?:\/\//i,""))+'</a>':'')
@@ -5594,7 +5648,30 @@ function fillContentSelects(curP, curS){
     if(curS!=null) st.value=curS;
   }
 }
-function openContentDlg(id){
+/* 등록·수정 모달의 계산 줄 — 단가를 고치는 그 자리에서 ‘단가 × 판매 건수’와 누적 수익을 다시 보여 준다 */
+function updateContentMoney(){
+  var el=$("#cMoney"); if(!el) return;
+  var c=editingC?contentById(editingC):null;
+  var price=parseInt(digitsOnly($("#cPrice").value),10);
+  if(!isFinite(price) || price<0) price=0;
+  var qty=0, rev=0;
+  if(c){
+    qty=contentTotals(c).qty;
+    /* 모달에서 바꾼 단가로 미리 계산 — 금액을 손으로 적은 기록은 그 금액 그대로 쓴다 */
+    rev=(c.sales||[]).reduce(function(sum,s){ return sum+saleAmount({price:price}, s); },0);
+  }
+  if(price>0 && qty>0){
+    el.innerHTML="누적 수익 <b>"+fmtWon(rev)+"</b> · 단가 "+fmtWon(price)+" × 판매 "+qty+"건"
+      + (rev!==price*qty ? ' <small>· 손으로 적은 금액은 그대로 둬요</small>' : '');
+  } else if(price>0){
+    el.innerHTML="단가 <b>"+fmtWon(price)+"</b> · 아직 판매 기록이 없어요 — <b>＋ 수익 기록</b>에서 판매 건수만 넣으면 수익이 <b>단가 × 건수</b>로 자동으로 채워져요.";
+  } else if(qty>0){
+    el.innerHTML="판매 "+qty+"건 · 누적 수익 <b>"+fmtWon(rev)+"</b> — 단가를 넣으면 앞으로 <b>단가 × 건수</b>로 자동 계산돼요.";
+  } else {
+    el.innerHTML="단가를 넣으면 수익이 <b>단가 × 판매 건수</b>로 자동 계산돼요.";
+  }
+}
+function openContentDlg(id, date){
   var c=id?contentById(id):null;
   fillContentSelects(c?(c.platform||""):null, c?(c.status||""):null);
   editingC=c?c.id:null;
@@ -5602,12 +5679,15 @@ function openContentDlg(id){
   $("#cPlatform").value=c?(c.platform||""):(cPlatNames()[0]||"");
   $("#cName").value=c?c.name:"";
   $("#cStatus").value=c?(c.status||""):(cStatNames()[0]||"");
-  $("#cSubmit").value=c?(c.submitDate||""):"";
+  /* 달력의 빈 날짜 칸을 눌러 열면 그날을 제출일로 미리 채웁니다 */
+  var pre=/^\d{4}-\d{2}-\d{2}$/.test(String(date||"")) ? String(date) : "";
+  $("#cSubmit").value=c?(c.submitDate||""):pre;
   $("#cRelease").value=c?(c.releaseDate||""):"";
   $("#cPrice").value=(c && c.price>0)?fmtNum(c.price):"";
   $("#cUrl").value=c?c.url:"";
   $("#cMemo").value=c?c.memo:"";
   $("#cDelete").hidden=!c;
+  updateContentMoney();
   $("#contentDlg").hidden=false;
   setTimeout(function(){ $("#cName").focus(); },30);
 }
@@ -5665,7 +5745,40 @@ function deleteContent(id){
   });
 }
 
-/* ---------- 수익 기록 ---------- */
+/* ---------- 수익 기록 ----------
+   콘텐츠에 단가가 있으면 판매 건수만 넣어도 수익이 ‘단가 × 건수’로 채워진다.
+   채워진 금액은 그대로 저장되므로 백업·동기화·합계 계산은 예전과 똑같이 동작하고,
+   수수료처럼 실제 정산 금액이 다를 때는 금액을 직접 고쳐 쓰면 그 값이 남는다. */
+function saleBase(){
+  var c=contentById(revContentId);
+  var price=c?(Number(c.price)||0):0;
+  var qty=parseInt(digitsOnly($("#sQty").value),10); if(!isFinite(qty)||qty<1) qty=1;
+  return {price:price, qty:qty, base:price*qty};
+}
+function updateSaleCalc(){
+  var el=$("#sCalc"); if(!el) return;
+  var b=saleBase();
+  var amt=parseInt(digitsOnly($("#sAmount").value),10); if(!isFinite(amt)||amt<0) amt=0;
+  if(b.price>0 && b.qty>0){
+    if(amt>0 && amt!==b.base) el.innerHTML="단가 "+fmtWon(b.price)+" × "+b.qty+"건 = <b>"+fmtWon(b.base)+"</b> <small>· 지금은 "+fmtWon(amt)+"으로 적혀 있어요</small>";
+    else el.innerHTML="수익 <b>"+fmtWon(b.base)+"</b> · 단가 "+fmtWon(b.price)+" × "+b.qty+"건";
+  } else if(b.price>0){
+    el.innerHTML="단가 "+fmtWon(b.price)+" · 판매 건수를 넣으면 수익이 <b>단가 × 건수</b>로 채워져요.";
+  } else {
+    el.innerHTML="이 콘텐츠에 단가가 없어서 수익을 직접 적어요 — 콘텐츠 <b>✎ 수정</b>에서 단가를 넣으면 자동으로 계산돼요.";
+  }
+}
+/* 판매 건수를 고치면, 금액을 손대지 않았을 때만 자동 값이 따라간다 */
+function onSaleQtyInput(){
+  var b=saleBase();
+  if(b.price>0){
+    var cur=parseInt(digitsOnly($("#sAmount").value),10); if(!isFinite(cur)||cur<0) cur=0;
+    if((sAutoAmt===null && !cur) || (sAutoAmt!==null && cur===sAutoAmt)){
+      $("#sAmount").value=fmtNum(b.base); sAutoAmt=b.base;
+    }
+  }
+  updateSaleCalc();
+}
 function openRevenueDlg(cid, sid){
   var c=contentById(cid); if(!c) return;
   var s=null;
@@ -5674,21 +5787,28 @@ function openRevenueDlg(cid, sid){
   $("#sDlgTitle").textContent=(s?"수익 수정":"수익 기록")+" · "+c.name;
   $("#sDate").value=s?(s.date||todayISO()):todayISO();
   $("#sQty").value=s?String(s.qty):"1";
-  $("#sAmount").value=s?fmtNum(s.amount):"";
+  $("#sAmount").value=s?fmtNum(saleAmount(c,s)):"";
   $("#sMemo").value=s?s.memo:"";
   $("#sDelete").hidden=!s;
+  sAutoAmt=null;
+  /* 새 기록 + 단가가 있으면 1건짜리 금액을 미리 채워 둔다 */
+  if(!s && Number(c.price)>0){ sAutoAmt=Number(c.price); $("#sAmount").value=fmtNum(sAutoAmt); }
+  updateSaleCalc();
   $("#revenueDlg").hidden=false;
-  setTimeout(function(){ $("#sAmount").focus(); },30);
+  setTimeout(function(){ (sAutoAmt===null?$("#sAmount"):$("#sQty")).focus(); },30);
 }
 function closeRevenueDlg(){ $("#revenueDlg").hidden=true; revContentId=null; editingS=null; }
 function saveRevenue(){
   var c=contentById(revContentId);
   if(!c){ closeRevenueDlg(); return; }
-  var amount=parseInt(digitsOnly($("#sAmount").value),10);
-  if(!amount || amount<=0){ toast("수익 금액을 입력해 주세요"); $("#sAmount").focus(); return; }
   var qty=parseInt(digitsOnly($("#sQty").value),10);
   if(!isFinite(qty) || qty<1) qty=1;
   if(qty>9999) qty=9999;
+  var amount=parseInt(digitsOnly($("#sAmount").value),10);
+  if(!isFinite(amount) || amount<0) amount=0;
+  /* 금액을 비워 두고 저장하면 단가 × 건수로 채운다 */
+  if(!amount && Number(c.price)>0) amount=Number(c.price)*qty;
+  if(!amount){ toast("수익 금액을 입력해 주세요"); $("#sAmount").focus(); return; }
   var date=$("#sDate").value||todayISO();
   if(!/^\d{4}-\d{2}-\d{2}$/.test(date)) date=todayISO();
   var memo=String($("#sMemo").value||"").slice(0,60);
@@ -5737,6 +5857,8 @@ function bindContents(){
     if((el=e.target.closest("[data-sdel]"))){ e.preventDefault(); deleteRevenue(el.dataset.cid, el.dataset.sdel); return; }
     if((el=e.target.closest("[data-sedit]"))){ openRevenueDlg(el.dataset.cid, el.dataset.sedit); return; }
     if((el=e.target.closest("[data-csales]"))){ var id=el.dataset.csales; cOpen[id]=!cOpen[id]; renderContents(); return; }
+    /* 달력의 빈 날짜 칸 — 그날을 제출일로 새 콘텐츠를 연다(칩·수익 줄은 위에서 먼저 잡힌다) */
+    if((el=e.target.closest("[data-ccday]"))){ openContentDlg(null, el.dataset.ccday); return; }
     if((el=e.target.closest("[data-cplat]"))){ var p=el.dataset.cplat; cFilter.platform=(cFilter.platform===p||p==="all")?"all":p; renderContents(); return; }
     if((el=e.target.closest("[data-cstat]"))){ var s=el.dataset.cstat; cFilter.status=(cFilter.status===s||s==="all")?"all":s; renderContents(); return; }
     if((el=e.target.closest("[data-csort]"))){ cFilter.sort=el.dataset.csort; renderContents(); return; }
@@ -5757,6 +5879,13 @@ function bindContents(){
   if(cDel) cDel.addEventListener("click", function(){ var id=editingC; if(!id) return; closeContentDlg(); deleteContent(id); });
   var sSave=$("#sSave");
   if(sSave) sSave.addEventListener("click", saveRevenue);
+  /* 단가 × 판매 자동 계산 — 단가를 고치면 모달 안의 계산 줄이 바로 따라간다 */
+  var cpEl=$("#cPrice");
+  if(cpEl) cpEl.addEventListener("input", updateContentMoney);
+  var sqEl=$("#sQty");
+  if(sqEl) sqEl.addEventListener("input", onSaleQtyInput);
+  var saEl=$("#sAmount");
+  if(saEl) saEl.addEventListener("input", function(){ sAutoAmt=null; updateSaleCalc(); });
   var sDel=$("#sDelete");
   if(sDel) sDel.addEventListener("click", function(){ var cid=revContentId, sid=editingS; if(!cid||!sid) return; closeRevenueDlg(); deleteRevenue(cid, sid); });
   $$("[data-cclose]").forEach(function(b){ if(b.closest("#contentDlg")) b.addEventListener("click", closeContentDlg); });
