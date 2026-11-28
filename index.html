@@ -1071,6 +1071,8 @@ html.wdnd-on,html.wdnd-on body{-webkit-user-select:none;user-select:none;cursor:
 .c-ico:hover{background:#EDF2FC;color:var(--ink-soft)}
 .c-ico.del:hover{background:#FBEDEC;color:#AE4A45}
 .lt-empty{display:none}
+/* 내역이 하나도 없을 때는 표 머리·합계 줄을 감춰 안내 카드만 남긴다(콘텐츠 탭 빈 화면과 같은 결) */
+.ledger-table-card.empty .lt-headrow,.ledger-table-card.empty .lt-foot{display:none}
 .lt-empty.on{display:block;padding:2px 0 6px}
 .lt-empty .cont-empty{padding:24px 14px 26px}
 .lt-foot{display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--line-strong);margin-top:2px;padding:8px 2px 2px;font-weight:800;font-size:12px;color:var(--ink-soft)}
@@ -2219,7 +2221,7 @@ kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;bac
           <span class="ccount no-print" id="lCount">0건</span>
         </div>
 
-        <div class="ledger-table-card">
+        <div class="ledger-table-card" id="lTable">
           <div class="lt-row lt-headrow">
             <span>날짜</span><span>구분</span><span>카테고리</span><span>시간</span><span>내역</span><span class="c-num">금액</span><span></span>
           </div>
@@ -5011,6 +5013,7 @@ function renderLedger(){
 
   /* 상세 내역 목록 — 행을 누르면 수정, ✎ 수정 · ✕ 삭제 */
   $("#lRows").innerHTML=rows.map(entryRowHTML).join("");
+  var tb=$("#lTable"); if(tb) tb.classList.toggle("empty", rows.length===0);
   var emptyEl=$("#lEmpty");
   if(rows.length){
     emptyEl.classList.remove("on");
