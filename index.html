@@ -5001,6 +5001,8 @@ function renderLedger(){
   var catHTML='<button class="fchip'+(lFilter.cat==="all"?" on":"")+'" type="button" data-lfcat="all" aria-pressed="'+(lFilter.cat==="all"?"true":"false")+'">전체<small>'+cntType[lFilter.type]+'</small></button>';
   S.ledgerCats.forEach(function(c){
     if(lFilter.type!=="all" && c.type!==lFilter.type) return;
+    /* 이 달에 내역이 있는 분류만 칩으로 — 0건짜리 분류까지 깔면 줄만 길어진다(고른 분류는 남긴다) */
+    if(!cntCat[c.id] && lFilter.cat!==c.id) return;
     catHTML+='<button class="fchip'+(lFilter.cat===c.id?" on":"")+'" type="button" data-lfcat="'+c.id+'" aria-pressed="'+(lFilter.cat===c.id?"true":"false")+'" title="'+esc(c.name)+' 내역만 보기"><i class="fdot" style="--c:'+c.color+'"></i>'+esc(c.name)+'<small>'+(cntCat[c.id]||0)+'</small></button>';
   });
   $("#lCatChips").innerHTML=catHTML;
